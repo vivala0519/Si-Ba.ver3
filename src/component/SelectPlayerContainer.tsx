@@ -39,9 +39,16 @@ const SelectPlayerContainer = () => {
                 return player
             }
         })
-        const playersDisplayTextList:string[] = playersDataByTeam.map(player => {
-            return `${player.position} ${player.name}`
+        const extractPositionName: {position: string, name: string}[] = playersDataByTeam.map(player => {
+            // return `${player.position} ${player.name}`
+            return {position: player.position, name: player.name}
         })
+        // 포지션 순으로 정렬
+        const orderByPosition = ['DH', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF'];
+        const playersDisplayTextList = extractPositionName.sort((a, b) => orderByPosition.indexOf(a.position) - orderByPosition.indexOf(b.position)).map(player => {
+            return `${player.position} ${player.name}`
+        });
+
 
         setPlayerList(playersDisplayTextList);
     }, [teamList, team, playerListByYear])

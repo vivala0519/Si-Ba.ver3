@@ -6,17 +6,22 @@ import { useState } from 'react'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [selectedArea, setSelectedArea] = useState<string | null>(null);
   
+  // useEffect(() => {
+  //   console.log(selectedArea);
+    
+  // }, [selectedArea])
 
   return (
     <>
       <div className='container'>
         <div>
-          <LineUp placeholder='Home' />
+          <LineUp way='Home' selectedArea={selectedArea?.includes('Home') ? selectedArea : null} setSelectedArea={setSelectedArea} />
         </div>
         <SelectPlayerContainer />
         <div>
-          <LineUp placeholder='Away' />
+          <LineUp way='Away' selectedArea={selectedArea?.includes('Away') ? selectedArea : null} setSelectedArea={setSelectedArea} />
         </div>
       </div>
       <div className="card">
@@ -27,9 +32,6 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

@@ -1,27 +1,38 @@
+import { useEffect, useState } from 'react'
 import LineUp from './component/LineUp'
 import SelectPlayerContainer from './component/SelectPlayerContainer'
 import './App.css'
 
-import { useState } from 'react'
-
 function App() {
   const [count, setCount] = useState(0)
-  const [selectedArea, setSelectedArea] = useState<string | null>(null);
+  const [selectedArea, setSelectedArea] = useState<string | null>(null)
+  const [addedPlayer, setAddedPlayer] = useState<object | null>(null)
   
-  // useEffect(() => {
-  //   console.log(selectedArea);
+  useEffect(() => {
+    console.log(selectedArea);
     
-  // }, [selectedArea])
+  }, [selectedArea])
 
   return (
     <>
       <div className='container'>
         <div>
-          <LineUp way='Home' selectedArea={selectedArea?.includes('Home') ? selectedArea : null} setSelectedArea={setSelectedArea} />
+          <LineUp
+            way='Away' 
+            addedPlayer={selectedArea?.includes('Away') ? addedPlayer : null}
+            setAddedPlayer={setAddedPlayer}
+            selectedArea={selectedArea?.includes('Away') ? selectedArea : null}
+            setSelectedArea={setSelectedArea}
+            />
         </div>
-        <SelectPlayerContainer />
+        <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
         <div>
-          <LineUp way='Away' selectedArea={selectedArea?.includes('Away') ? selectedArea : null} setSelectedArea={setSelectedArea} />
+          <LineUp
+            way='Home'
+            addedPlayer={selectedArea?.includes('Home') ? addedPlayer : null}
+            setAddedPlayer={setAddedPlayer}
+            selectedArea={selectedArea?.includes('Home') ? selectedArea : null}
+            setSelectedArea={setSelectedArea} />
         </div>
       </div>
       <div className="card">

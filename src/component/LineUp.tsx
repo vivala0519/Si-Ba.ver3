@@ -7,18 +7,27 @@ interface PropsType {
     way: string
     selectedArea: string | null
     setSelectedArea: React.Dispatch<React.SetStateAction<string | null>>
+    addedPlayer: object | null
+    setAddedPlayer: React.Dispatch<React.SetStateAction<object | null>>
 }
 
 interface PlayerProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    $hover: boolean;
-    selected: boolean;
+    $hover: boolean
+    selected: boolean
+}
+
+interface LineUp {
+    name: string
+    position: string
+    avg: number
 }
 
 const LineUp = (props: PropsType) => {
     // props
-    const { way, selectedArea, setSelectedArea } = props;
+    const { way, selectedArea, setSelectedArea, addedPlayer, setAddedPlayer } = props;
     // state
     const [team, setTeam] = useState('')
+    const [lineUpList, setLineUpList] = useState<Array<LineUp | null>>(Array.from({ length: 13 }, () => null));
     
     const playerList = Array.from({ length: 13 }, (_, i) => (
         <Player
@@ -33,7 +42,9 @@ const LineUp = (props: PropsType) => {
             :
                 <>
                     <LineUpNumber>{i === 10 ? '선발' : i === 11 ? '중계' : i === 12 ? '마무리' : `${i + 1}번`}</LineUpNumber>
-                    <PlayerName />
+                    <PlayerName>{lineUpList[i] ? `${lineUpList[i]?.name}` : ''}</PlayerName>
+                    {i < 10 ? <Position>{lineUpList[i] ? `${lineUpList[i]?.position}` : ''}</Position> : <Position/>}
+                    {i < 10 ? <Average>{lineUpList[i] ? `0${lineUpList[i]?.avg}` : ''}</Average> : <Average/>}
                 </>
             }
         </Player>
@@ -51,9 +62,23 @@ const LineUp = (props: PropsType) => {
         console.log(team);
     }, [team])
 
+    useEffect(() => {
+        // 라인업에 추가 후 초기화
+        const selectedPlace = selectedArea?.split(way)[1]
+        if (addedPlayer && selectedPlace) {
+            console.log('add - ', addedPlayer);
+
+            const copiedLineUp = [...lineUpList]
+            copiedLineUp[selectedPlace] = addedPlayer
+
+            setLineUpList(copiedLineUp);
+            setAddedPlayer(null)
+        }
+    }, [addedPlayer])
+
     return (
         <>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{display: 'flex', flexDirection: 'column', width: '270px'}}>
                 <TeamName placeholder={way} onChange={(event) => setTeam(event.target.value)}/>
                 { playerList }
             </div>
@@ -71,7 +96,7 @@ const TeamName = styled.input`
     maxlength: 8;
     margin-bottom: 4px;
     height: 30px;
-    width: 70%;
+    width: 81%;
     border: 2px solid #ffbe98;
     border-radius: 50% 20% / 10% 40%;
     ::placeholder {
@@ -83,9 +108,9 @@ const TeamName = styled.input`
 const Player = styled.div<PlayerProps>`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 2px;
     border: 3px solid transparent;
-    // background-image: transparent;
 
     ${(props) =>
         props.selected &&
@@ -111,9 +136,23 @@ const SeperatorLine = styled.hr`
 const LineUpNumber = styled.div`
     margin: 2px;
     text-align: center;
-    width: 50px;
+    width: 48px;
 `
 
 const PlayerName = styled.div`
-	text-align: center
+	text-align: center;
+    position: relative;
+    left: -5px;
+    width: 80px;
+`
+
+const Position = styled.div`
+	text-align: center;
+    width: 20px;
+`
+
+const Average = styled.div`
+	text-align: center;
+    width: 40px;
+    margin-right: 10px;
 `

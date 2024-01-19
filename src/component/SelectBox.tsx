@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
+interface Player {
+    team: string;
+    position: string;
+    name: string;
+}
+
 interface BoxProps {
     width: number
     state?: string
     setState?: React.Dispatch<React.SetStateAction<string>>
     setSelectedIdx?: React.Dispatch<React.SetStateAction<number>>
-    propList?: Array<string>
+    propList?: Array<string | Player>
     type?: string
 }
 
@@ -14,16 +20,15 @@ const SelectBox = (props:BoxProps) => {
     const {propList, setState, setSelectedIdx, width, state, type} = props;
     type optionList = React.ReactElement<{key: number, value: string}, "option">;
     const [listElement, setListElement] = useState<optionList[] | undefined>([]);
-    // const [selectedIdx, setSelectedIdx] = useState<number>(0);
 
     useEffect(() => {
         if (type === 'player') {
-            console.log(propList);
-            const playersDisplayTextList = propList.map(player => {
-                return `${player.position} ${player.name}`
-            });
+            const playersDisplayTextList = (propList || []).filter((player): player is Player => typeof player !== 'string').map((player: Player) => {
+                return `${player.position !== 'P' ? player.position : ''} ${player.name}`;
+            });            
             setListElement(playersDisplayTextList?.map((el, idx) => <option key={idx}>{el}</option>));
         } else {
+            //@ts-expect-error: must string
             setListElement(propList?.map((el, idx) => <option key={idx}>{el}</option>))
         }
     }, [propList])

@@ -20,6 +20,7 @@ interface LineUp {
     name: string
     position: string
     avg: number
+    year: string
 }
 
 const LineUp = (props: PropsType) => {
@@ -42,7 +43,7 @@ const LineUp = (props: PropsType) => {
             :
                 <>
                     <LineUpNumber>{i === 10 ? '선발' : i === 11 ? '중계' : i === 12 ? '마무리' : `${i + 1}번`}</LineUpNumber>
-                    <PlayerName>{lineUpList[i] ? `${lineUpList[i]?.name}` : ''}</PlayerName>
+                    <PlayerName>{lineUpList[i] ? `${lineUpList[i]?.year.slice(2)}  ${lineUpList[i]?.name}` : ''}</PlayerName>
                     {i < 10 ? <Position>{lineUpList[i] ? `${lineUpList[i]?.position}` : ''}</Position> : <Position/>}
                     {i < 10 ? <Average>{lineUpList[i] ? `0${lineUpList[i]?.avg}` : ''}</Average> : <Average/>}
                 </>

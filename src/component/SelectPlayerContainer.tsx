@@ -4,9 +4,10 @@ import SelectBox from './SelectBox';
 import styled from 'styled-components'
 
 interface Player {
-    team: string;
-    position: string;
-    name: string;
+    team: string
+    position: string
+    name: string
+    year: string
 }
 
 const SelectPlayerContainer = (props) => {
@@ -35,7 +36,7 @@ const SelectPlayerContainer = (props) => {
             const data = await import(fileName).then(module => module.default)
             setPlayerListByYear(data)
             const teams = [...new Set(data.map((player:Player) => player.team))].sort() as string[]
-            setTeamList(teams);
+            setTeamList(teams)
             return data
         }
     }
@@ -43,6 +44,7 @@ const SelectPlayerContainer = (props) => {
     // 선수 추가 Func
     const addPlayer = () => {
         if (selectedArea) {
+            playerList[selectedIdx].year = year
             setAddedPlayer(playerList[selectedIdx]);
         }
     }
@@ -50,7 +52,7 @@ const SelectPlayerContainer = (props) => {
     // 연도에 따른 data json 가져오기
     useEffect(() => {
         importJsonByYear(year);
-    }, [year])
+    }, [year, selectedArea])
     // 연도에 따라 팀 리스트 바뀌면 default [0] 설정
     useEffect(() => {
         setTeam(teamList[0])
@@ -64,16 +66,16 @@ const SelectPlayerContainer = (props) => {
             }
         })
         // 포지션 순으로 정렬
-        const orderByPosition = ['DH', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF'];
+        const orderByPosition = ['DH', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF']
         const sortedList:Player[] = playersDataByTeam.sort((a, b) => orderByPosition.indexOf(a.position) - orderByPosition.indexOf(b.position));
         
-        setPlayerList(sortedList);
+        setPlayerList(sortedList)
         setSelectedIdx(0);
     }, [teamList, team, playerListByYear])
 
     // 선택된 player Func
     useEffect(() => {
-        console.log('select -', playerList[selectedIdx]);
+        console.log('select: ', playerList[selectedIdx]);
         
     }, [selectedIdx, playerList])
 
@@ -81,11 +83,17 @@ const SelectPlayerContainer = (props) => {
     return (
         <div>
             <SelectContainer>
-                <SelectBox state={year} setState={setYear} propList={yearList} width={77} />
-                <SelectBox state={team} setState={setTeam} propList={teamList} width={120} />
-                <SelectBox type='player' state={player} setState={setPlayer} setSelectedIdx={setSelectedIdx} propList={playerList} width={177} />
-                <ViewDetailStat />
-                <button onClick={addPlayer}>add</button>
+                {selectedArea ? 
+                    <>
+                        <SelectBox state={year} setState={setYear} propList={yearList} width={77} />
+                        <SelectBox state={team} setState={setTeam} propList={teamList} width={120} />
+                        <SelectBox type='player' state={player} setState={setPlayer} setSelectedIdx={setSelectedIdx} propList={playerList} width={177} />
+                        <ViewDetailStat />
+                        <button onClick={addPlayer}>add</button>
+                    </>
+                :
+                    <div>select area for add</div> 
+                }
             </SelectContainer>
             {/* <div>
                 <SearchBox />

@@ -32,7 +32,7 @@ const LineUp = (props: PropsType) => {
     
     const playerList = Array.from({ length: 13 }, (_, i) => (
         <Player
-            className={selectedArea === way + i ? 'player' : ''}
+            className={`player ${selectedArea === way + i ? 'selected' : ''}`}
             key={way + i}
             selected={selectedArea ? selectedArea === way + i : false}
             onClick={() => clickHandler(i)}
@@ -59,21 +59,41 @@ const LineUp = (props: PropsType) => {
         }
     }
 
+    const moveToNextEmptyArea = (nowNumber) => {
+        // const nowNumber = Number(selectedArea?.slice(4))
+        const plusNumber = nowNumber === 8 ? 2 : 1
+        // if (lineUpList[Number(selectedArea?.slice(4))]) {
+        //     setSelectedArea(way + String(nowNumber + plusNumber))
+        // }
+        console.log(nowNumber + plusNumber);
+        console.log(lineUpList[nowNumber + plusNumber]);
+        
+        
+        if (!lineUpList[nowNumber + plusNumber]) {
+            setSelectedArea(way + String(nowNumber + plusNumber))
+        } else {
+            moveToNextEmptyArea(nowNumber + plusNumber)
+        }
+    }
+
     useEffect(() => {
         console.log(team);
     }, [team])
 
     useEffect(() => {
-        // 라인업에 추가 후 초기화
+        // 라인업에 추가 후 addedPlayer 초기화
         const selectedPlace = selectedArea?.split(way)[1]
         if (addedPlayer && selectedPlace) {
             console.log('add - ', addedPlayer);
 
+            lineUpList[selectedPlace] = addedPlayer
             const copiedLineUp = [...lineUpList]
-            copiedLineUp[selectedPlace] = addedPlayer
 
             setLineUpList(copiedLineUp);
             setAddedPlayer(null)
+            
+            // 추가 후 이동된 area에 데이터 있으면 다음 area로
+            moveToNextEmptyArea(Number(selectedPlace))
         }
     }, [addedPlayer])
 

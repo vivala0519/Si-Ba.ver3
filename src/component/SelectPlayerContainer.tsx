@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
-import SelectBox from './SelectBox';
-// import SearchBox from './SearchBox';
+import DropDownBox from './DropDownBox';
+import SearchBox from './SearchBox';
 import styled from 'styled-components'
+import changeModeButton from '../assets/change-mode.svg';
+import addPlayerButton from '../assets/add-player.svg';
 
 interface Player {
     team: string
@@ -16,6 +18,7 @@ const SelectPlayerContainer = (props) => {
     // 연도 declare
     const yearList = Array.from({ length: 2023 - 1982 + 1 }, (_, i) => String(i + 1982))
     
+    const [selectMode, setSelectMode] = useState(true)
     const [playerListByYear, setPlayerListByYear] = useState([])
     const [teamList, setTeamList] = useState<string[]>([])
     const [playerList, setPlayerList] = useState<Player[]>([])
@@ -60,7 +63,6 @@ const SelectPlayerContainer = (props) => {
     // 
     useEffect(() => {
         const playersDataByTeam:Player[] = playerListByYear.filter((player) => {
-            //@ts-expect-error: not a bug
             if (team === player.team) {
                 return player
             }
@@ -79,17 +81,28 @@ const SelectPlayerContainer = (props) => {
         
     }, [selectedIdx, playerList])
 
+    useEffect(() => {
+        
+    }, [selectMode])
+
 
     return (
         <div>
             <SelectContainer>
                 {selectedArea ? 
+                    selectMode ? 
                     <>
-                        <SelectBox state={year} setState={setYear} propList={yearList} width={77} />
-                        <SelectBox state={team} setState={setTeam} propList={teamList} width={120} />
-                        <SelectBox type='player' state={player} setState={setPlayer} setSelectedIdx={setSelectedIdx} propList={playerList} width={177} />
-                        <ViewDetailStat />
-                        <button onClick={addPlayer}>add</button>
+                        {/* <ChangeMode onClick={() => setSelectMode(!selectMode)}>search</ChangeMode> */}
+                        <DropDownBox type='Year' state={year} setState={setYear} propList={yearList} width={120}/>
+                        <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={120}/>
+                        <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={177}/>
+                        {/* <ViewDetailStat /> */}
+                        <AddPlayerButton onClick={addPlayer} />
+                    </>
+                    : 
+                    <>
+                        <ChangeMode onClick={() => setSelectMode(!selectMode)}>list</ChangeMode>
+                        <SearchBox />
                     </>
                 :
                     <div>select area for add</div> 
@@ -106,16 +119,45 @@ export default SelectPlayerContainer
 const SelectContainer = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
+    height: 50px;
 `
 
-const ViewDetailStat = styled.div`
-    position: relative;
-    left: -40px;
-    width: 10px;
-    height: 10px;
-    background-color: blue;
+// const ViewDetailStat = styled.div`
+//     position: relative;
+//     left: -40px;
+//     width: 10px;
+//     height: 10px;
+//     background-color: blue;
 
-    &:hover {
-        cursor: pointer};
+//     &:hover {
+//         cursor: pointer};
+//     }
+// `
+
+const AddPlayerButton = styled.button`
+    background: url(${addPlayerButton}) no-repeat center center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    width: 70px;
+    height: 40px;
+    &:hover,
+    &:focus {
+        outline: none;
+    }
+`
+
+const ChangeMode = styled.button`
+    background: url(${changeModeButton}) no-repeat center center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    font-size: 9px;
+    width: 70px;
+    height: 40px;
+    &:hover,
+    &:focus {
+        outline: none;
     }
 `

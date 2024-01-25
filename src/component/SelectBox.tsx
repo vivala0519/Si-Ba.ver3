@@ -54,4 +54,8 @@ const Box = styled.select<BoxProps>`
     text-align: center;
     width: ${props => props.width || 100}px;
     height: 30px;
+
+    &:hover {
+        background-color: #ffbe98;
+    }
 `

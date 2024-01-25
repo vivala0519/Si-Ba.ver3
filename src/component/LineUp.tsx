@@ -1,7 +1,6 @@
 import React, { DetailedHTMLProps, HTMLAttributes, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import './LineUp.css'
-// import selectedPlayer from '../assets/selected-player.svg'
 
 interface PropsType {
     way: string
@@ -60,15 +59,7 @@ const LineUp = (props: PropsType) => {
     }
 
     const moveToNextEmptyArea = (nowNumber) => {
-        // const nowNumber = Number(selectedArea?.slice(4))
         const plusNumber = nowNumber === 8 ? 2 : 1
-        // if (lineUpList[Number(selectedArea?.slice(4))]) {
-        //     setSelectedArea(way + String(nowNumber + plusNumber))
-        // }
-        console.log(nowNumber + plusNumber);
-        console.log(lineUpList[nowNumber + plusNumber]);
-        
-        
         if (!lineUpList[nowNumber + plusNumber]) {
             setSelectedArea(way + String(nowNumber + plusNumber))
         } else {
@@ -100,7 +91,7 @@ const LineUp = (props: PropsType) => {
     return (
         <>
             <div style={{display: 'flex', flexDirection: 'column', width: '270px'}}>
-                <TeamName placeholder={way} onChange={(event) => setTeam(event.target.value)}/>
+                <TeamName placeholder={way} onChange={(event) => setTeam(event.target.value)} maxLength={13} />
                 { playerList }
             </div>
         </>
@@ -114,9 +105,8 @@ const TeamName = styled.input`
     position: relative;
     left: 22px;
     text-align: center;
-    maxlength: 8;
     margin-bottom: 4px;
-    height: 30px;
+    height: 40px;
     width: 81%;
     border: 2px solid #ffbe98;
     border-radius: 50% 20% / 10% 40%;
@@ -124,6 +114,7 @@ const TeamName = styled.input`
         color: red;
         opacity: 1;
     }
+    z-index: 0;
 `
 
 const Player = styled.div<PlayerProps>`

@@ -1,5 +1,5 @@
 // import { useEffect, useState } from 'react'
-// import styled from 'styled-components'
+import styled from 'styled-components'
 
 // interface BoxProps {
 // }
@@ -9,8 +9,17 @@ const SearchBox = () => {
 
     return (
         <>
-            <div>searchBox</div>
+            <SearchPlayer />
         </>
     )
 }
 export default SearchBox
+
+const SearchPlayer = styled.input`
+    type: text;
+    text-align: center;
+    height: 30px;
+    width: 200px;
+    border: 2px solid #ffbe98;
+    border-radius: 50% 20% / 10% 40%;
+`

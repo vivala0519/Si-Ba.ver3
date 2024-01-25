@@ -35,7 +35,9 @@
 }
 .container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 585px;
+  margin-top: 20px;
 }
 
 .card {

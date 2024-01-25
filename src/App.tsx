@@ -10,6 +10,7 @@ function App() {
 
   return (
     <>
+      <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
       <div className='container'>
         <div>
           <LineUp
@@ -20,7 +21,6 @@ function App() {
             setSelectedArea={setSelectedArea}
             />
         </div>
-        <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
         <div>
           <LineUp
             way='Home'

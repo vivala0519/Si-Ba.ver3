@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import DropDownBox from './DropDownBox';
-import SearchBox from './SearchBox';
+import DropDownBox from './DropDownBox'
+import SearchBox from './SearchBox'
 import styled from 'styled-components'
-import changeModeButton from '../assets/change-mode.svg';
-import addPlayerButton from '../assets/add-player.svg';
+import changeModeButton from '../assets/change-mode.svg'
+import addBatterButton from '../assets/add-batter.svg'
+import addPitcherButton from '../assets/add-pitcher.svg'
 
 interface Player {
     team: string
@@ -97,7 +98,7 @@ const SelectPlayerContainer = (props) => {
                         <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={120}/>
                         <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={177}/>
                         {/* <ViewDetailStat /> */}
-                        <AddPlayerButton onClick={addPlayer} />
+                        {Number(selectedArea.slice(4)) > 9 ? <AddPitcher onClick={addPlayer} /> : <AddBatter onClick={addPlayer} />}
                     </>
                     : 
                     <>
@@ -135,8 +136,22 @@ const SelectContainer = styled.div`
 //     }
 // `
 
-const AddPlayerButton = styled.button`
-    background: url(${addPlayerButton}) no-repeat center center;
+const AddBatter = styled.button`
+    background: url(${addBatterButton}) no-repeat center center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    width: 70px;
+    height: 40px;
+    &:hover,
+    &:focus {
+        outline: none;
+    }
+`
+
+
+const AddPitcher = styled.button`
+    background: url(${addPitcherButton}) no-repeat center center;
     background-size: contain;
     cursor: pointer;
     border: none;

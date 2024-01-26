@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import styled from 'styled-components'
 import LineUp from './component/LineUp'
 import SelectPlayerContainer from './component/SelectPlayerContainer'
+import playButton from './assets/play.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
   const [selectedArea, setSelectedArea] = useState<string | null>(null)
   const [addedPlayer, setAddedPlayer] = useState<object | null>(null)
 
@@ -31,11 +33,12 @@ function App() {
         </div>
       </div>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        {/* <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
-        </button>
+        </button> */}
+        <PlayButton />
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          footer
         </p>
       </div>
     </>
@@ -43,3 +46,17 @@ function App() {
 }
 
 export default App
+
+
+const PlayButton = styled.button`
+    background: url(${playButton}) no-repeat center center;
+    ackground-size: cover;
+    cursor: pointer;
+    border: none;
+    width: 80px;
+    height: 80px;
+    &:hover,
+    &:focus {
+        outline: none;
+    }
+  `

@@ -8,6 +8,8 @@ interface PropsType {
     setSelectedArea: React.Dispatch<React.SetStateAction<string | null>>
     addedPlayer: object | null
     setAddedPlayer: React.Dispatch<React.SetStateAction<object | null>>
+    lineUpList: Array<LineUp | null>
+    setLineUpList: React.Dispatch<React.SetStateAction<Array<LineUp | null> | null>>
 }
 
 interface PlayerProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -24,10 +26,9 @@ interface LineUp {
 
 const LineUp = (props: PropsType) => {
     // props
-    const { way, selectedArea, setSelectedArea, addedPlayer, setAddedPlayer } = props;
+    const { way, selectedArea, setSelectedArea, addedPlayer, setAddedPlayer, lineUpList, setLineUpList } = props;
     // state
     const [team, setTeam] = useState('')
-    const [lineUpList, setLineUpList] = useState<Array<LineUp | null>>(Array.from({ length: 13 }, () => null));
     
     const playerList = Array.from({ length: 13 }, (_, i) => (
         <Player

@@ -1,13 +1,18 @@
 // OBA 데이터 생성 func.
+const gameDataGeneration = async () => {
+    await obaGeneration()
+    await baseRunningCaseGeneration()
+}
+
 const obaGeneration = async () => {
     // 연도별 wOBA data 불러오기
     const fileName = `../stat_scraper/wOBA.json`
     window.wOBAdata = await import(fileName).then(module => module.default)
 
-    const wOBA_Map = new Map();
+    const wOBA_Map = new Map()
 
     for (const key in window.wOBAdata) {
-        wOBA_Map.set(key, window.wOBAdata[key]);
+        wOBA_Map.set(key, window.wOBAdata[key])
     }
 
     // 모든 연도 평균 wOBA, OZ
@@ -17,11 +22,88 @@ const obaGeneration = async () => {
     window.ozByAvgOBA = window.avgOBA / (1 - window.avgOBA)
 }
 
+const baseRunningCaseGeneration = () => {
+    const baseCase = ['0,0,0', '1,0,0', '1,1,0', '1,1,1', '1,0,1', '0,1,0', '0,1,1', '0,0,1']
+    
+    // 1루타 case
+    const singleMap = new Map()
+    singleMap.set(baseCase[0], [1, 0, 0, 0])
+    singleMap.set(baseCase[1], [1, 1, 0, 0])
+    singleMap.set(baseCase[2], [1, 1, 1, 0])
+    singleMap.set(baseCase[3], [1, 1, 1, 1])
+    singleMap.set(baseCase[4], [1, 1, 0, 1])
+    singleMap.set(baseCase[5], [1, 0, 1, 0])
+    singleMap.set(baseCase[6], [1, 0, 1, 1])
+    singleMap.set(baseCase[7], [1, 0, 0, 1])
+
+    // 2루타 case
+    const doubleMap = new Map()
+    doubleMap.set(baseCase[0], [0, 1, 0, 0])
+    doubleMap.set(baseCase[1], [0, 1, 1, 0])
+    doubleMap.set(baseCase[2], [0, 1, 1, 1])
+    doubleMap.set(baseCase[3], [0, 1, 1, 2])
+    doubleMap.set(baseCase[4], [0, 1, 1, 1])
+    doubleMap.set(baseCase[5], [0, 1, 0, 1])
+    doubleMap.set(baseCase[6], [0, 1, 0, 2])
+    doubleMap.set(baseCase[7], [0, 1, 0, 1])
+
+    // 볼넷 case
+    const bbMap = new Map()
+    bbMap.set(baseCase[0], [1, 0, 0, 0])
+    bbMap.set(baseCase[1], [1, 1, 0, 0])
+    bbMap.set(baseCase[2], [1, 1, 1, 0])
+    bbMap.set(baseCase[3], [1, 1, 1, 1])
+    bbMap.set(baseCase[4], [1, 1, 1, 0])
+    bbMap.set(baseCase[5], [1, 1, 0, 0])
+    bbMap.set(baseCase[6], [1, 1, 1, 0])
+    bbMap.set(baseCase[7], [1, 0, 1, 0])
+
+
+    window.singleCase = singleMap
+    window.doubleCase = doubleMap
+    window.bbCase = bbMap
+}
+
+const baseRunning = (beforeBase, data) => {
+    const stringifiedBase = String(beforeBase)
+    if (data === '볼넷') {
+        return window.bbCase.get(stringifiedBase)
+    }
+    if (data === '안타') {
+        return window.singleCase.get(stringifiedBase)
+    }
+    if (data === '2루타') {
+        return window.doubleCase.get(stringifiedBase)
+    }
+    const sum = beforeBase.reduce((acc, currentValue) => acc + currentValue, 0);
+    if (data === '3루타') {
+        return [0, 0, 1, sum]
+    }
+    if (data === '홈런') {
+        return [0, 0, 0, sum + 1]
+    }
+}
+
+const randomPitchCount = (result) => {
+    let countType = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    let rate = [0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.07, 0.07, 0.07, 0.07]
+
+    if (result.data === '삼진') {
+        countType = [3, 4, 5, 6, 7, 8, 9, 10]
+        rate = [0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125]
+    }
+    if (result.data === '볼넷') {
+        countType = [4, 5, 6, 7, 8, 9, 10]
+        rate = [0.16, 0.14, 0.14, 0.14, 0.14, 0.14, 0.14]
+    }
+    
+    return choiceByWeight(countType, rate)
+}
 
 // inning 진행 func.
 const inningProcess = (attacker, defencer) => {
     let out = 0
-    const base = [0, 0, 0]
+    let base = [0, 0, 0]
 
     while (out < 3) {
         const batterNum = attacker.batter
@@ -30,12 +112,51 @@ const inningProcess = (attacker, defencer) => {
         const pitcher = defencer.lineUp[pitcherNum]
 
         const result = singleCombat(batter, pitcher)
-        if (result === 'hit') {
-            // console.log('hit');
+        
+        attacker.batterReport[batterNum].push(result.data)
+
+        console.log(result);
+        if (result.type === 'hit') {
+            console.log(result);
+            const runningResult = baseRunning(base, result.data)
+            console.log(runningResult)
+            // 잔루
+            base = runningResult.slice(0, 3)
+            if (result.data === '볼넷') {
+                attacker.bb += 1
+            } else {
+                attacker.hit += 1
+            }
+            
+            const score = runningResult[3]
+            attacker.score += score // 공격 팀 득점 추가
+            defencer.pitcherLostScore += score // 투수 실점 추가
+            console.log(attacker);
         } else {
+            console.log(result);
+            if (result.data === '삼진') {
+                defencer.pitcherK += 1
+            }
             out += 1
         }
-        // console.log('end out: ', out)
+        
+        // 다음 타자
+        attacker.batter += 1
+        if (attacker.batter === 9) {
+            attacker.batter = 0
+        }
+
+        // 투구 수 추가
+        const addPitchCount = randomPitchCount(result)
+        defencer.pitcherCount += addPitchCount
+        
+        // 조건에 따른 투수 교체
+        if (defencer.pitcher < 12 && (defencer.pitcherLostScore > 4 || defencer.pitcherCount > 100)) {
+            defencer.pitcher += 1
+            defencer.pitcherCount = 0
+            defencer.pitcherLostScore = 0
+            console.log('pitcher changed-----------------------------------');
+        }
     }
 }
 
@@ -46,7 +167,7 @@ const choiceByWeight = (options, weights) => {
 
     // 가중치를 고려한 랜덤 인덱스 생성
     const weightedRandomIndex = (weights) => {
-        const randomValue = Math.random();
+        const randomValue = Math.random()
         let cumulativeWeight = 0
         
         for (let i = 0; i < weights.length; i++) {
@@ -60,31 +181,31 @@ const choiceByWeight = (options, weights) => {
         return weights.length - 1
     }
     
-    const defIndex = weightedRandomIndex(normalizedRate)
-    return defIndex
+    return options[weightedRandomIndex(normalizedRate)]
 }
 
 // 타자 데이터에 따른 hit result 도출 func.
 const extractRunResult = ( batter ) => {
     const {one_hit, double_hit, triple_hit, home_run, BB} = batter
-    const hit = Number(one_hit) + Number(double_hit) + Number(triple_hit) + Number(home_run) + Number(BB);
+    const hit = Number(one_hit) + Number(double_hit) + Number(triple_hit) + Number(home_run) + Number(BB)
 
-    const hitKind = ['안타', '2루타', '3루타', '홈런', '볼넷'];
-    const runRate = [one_hit / hit, double_hit / hit, triple_hit / hit, home_run / hit, BB / hit];
+    const hitKind = ['안타', '2루타', '3루타', '홈런', '볼넷']
+    const runRate = [one_hit / hit, double_hit / hit, triple_hit / hit, home_run / hit, BB / hit]
     // console.log(runRate)
 
-    const runResult = hitKind[choiceByWeight(hitKind, runRate)];
-    console.log(runResult)
+    // const runResult = hitKind[choiceByWeight(hitKind, runRate)]
+    // console.log(runResult)
+    return choiceByWeight(hitKind, runRate)
 }
 
 // out result 도출 func.
 const extractOutResult = () => {
-    const outKind = ['삼진', '땅볼', '뜬공'];
-    const outRate = [0.33333334, 0.33333333, 0.3333333];
+    const outKind = ['삼진', '땅볼', '뜬공']
+    const outRate = [0.33333334, 0.33333333, 0.3333333]
 
-    const outResult = outKind[choiceByWeight(outKind, outRate)];
-    console.log(outResult);
-    return outResult;
+    // const outResult = outKind[choiceByWeight(outKind, outRate)];
+    // console.log(outResult);
+    return choiceByWeight(outKind, outRate)
 }
 
 // 투수 vs 타자 대결 func.
@@ -105,20 +226,24 @@ const singleCombat = (batter, pitcher) => {
 
     const hitOrOut = ['출루', '아웃']
     const hitRate = [vsObp, 1 - vsObp]
-    const vsResult = hitOrOut[choiceByWeight(hitOrOut, hitRate)]
+    const vsResult = choiceByWeight(hitOrOut, hitRate)
 
     // 출루면 타자의 데이터로 안타 종류 추출, 아웃이면 동일 확률로 아웃 종류 추출
     if (vsResult === '출루') {
-        extractRunResult(batter)
+        const runResult = extractRunResult(batter)
+        const result = {type: 'hit', data: runResult}
+        return result
     } else {
-        extractOutResult()
+        const outResult = extractOutResult()
+        const result = {type: 'out', data: outResult}
+        return result
     }
 }
 
 // game 진행 func.
 export const gameProcess = async (home, away) => {
     console.log(home, away);
-    obaGeneration()
+    await gameDataGeneration()
 
     let inning = 1
     // let scoreBoard = ''
@@ -129,10 +254,10 @@ export const gameProcess = async (home, away) => {
         hit: 0,
         bb: 0,
         pitcherCount: 0,
-        batterReport: '',
+        batterReport: {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: []},
         pitcherReport: '',
-        pitcherK: '',
-        pitcherLostScore: '',
+        pitcherK: 0,
+        pitcherLostScore: 0,
         lineUp: home,
     }
     const awayInfo = {
@@ -142,17 +267,20 @@ export const gameProcess = async (home, away) => {
         hit: 0,
         bb: 0,
         pitcherCount: 0,
-        batterReport: '',
+        batterReport: {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: []},
         pitcherReport: '',
-        pitcherK: '',
-        pitcherLostScore: '',
+        pitcherK: 0,
+        pitcherLostScore: 0,
         lineUp: away,
     }
 
-    for (inning; inning < 2; inning++) {
+    for (inning; inning < 10; inning++) {
         // away 공격 / home 수비
+        console.log(inning, '회 초');
         inningProcess(awayInfo, homeInfo)
         // home 공격 / away 수비
-        // inningProcess(homeInfo, awayInfo)
+        console.log(inning, '회 말');
+        inningProcess(homeInfo, awayInfo)
     }
+    console.log(homeInfo, awayInfo);
 }

@@ -1,9 +1,11 @@
-import React, { DetailedHTMLProps, HTMLAttributes, useEffect, useState } from 'react'
+import React, { DetailedHTMLProps, HTMLAttributes, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import './LineUp.css'
 
 interface PropsType {
     way: string
+    team: string
+    setTeam: React.Dispatch<React.SetStateAction<string | null>>
     selectedArea: string | null
     setSelectedArea: React.Dispatch<React.SetStateAction<string | null>>
     addedPlayer: object | null
@@ -26,9 +28,7 @@ interface LineUp {
 
 const LineUp = (props: PropsType) => {
     // props
-    const { way, selectedArea, setSelectedArea, addedPlayer, setAddedPlayer, lineUpList, setLineUpList } = props;
-    // state
-    const [team, setTeam] = useState('')
+    const { way, selectedArea, setSelectedArea, addedPlayer, setAddedPlayer, lineUpList, setLineUpList, team, setTeam } = props;
     
     const playerList = Array.from({ length: 13 }, (_, i) => (
         <Player

@@ -47,3 +47,17 @@
 .read-the-docs {
   color: #888;
 }
+
+
+@keyframes disappear {
+  from {
+    opacity: 100%;
+  }
+  to {
+    opacity: 0%;
+  }
+}
+
+.onPlay {
+  animation: disappear 1s ease-in-out;
+}

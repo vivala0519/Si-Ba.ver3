@@ -25,7 +25,7 @@ const DropDownBox = (props: BoxProps) => {
     const [haveText, setHaveText] = useState("");
 
     useEffect(() => {
-        console.log(state);
+        // console.log(state);
         
     }, [state])
     

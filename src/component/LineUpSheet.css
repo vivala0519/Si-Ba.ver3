@@ -1,23 +1,21 @@
-@keyframes appear {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  
-@keyframes decreaseGap {
-    0% {
-        gap: 585px;
-    }
-    100% {
-        gap: 20px;
-    }
+.sheetBorder {
+    animation: appearBorder 1s ease-in-out;
 }
 
 .sheetActive {
     animation: appearAndDecreaseGap 1s ease-in-out;
+}
+
+@keyframes appearBorder {
+    0% {
+        border: none;
+    }
+    80% {
+        border: none;
+    }
+    100% {
+        border: 1px solid black;
+    }
 }
 
 @keyframes appearAndDecreaseGap {
@@ -29,6 +27,6 @@
         opacity: 1;
     }
     100% {
-        gap: 20px;
+        gap: 10px;
     }
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Swal from "sweetalert2"
 import LineUp from './component/LineUp'
@@ -16,6 +16,191 @@ function App() {
     avg: number
     year: string
   }
+  const dummyData = [
+    {
+      "name": "소크라테스",
+      "team": "MBC",
+      "position": "C",
+      "avg": ".254",
+      "obp": ".343",
+      "slg": ".479",
+      "total_hit": "36",
+      "double_hit": "5",
+      "triple_hit": "0",
+      "home_run": "9",
+      "BB": "21",
+      "SB": "2",
+      "Dead_Ball": "0",
+      "one_hit": 22,
+      "year": "1982"
+  }, 
+  {
+    "name": "소크라테스",
+    "team": "MBC",
+    "position": "C",
+    "avg": ".254",
+    "obp": ".343",
+    "slg": ".479",
+    "total_hit": "36",
+    "double_hit": "5",
+    "triple_hit": "0",
+    "home_run": "9",
+    "BB": "21",
+    "SB": "2",
+    "Dead_Ball": "0",
+    "one_hit": 22,
+    "year": "1982"
+}, 
+{
+  "name": "소크라테스",
+  "team": "MBC",
+  "position": "C",
+  "avg": ".254",
+  "obp": ".343",
+  "slg": ".479",
+  "total_hit": "36",
+  "double_hit": "5",
+  "triple_hit": "0",
+  "home_run": "9",
+  "BB": "21",
+  "SB": "2",
+  "Dead_Ball": "0",
+  "one_hit": 22,
+  "year": "1982"
+}, 
+{
+"name": "소크라테스",
+"team": "MBC",
+"position": "C",
+"avg": ".254",
+"obp": ".343",
+"slg": ".479",
+"total_hit": "36",
+"double_hit": "5",
+"triple_hit": "0",
+"home_run": "9",
+"BB": "21",
+"SB": "2",
+"Dead_Ball": "0",
+"one_hit": 22,
+"year": "1982"
+}, 
+{
+"name": "필",
+"team": "MBC",
+"position": "C",
+"avg": ".254",
+"obp": ".343",
+"slg": ".479",
+"total_hit": "36",
+"double_hit": "5",
+"triple_hit": "0",
+"home_run": "9",
+"BB": "21",
+"SB": "2",
+"Dead_Ball": "0",
+"one_hit": 22,
+"year": "1982"
+}, 
+{
+"name": "한유섬",
+"team": "MBC",
+"position": "C",
+"avg": ".254",
+"obp": ".343",
+"slg": ".479",
+"total_hit": "36",
+"double_hit": "5",
+"triple_hit": "0",
+"home_run": "9",
+"BB": "21",
+"SB": "2",
+"Dead_Ball": "0",
+"one_hit": 22,
+"year": "1982"
+}, 
+{
+"name": "최정",
+"team": "MBC",
+"position": "C",
+"avg": ".254",
+"obp": ".343",
+"slg": ".479",
+"total_hit": "36",
+"double_hit": "5",
+"triple_hit": "0",
+"home_run": "9",
+"BB": "21",
+"SB": "2",
+"Dead_Ball": "0",
+"one_hit": 22,
+"year": "1982"
+}, 
+{
+"name": "라가레스",
+"team": "MBC",
+"position": "C",
+"avg": ".254",
+"obp": ".343",
+"slg": ".479",
+"total_hit": "36",
+"double_hit": "5",
+"triple_hit": "0",
+"home_run": "9",
+"BB": "21",
+"SB": "2",
+"Dead_Ball": "0",
+"one_hit": 22,
+"year": "1982"
+}, 
+{
+"name": "소크라테스",
+"team": "MBC",
+"position": "C",
+"avg": ".254",
+"obp": ".343",
+"slg": ".479",
+"total_hit": "36",
+"double_hit": "5",
+"triple_hit": "0",
+"home_run": "9",
+"BB": "21",
+"SB": "2",
+"Dead_Ball": "0",
+"one_hit": 22,
+"year": "1982"
+}, null, 
+{
+"name": "켈리",
+"team": "MBC",
+"position": "P",
+"G": "12",
+"Inning": "35.1",
+"avg": ".308",
+"obp": ".355",
+"year": "1982"
+},
+{
+"name": "이승호",
+"team": "MBC",
+"position": "P",
+"G": "12",
+"Inning": "35.1",
+"avg": ".308",
+"obp": ".355",
+"year": "1982"
+},
+{
+"name": "라가레스",
+"team": "MBC",
+"position": "P",
+"G": "12",
+"Inning": "35.1",
+"avg": ".308",
+"obp": ".355",
+"year": "1982"
+}
+  ]
 
   const [awayTeam, setAwayTeam] = useState<string | null>(null)
   const [homeTeam, setHomeTeam] = useState<string | null>(null)
@@ -44,9 +229,30 @@ function App() {
     gameProcess(homeLineUpList, awayLineUpList)
   }
 
+  useEffect(() => {
+    setAwayLineUpList(dummyData)
+    setHomeLineUpList(dummyData)
+  }, [])
+
+  
+  // const fileName = `./stat_scraper/batter.json`
+  // import(fileName).then(module => module.default).then(res => {
+  //   console.log(res)
+  //   const lengthSet = new Set()
+  //   Object.values(res).map(year => year.forEach(p => {
+  //     if (p.name.length === 2) {
+  //       console.log(p.name, p.team);
+  //     }
+  //     lengthSet.add(p.name.length)
+  //   }))
+  //   console.log(lengthSet);
+  //   }
+    
+  // )
+
   return (
     <>
-      <Title>Simulation of Baseball</Title>
+      {!onPlay ? <Title>Simulation of Baseball</Title> : <></>}
       {!onPlay ? 
         <div className={disappear ? 'onPlay' : ''}>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
@@ -81,10 +287,11 @@ function App() {
         </div>
       : <LineUpSheet onPlay={onPlay} awayTeam={awayTeam} homeTeam={homeTeam} awayLineUp={awayLineUpList} homeLineUp={homeLineUpList} />
       }
-      <div className="card">
-        {onPlay ? <></> : <PlayButton onClick={playButtonHandler} />}
-      </div>
-      <footer>footer</footer>
+      {onPlay ? 
+        <></> : 
+        <PlayButton onClick={playButtonHandler} />
+      }
+      {!onPlay ? <footer>footer</footer> : <></>}
     </>
   )
 }

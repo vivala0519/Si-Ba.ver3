@@ -18,16 +18,14 @@ interface LineUp {
 }
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    nameLength: number
+    namelength: number
 }
 
 const LineUpSheet = (props: PropsType) => {
     const { awayTeam, homeTeam, awayLineUp, homeLineUp, onPlay } = props
-    const [startingPitcher, setStartingPitcher] = useState([])
-    const [visibleNames, setVisibleNames] = useState(Array.from({length: 9 }, () => ''))
-    // const [awayNameList, setAwayNameList] = useState(['', '', '', '', '', '', '', '', ''])
-    
-    // console.log(awayPlayersNameList);
+    // const [startingPitcher, setStartingPitcher] = useState()
+    const [awayVisibleNames, setAwayVisibleNames] = useState(Array.from({length: 21 }, () => ''))
+    const [homeVisibleNames, setHomeVisibleNames] = useState(Array.from({length: 21 }, () => ''))
     
     const arrayFromName = (name) => {
         return [...name]
@@ -37,42 +35,67 @@ const LineUpSheet = (props: PropsType) => {
     ))
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            setStartingPitcher(prevStarter => {
-                const nextIndex = arrayFromName(prevStarter).findIndex(name => name.length < awayLineUp[10].name.length);
-                
-                if (nextIndex !== -1) {
-                    const newVisibleNames = [...prevStarter];
-                    newVisibleNames[nextIndex] = awayLineUp[nextIndex].name.slice(0, newVisibleNames[nextIndex].length + 1);
-                    console.log(newVisibleNames[nextIndex]);
-                    
-                    return newVisibleNames;
-                } else {
-                    clearTimeout(timeout);
-                    return prevStarter;
-                }
-            })
-        }, 100)
-    }, [startingPitcher, awayLineUp])
+        const adjustedNameList = [awayLineUp[10].name]
+        for (let i = 0; i < 13; i++) {
+            if (i < 9) {
+                adjustedNameList.push(awayLineUp[i].position)
+                adjustedNameList.push(awayLineUp[i].name)
+            } else if (i > 10 && i < 13) {
+                adjustedNameList.push(awayLineUp[i].name)
+            }
+        }
 
-    useEffect(() => {
+        const isLineUpSheetOn = awayVisibleNames[0].length === 0 ? true :  false
+        
         const timeout = setTimeout(() => {
-            setVisibleNames(prevVisibleNames => {
-                const nextIndex = prevVisibleNames.findIndex(name => name.length < awayLineUp[prevVisibleNames.indexOf(name)].name.length);
+            setAwayVisibleNames(prevVisibleNames => {
+                const nextIndex = prevVisibleNames.findIndex(name => name.length < adjustedNameList[prevVisibleNames.indexOf(name)].length);
                 
                 if (nextIndex !== -1) {
                     const newVisibleNames = [...prevVisibleNames];
-                    newVisibleNames[nextIndex] = awayLineUp[nextIndex].name.slice(0, newVisibleNames[nextIndex].length + 1);
+                    newVisibleNames[nextIndex] = adjustedNameList[nextIndex].slice(0, newVisibleNames[nextIndex].length + 1);
                     return newVisibleNames;
                 } else {
                     clearTimeout(timeout);
                     return prevVisibleNames;
                 }
             });
-        }, 100); // 각 글자를 출력하는 딜레이 시간 (밀리초)
+        }, isLineUpSheetOn ? 1200 : 50); // 각 글자를 출력하는 딜레이 시간
 
         return () => clearTimeout(timeout);
-    }, [visibleNames, awayLineUp]);
+    }, [awayVisibleNames, awayLineUp]);
+
+    
+    useEffect(() => {
+        const adjustedNameList = [homeLineUp[10].name]
+        for (let i = 0; i < 13; i++) {
+            if (i < 9) {
+                adjustedNameList.push(homeLineUp[i].position)
+                adjustedNameList.push(homeLineUp[i].name)
+            } else if (i > 10 && i < 13) {
+                adjustedNameList.push(homeLineUp[i].name)
+            }
+        }
+
+        const isLineUpSheetOn = homeVisibleNames[0].length === 0 ? true :  false
+        
+        const timeout = setTimeout(() => {
+            setHomeVisibleNames(prevVisibleNames => {
+                const nextIndex = prevVisibleNames.findIndex(name => name.length < adjustedNameList[prevVisibleNames.indexOf(name)].length);
+                
+                if (nextIndex !== -1) {
+                    const newVisibleNames = [...prevVisibleNames];
+                    newVisibleNames[nextIndex] = adjustedNameList[nextIndex].slice(0, newVisibleNames[nextIndex].length + 1);
+                    return newVisibleNames;
+                } else {
+                    clearTimeout(timeout);
+                    return prevVisibleNames;
+                }
+            });
+        }, isLineUpSheetOn ? 1200 : 50);
+
+        return () => clearTimeout(timeout);
+    }, [homeVisibleNames, homeLineUp]);
     
     // const awayPlayerList = Array.from({ length: 9 }, (_, i) => (
     //     <>
@@ -90,68 +113,47 @@ const LineUpSheet = (props: PropsType) => {
     //     </>
     // ));
     
-    const homePlayerList = Array.from({ length: 9 }, (_, i) => (
-        <>
-            {i !== 9 ? 
-                <PlayerEl key={i}>
-                    <Td style={{borderBottom: i === 8 ? '0px' : '1px solid black'}}>{i + 1}</Td>
-                    <CursiveTd style={{borderBottom: i === 8 ? '0px' : '1px solid black'}}>{homeLineUp[i].position}</CursiveTd>
-                    <CursiveTd style={{borderBottom: i === 8 ? '0px' : '1px solid black', borderRight: '0px'}}>
-                        {/* <div style={{display: 'flex', gap: '15px'}}>
-                            {characterSpanByName(homeLineUp[i].name)}
-                        </div> */}
-                        <LetterSpacedByLength nameLength={homeLineUp[i].name.length}>{homeLineUp[i].name}</LetterSpacedByLength>
-                    </CursiveTd>
-                </PlayerEl>
-                :
-                <></>
-            }
-        </>
-    ));
-
-    // useEffect(() => {
-    //     let currentIndex = 0
-    //     awayPlayersNameList.forEach((name, idx) => {
-    //         const intervalId = setInterval(() => {
-    //             if (currentIndex < name?.length) {
-    //                 const copiedAwayNameList = [...awayNameList]
-    //                 copiedAwayNameList[idx] = name.substring(0, currentIndex + 1)
-    //                 console.log(copiedAwayNameList[idx]);
-                    
-    //                 setAwayNameList(copiedAwayNameList)
-    //                 // setDisplayText(name.substring(0, currentIndex + 1))
-    //                 currentIndex++
-    //             } else {
-    //                 clearInterval(intervalId)
-    //             }
-    //         }, 30)
-    //     })
-        
-    // }, [onPlay])
+    // const homePlayerList = Array.from({ length: 9 }, (_, i) => (
+    //     <>
+    //         {i !== 9 ? 
+    //             <PlayerEl key={i}>
+    //                 <Td style={{borderBottom: i === 8 ? '0px' : '1px solid black'}}>{i + 1}</Td>
+    //                 <CursiveTd style={{borderBottom: i === 8 ? '0px' : '1px solid black'}}>{homeLineUp[i].position}</CursiveTd>
+    //                 <CursiveTd style={{borderBottom: i === 8 ? '0px' : '1px solid black', borderRight: '0px'}}>
+    //                     {/* <div style={{display: 'flex', gap: '15px'}}>
+    //                         {characterSpanByName(homeLineUp[i].name)}
+    //                     </div> */}
+    //                     <LetterSpacedByLength nameLength={homeLineUp[i].name.length}>{homeLineUp[i].name}</LetterSpacedByLength>
+    //                 </CursiveTd>
+    //             </PlayerEl>
+    //             :
+    //             <></>
+    //         }
+    //     </>
+    // ));
 
     return (
         <>
             <CardBorder className={onPlay ? 'sheetBorder' : ''}>
             <Title>LINE-UP CARD</Title>
             <SheetContainer className={onPlay ? 'sheetActive' : 'sheet'}>
-                <div>
+                <div key='away_sheet'>
                 <Sheet>
-                    <SheetDiv style={{borderBottom: '0px'}}>{awayTeam ? awayTeam : 'Away'}</SheetDiv>
-                    {/* <Pitcher>선발투수 : <div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayLineUp[10].name)}</div></Pitcher> */}
-                    <Pitcher>선발투수 : <div style={{display: 'flex', gap: '15px'}}><CursiveText>{startingPitcher}</CursiveText></div></Pitcher>
+                    <SheetDiv key='away_team_name' style={{borderBottom: '0px'}}>{awayTeam ? awayTeam : 'Away'}</SheetDiv>
+                    <Pitcher>선발투수 : <div style={{display: 'flex', gap: '15px'}}><CursiveText>{awayVisibleNames[0]}</CursiveText></div></Pitcher>
                     <SheetDiv>
-                        <PlayerEl key={'title'}>
+                        <PlayerEl key='away_title'>
                             <Td>타순</Td>
                             <Td>위치</Td>
                             <Td style={{borderRight: '0px'}}>선수명</Td>
                         </PlayerEl>
-                        {awayLineUp.map((player, index) => (
+                        {awayLineUp.map((_, index) => (
                             index < 9 ? 
-                            <PlayerEl key={index}>
+                            <PlayerEl key={'away_sheet' + index}>
                                 <Td style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{index + 1}</Td>
-                                <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{awayLineUp[index].position}</CursiveTd>
+                                <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{awayVisibleNames[index * 2 + 1]}</CursiveTd>
                                 <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black', borderRight: '0px' }}>
-                                    <LetterSpacedByLength nameLength={awayLineUp[index].name.length}>{visibleNames[index]}</LetterSpacedByLength>
+                                    <LetterSpacedByLength namelength={awayLineUp[index].name.length}>{awayVisibleNames[index * 2 + 2]}</LetterSpacedByLength>
                                 </CursiveTd>
                             </PlayerEl>
                             : <></>
@@ -161,27 +163,38 @@ const LineUpSheet = (props: PropsType) => {
                 </Sheet>
                 <BullpenSheet>
                     <Pitcher>대기투수</Pitcher>
-                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayLineUp[11].name)}</div></CursiveText></Pitcher>
-                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayLineUp[12].name)}</div></CursiveText></Pitcher>
+                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[19])}</div></CursiveText></Pitcher>
+                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[20])}</div></CursiveText></Pitcher>
                 </BullpenSheet>
                 </div>
-                <div>
+                <div key='home_sheet'>
                 <Sheet>
-                    <SheetDiv style={{borderBottom: '0px'}}>{homeTeam ? homeTeam : 'Home'}</SheetDiv>
-                    <Pitcher>선발투수 : <div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeLineUp[10].name)}</div></Pitcher>
+                    <SheetDiv key='home_team_name' style={{borderBottom: '0px'}}>{homeTeam ? homeTeam : 'Home'}</SheetDiv>
+                    <Pitcher>선발투수 : <div style={{display: 'flex', gap: '15px'}}><CursiveText>{homeVisibleNames[0]}</CursiveText></div></Pitcher>
                     <SheetDiv>
-                        <PlayerEl key={'title'}>
+                        <PlayerEl key='home_title'>
                             <Td>타순</Td>
                             <Td>위치</Td>
                             <Td style={{borderRight: '0px'}}>선수명</Td>
                         </PlayerEl>
-                        { homePlayerList }
+                        {homeLineUp.map((_, index) => (
+                            index < 9 ? 
+                            <PlayerEl key={'home_sheet' + index}>
+                                <Td style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{index + 1}</Td>
+                                <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{homeVisibleNames[index * 2 + 1]}</CursiveTd>
+                                <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black', borderRight: '0px' }}>
+                                    <LetterSpacedByLength namelength={homeLineUp[index].name.length}>{homeVisibleNames[index * 2 + 2]}</LetterSpacedByLength>
+                                </CursiveTd>
+                            </PlayerEl>
+                            : <></>
+                        ))}
+                        {/* { homePlayerList } */}
                     </SheetDiv>
                 </Sheet>
                 <BullpenSheet>
                     <Pitcher>대기투수</Pitcher>
-                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeLineUp[11].name)}</div></CursiveText></Pitcher>
-                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeLineUp[12].name)}</div></CursiveText></Pitcher>
+                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[19])}</div></CursiveText></Pitcher>
+                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[20])}</div></CursiveText></Pitcher>
                 </BullpenSheet>
                 </div>
             </SheetContainer>
@@ -263,7 +276,7 @@ const CursiveTd = styled.div`
 const LetterSpacedByLength = styled.span<styleProps>`
     position: relative;
     left: ${props => {
-        if (props.nameLength < 4) {
+        if (props.namelength < 4) {
             return '18px'
         } else {
             return '8px'
@@ -273,7 +286,7 @@ const LetterSpacedByLength = styled.span<styleProps>`
     font-weight: 400;
     font-style: normal;
     letter-spacing: ${props => {
-        if (props.nameLength < 4) {
+        if (props.namelength < 4) {
             return '1.3em'
         } else {
             return '0.6em'
@@ -297,7 +310,7 @@ const Pitcher = styled.div`
     font-size: 19px;
     border: 1px solid black;
     border-bottom: 0px;
-    min-height: 35px;
+    min-height: 41px;
 `
 
 const BullpenSheet = styled.div`

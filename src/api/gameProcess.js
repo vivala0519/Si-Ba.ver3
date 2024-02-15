@@ -101,7 +101,7 @@ const randomPitchCount = (result) => {
 }
 
 // inning 진행 func.
-const inningProcess = (attacker, defencer) => {
+const inningProcess = (attacker, defencer, inning, scoreList) => {
     let out = 0
     let base = [0, 0, 0]
 
@@ -131,6 +131,11 @@ const inningProcess = (attacker, defencer) => {
             const score = runningResult[3]
             attacker.score += score // 공격 팀 득점 추가
             defencer.pitcherLostScore += score // 투수 실점 추가
+            if (scoreList[inning - 1] === undefined) {
+                scoreList.push(score)
+            } else {
+                scoreList[inning - 1] += score
+            }
             console.log(attacker);
         } else {
             console.log(result);
@@ -152,11 +157,15 @@ const inningProcess = (attacker, defencer) => {
         
         // 조건에 따른 투수 교체
         if (defencer.pitcher < 12 && (defencer.pitcherLostScore > 4 || defencer.pitcherCount > 100)) {
+            defencer.pitcherReport[defencer.pitcher] = {count: defencer.pitcherCount, lostScore: defencer.pitcherLostScore, k: defencer.pitcherK}
             defencer.pitcher += 1
             defencer.pitcherCount = 0
             defencer.pitcherLostScore = 0
             console.log('pitcher changed-----------------------------------');
         }
+    }
+    if (scoreList[inning - 1] === undefined) {
+        scoreList.push(0)
     }
 }
 
@@ -255,7 +264,7 @@ export const gameProcess = async (home, away) => {
         bb: 0,
         pitcherCount: 0,
         batterReport: {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: []},
-        pitcherReport: '',
+        pitcherReport: {10: null, 11: null, 12: null},
         pitcherK: 0,
         pitcherLostScore: 0,
         lineUp: home,
@@ -268,19 +277,28 @@ export const gameProcess = async (home, away) => {
         bb: 0,
         pitcherCount: 0,
         batterReport: {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: []},
-        pitcherReport: '',
+        pitcherReport: {10: null, 11: null, 12: null},
         pitcherK: 0,
         pitcherLostScore: 0,
         lineUp: away,
     }
+    const inningScore = {away: [], home: []}
 
     for (inning; inning < 10; inning++) {
         // away 공격 / home 수비
         console.log(inning, '회 초');
-        inningProcess(awayInfo, homeInfo)
+        inningProcess(awayInfo, homeInfo, inning, inningScore.away)
+        // 마지막 투수 report 기록
+        if (inning === 9 && !homeInfo.pitcherReport[homeInfo.pitcher]) {
+            homeInfo.pitcherReport[homeInfo.pitcher] = {count: homeInfo.pitcherCount, lostScore: homeInfo.pitcherLostScore, k: homeInfo.pitcherK}
+        }
         // home 공격 / away 수비
         console.log(inning, '회 말');
-        inningProcess(homeInfo, awayInfo)
+        inningProcess(homeInfo, awayInfo, inning, inningScore.home)
+        if (inning === 9 && !awayInfo.pitcherReport[awayInfo.pitcher]) {
+            awayInfo.pitcherReport[awayInfo.pitcher] = {count: awayInfo.pitcherCount, lostScore: awayInfo.pitcherLostScore, k: awayInfo.pitcherK}
+        }
     }
     console.log(homeInfo, awayInfo);
+    console.log(inningScore)
 }

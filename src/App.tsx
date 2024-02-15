@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Swal from "sweetalert2"
 import LineUp from './component/LineUp'
 import LineUpSheet from './component/LineUpSheet'
+import ScoreBoard from './component/ScoreBoard'
 import SelectPlayerContainer from './component/SelectPlayerContainer'
 import playButton from './assets/play.svg'
 import { gameProcess } from './api/gameProcess.js'
@@ -252,9 +253,9 @@ function App() {
 
   return (
     <>
-      {!onPlay ? <Title>Simulation of Baseball</Title> : <></>}
       {!onPlay ? 
         <div className={disappear ? 'onPlay' : ''}>
+        <Title>Simulation of Baseball</Title>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
           <div className='container'>
             <div>
@@ -285,7 +286,11 @@ function App() {
             </div>
           </div>
         </div>
-      : <LineUpSheet onPlay={onPlay} awayTeam={awayTeam} homeTeam={homeTeam} awayLineUp={awayLineUpList} homeLineUp={homeLineUpList} />
+      : 
+      <>
+        <ScoreBoard />
+        <LineUpSheet onPlay={onPlay} awayTeam={awayTeam} homeTeam={homeTeam} awayLineUp={awayLineUpList} homeLineUp={homeLineUpList} />
+      </>
       }
       {onPlay ? 
         <></> : 

@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { useEffect, useState, DetailedHTMLProps, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import './LineUpSheet.css'
@@ -213,6 +214,8 @@ const CardBorder = styled.div`
     border-radius: 3px;
     padding: 0px 10px 40px 10px;
     width: fit-content;
+    background-color: white;
+    color: black;
 `
 
 const Title = styled.div`
@@ -232,7 +235,6 @@ const SheetContainer = styled.div`
 const Sheet = styled.div`
     display: grid;
     grid-template-rows: 1fr 1fr 10fr;
-    background-color: white;
     width: 270px;
     border: 2px solid black;
     border-radius: 3px;

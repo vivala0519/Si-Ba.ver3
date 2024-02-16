@@ -210,6 +210,7 @@ function App() {
   const [awayLineUpList, setAwayLineUpList] = useState<Array<LineUp | null>>(Array.from({ length: 13 }, () => null));
   const [homeLineUpList, setHomeLineUpList] = useState<Array<LineUp | null>>(Array.from({ length: 13 }, () => null));
   const [onPlay, setOnPlay] = useState(false)
+  const [showScoreBoard, setShowScoreBoard] = useState(false)
   const [disappear, setDisappear] = useState(false)
 
   const playButtonHandler = () => {
@@ -288,8 +289,8 @@ function App() {
         </div>
       : 
       <>
-        <ScoreBoard />
-        <LineUpSheet onPlay={onPlay} awayTeam={awayTeam} homeTeam={homeTeam} awayLineUp={awayLineUpList} homeLineUp={homeLineUpList} />
+        <ScoreBoard showScoreBoard={showScoreBoard} gameReportRow={reportRow}/>
+        <LineUpSheet onPlay={onPlay} setShowScoreBoard={setShowScoreBoard} awayTeam={awayTeam} homeTeam={homeTeam} awayLineUp={awayLineUpList} homeLineUp={homeLineUpList} />
       </>
       }
       {onPlay ? 

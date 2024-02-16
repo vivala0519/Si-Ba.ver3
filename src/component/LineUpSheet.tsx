@@ -9,6 +9,7 @@ interface PropsType {
     homeLineUp: Array<LineUp | null>
     awayLineUp: Array<LineUp | null>
     onPlay: boolean
+    setShowScoreBoard: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface LineUp {
@@ -23,7 +24,7 @@ interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 }
 
 const LineUpSheet = (props: PropsType) => {
-    const { awayTeam, homeTeam, awayLineUp, homeLineUp, onPlay } = props
+    const { awayTeam, homeTeam, awayLineUp, homeLineUp, onPlay, setShowScoreBoard } = props
     // const [startingPitcher, setStartingPitcher] = useState()
     const [awayVisibleNames, setAwayVisibleNames] = useState(Array.from({length: 21 }, () => ''))
     const [homeVisibleNames, setHomeVisibleNames] = useState(Array.from({length: 21 }, () => ''))
@@ -36,6 +37,9 @@ const LineUpSheet = (props: PropsType) => {
     ))
 
     useEffect(() => {
+        if (homeVisibleNames[20].length === homeLineUp[12].name.length) {
+            setShowScoreBoard(true)
+        }
         const adjustedNameList = [awayLineUp[10].name]
         for (let i = 0; i < 13; i++) {
             if (i < 9) {
@@ -141,7 +145,7 @@ const LineUpSheet = (props: PropsType) => {
                 <div key='away_sheet'>
                 <Sheet>
                     <SheetDiv key='away_team_name' style={{borderBottom: '0px'}}>{awayTeam ? awayTeam : 'Away'}</SheetDiv>
-                    <Pitcher>선발투수 : <div style={{display: 'flex', gap: '15px'}}><CursiveText>{awayVisibleNames[0]}</CursiveText></div></Pitcher>
+                    <StarterPitcher>선발투수 : <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[0])}</div></CursiveText></StarterPitcher>
                     <SheetDiv>
                         <PlayerEl key='away_title'>
                             <Td>타순</Td>
@@ -171,7 +175,7 @@ const LineUpSheet = (props: PropsType) => {
                 <div key='home_sheet'>
                 <Sheet>
                     <SheetDiv key='home_team_name' style={{borderBottom: '0px'}}>{homeTeam ? homeTeam : 'Home'}</SheetDiv>
-                    <Pitcher>선발투수 : <div style={{display: 'flex', gap: '15px'}}><CursiveText>{homeVisibleNames[0]}</CursiveText></div></Pitcher>
+                    <StarterPitcher>선발투수 : <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[0])}</div></CursiveText></StarterPitcher>
                     <SheetDiv>
                         <PlayerEl key='home_title'>
                             <Td>타순</Td>
@@ -210,12 +214,30 @@ export default LineUpSheet
 const CardBorder = styled.div`
     display:flex;
     flex-direction: column;
-    border: 1px solid black;
-    border-radius: 3px;
     padding: 0px 10px 40px 10px;
     width: fit-content;
-    background-color: white;
     color: black;
+    background-color: white;
+    filter: drop-shadow(7px 7px 37px black);
+    //--borderWidth: 3px;
+    //position: relative;
+    //border-radius: var(--borderWidth);
+    //z-index: revert;
+    
+    //&::after {
+    //    content: '';
+    //    position: absolute;
+    //    top: calc(-1 * var(--borderWidth));
+    //    left: calc(-1 * var(--borderWidth));
+    //    height: calc(100% + var(--borderWidth) * 2);
+    //    width: calc(100% + var(--borderWidth) * 2);
+    //    background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+    //    border-radius: calc(2 * var(--borderWidth));
+    //    z-index: -1;
+    //    animation: animatedgradient 3s ease alternate infinite;
+    //    background-size: 300% 300%;
+    //    filter: blur(45px);
+    //}
 `
 
 const Title = styled.div`
@@ -303,6 +325,17 @@ const CursiveText = styled.span`
     font-style: normal;
 `
 
+const StarterPitcher = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding-left: 9px;
+    font-size: 19px;
+    border: 1px solid black;
+    border-bottom: 0px;
+    min-height: 41px;
+    justify-items: center;
+    align-items: center;
+`
 const Pitcher = styled.div`
     display: flex;
     flex-direction: row;

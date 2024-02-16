@@ -212,8 +212,10 @@ function App() {
   const [onPlay, setOnPlay] = useState(false)
   const [showScoreBoard, setShowScoreBoard] = useState(false)
   const [disappear, setDisappear] = useState(false)
+  const [report, setReport] = useState<object | null>(null)
+  const [reportRow, setReportRow] = useState<object | null>(null)
 
-  const playButtonHandler = () => {
+  const playButtonHandler = async () => {
     const homeLineUpNullCount = homeLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
     const awayLineUpNullCount = awayLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
     
@@ -224,11 +226,13 @@ function App() {
       })
       return
     }
+    const gameResult = await gameProcess(homeLineUpList, awayLineUpList)
     setDisappear(true)
     setTimeout(() => {
       setOnPlay(true)
     }, 1000)
-    gameProcess(homeLineUpList, awayLineUpList)
+    setReport(gameResult)
+    console.log(gameResult)
   }
 
   useEffect(() => {

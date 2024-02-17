@@ -172,7 +172,7 @@ function App() {
 "year": "1982"
 }, null, 
 {
-"name": "켈리",
+"name": "스트레일리",
 "team": "MBC",
 "position": "P",
 "G": "12",
@@ -240,21 +240,27 @@ function App() {
     setHomeLineUpList(dummyData)
   }, [])
 
-  
-  // const fileName = `./stat_scraper/batter.json`
-  // import(fileName).then(module => module.default).then(res => {
-  //   console.log(res)
-  //   const lengthSet = new Set()
-  //   Object.values(res).map(year => year.forEach(p => {
-  //     if (p.name.length === 2) {
-  //       console.log(p.name, p.team);
-  //     }
-  //     lengthSet.add(p.name.length)
-  //   }))
-  //   console.log(lengthSet);
-  //   }
-    
-  // )
+  useEffect(() => {
+    if (report && showScoreBoard) {
+      // 스코어보드 등장하면 0.5초 후 실행
+      setTimeout(() => {
+        const gameReport = report.report
+        const reportArr = [...gameReport]
+        reportArr.push({topBottom: 'finish'})
+
+        const interval = setInterval(() => {
+          if (reportArr.length > 0) {
+            const nextElement = reportArr.shift();
+            setReportRow(nextElement);
+          } else {
+            clearInterval(interval);
+          }
+        }, 100);
+
+        return () => clearInterval(interval);
+      }, 500)
+    }
+  }, [showScoreBoard])
 
   return (
     <>

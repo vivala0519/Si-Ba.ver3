@@ -1,15 +1,54 @@
-import React, { useState, DetailedHTMLProps, HTMLAttributes } from 'react'
+import React, { useEffect, useState, DetailedHTMLProps, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import './ScoreBoard.css'
 
+interface PropsType {
+    showScoreBoard: boolean
+    gameReportRow: object
+}
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     index: number
+    topBottom: string
 }
 
-const ScoreBoard = () => {
-    const boardHead = ['Team', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'R', 'H', 'B']
-    const awayRecords = ['Away', '0', '0', '0', '0', '0', '0', '0', '0', '0', '-', '-', '-', 0, 0, 0]
-    const homeRecords = ['Home', '0', '0', '0', '0', '0', '0', '0', '0', '0', '-', '-', '-', 0, 0, 0]
+const ScoreBoard = (props: PropsType) => {
+    const { showScoreBoard, gameReportRow } = props
+    const boardHead = ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'R', 'H', 'B']
+    const [awayRecord, setAwayRecord] = useState(['Away', '', '', '', '', '', '', '', '', '', '-', '-', '-', '0', '0', '0'])
+    const [homeRecord, setHomeRecord] = useState(['Home', '', '', '', '', '', '', '', '', '', '-', '-', '-', '0', '0', '0'])
+
+    const scoringFunc = (record, gameReportRow) => {
+        const { inning, inningScore, totalScore, totalHit, totalBB } = gameReportRow
+        // 이닝별 스코어
+        if (record[inning] === '') {
+            record[inning] = 0
+        } else {
+            record[inning] = inningScore ? inningScore : record[inning]
+        }
+        // R, H, B
+        record[13] = totalScore ? totalScore : (record[13] ? record[13] : 0)
+        record[14] = totalHit ? totalHit : (record[14] ? record[14] : 0)
+        record[15] = totalBB ? totalBB : (record[15] ? record[15] : 0)
+        return record
+    }
+
+    useEffect(() => {
+        console.log(gameReportRow)
+        if (gameReportRow) {
+            const topBottom = gameReportRow['topBottom']
+
+            if (topBottom === 'top') {
+                const copiedRecord = [...awayRecord]
+                const returnRecord = scoringFunc(copiedRecord, gameReportRow)
+                setAwayRecord(returnRecord)
+            } else if (topBottom === 'bottom') {
+                const copiedRecord = [...homeRecord]
+                const returnRecord = scoringFunc(copiedRecord, gameReportRow)
+                setHomeRecord(returnRecord)
+            }
+        }
+
+    },[gameReportRow])
 
     return (
         <ProcessBorder topBottom={gameReportRow ? gameReportRow['topBottom'] : 'none'} className={ showScoreBoard ? 'show' : ''}>
@@ -66,11 +105,11 @@ const ProcessBorder = styled.div<styleProps>`
 const Board = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: #232B55;
-    width: 570px;
-    height: 101px;
-    margin-bottom: 15px;
-    border: 1px solid #232B55;
+    width: 575px;
+    height: 124px;
+    background: repeating-linear-gradient(to right, #3f3f3f, black 82%, #3f3f3f 18%);
+    border: 3mm inset black;
+    //margin-bottom: 15px;
     color: white;
     font-family: "Road Rage", sans-serif;
     font-weight: 400;

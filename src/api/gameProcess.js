@@ -147,7 +147,8 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
                 result: result.data,
                 totalScore: attacker.score,
                 totalHit: attacker.hit,
-                totalBB: attacker.bb
+                totalBB: attacker.bb,
+                out: out,
             })
             console.log(attacker);
         } else {
@@ -156,7 +157,15 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
                 defender.pitcherK += 1
             }
             out += 1
-            report.push({inning: inning, topBottom: topBottom, number: attacker.batter, result: result.data, pitcherNum: defender.pitcher, k: defender.pitcherK})
+            report.push({
+                inning: inning,
+                topBottom: topBottom,
+                number: attacker.batter,
+                result: result.data,
+                pitcherNum: defender.pitcher,
+                k: defender.pitcherK,
+                out: out,
+            })
         }
 
         // 다음 타자

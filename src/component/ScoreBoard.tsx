@@ -5,17 +5,27 @@ import './ScoreBoard.css'
 interface PropsType {
     showScoreBoard: boolean
     gameReportRow: object
+    showPlayButton: boolean
+    setShowPlayButton: React.Dispatch<React.SetStateAction<boolean>>
+}
+interface GameReportRow {
+    topBottom?: string
+    out?: number
 }
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    index: number
-    topBottom: string
+    index?: number
+    topBottom?: string
+    on?: boolean
+    show?: boolean
+    halfOpacity?: boolean
 }
 
 const ScoreBoard = (props: PropsType) => {
-    const { showScoreBoard, gameReportRow } = props
+    const { showScoreBoard, gameReportRow, showPlayButton, setShowPlayButton } = props
     const boardHead = ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'R', 'H', 'B']
     const [awayRecord, setAwayRecord] = useState(['Away', '', '', '', '', '', '', '', '', '', '-', '-', '-', '0', '0', '0'])
     const [homeRecord, setHomeRecord] = useState(['Home', '', '', '', '', '', '', '', '', '', '-', '-', '-', '0', '0', '0'])
+    const [outCount, setOutCount] = useState([false, false, false])
 
     const scoringFunc = (record, gameReportRow) => {
         const { inning, inningScore, totalScore, totalHit, totalBB } = gameReportRow
@@ -33,10 +43,17 @@ const ScoreBoard = (props: PropsType) => {
     }
 
     useEffect(() => {
-        console.log(gameReportRow)
         if (gameReportRow) {
-            const topBottom = gameReportRow['topBottom']
-
+            const { topBottom, out } = gameReportRow as GameReportRow
+            // 아웃카운트 갱신
+            if (out) {
+                const tempOutCount = [false, false, false]
+                for (let i = 0; i < out; i++) {
+                    tempOutCount[i] = true
+                }
+                setOutCount(tempOutCount)
+            }
+            // 스코어보드 갱신
             if (topBottom === 'top') {
                 const copiedRecord = [...awayRecord]
                 const returnRecord = scoringFunc(copiedRecord, gameReportRow)
@@ -51,26 +68,41 @@ const ScoreBoard = (props: PropsType) => {
     },[gameReportRow])
 
     return (
-        <ProcessBorder topBottom={gameReportRow ? gameReportRow['topBottom'] : 'none'} className={ showScoreBoard ? 'show' : ''}>
-            <Board>
-                {[boardHead, awayRecord, homeRecord].map((record, index) => (
-                    <ColumnDiv key={index} index={index}>
-                        {record.map((value, i) => (
-                            <ScoreCell key={i} index={i}>
-                                {value}
-                            </ScoreCell>
-                        ))}
-                    </ColumnDiv>
+        <>
+            <OutCount className={showScoreBoard && 'show'}>
+                {outCount.map((value, i) => (
+                    <Out key={i} on={value} />
                 ))}
-            </Board>
-        </ProcessBorder>
+            </OutCount>
+            <ProcessBorder
+                className={showScoreBoard && 'show'}
+                topBottom={gameReportRow ? gameReportRow['topBottom'] : 'none'}
+                halfOpacity={showPlayButton}
+                show={showScoreBoard}
+                onMouseEnter={() => showScoreBoard && setShowPlayButton(true)}
+                onMouseLeave={() => showScoreBoard && setShowPlayButton(false)}
+            >
+                <Board>
+                    {[boardHead, awayRecord, homeRecord].map((record, index) => (
+                        <ColumnDiv key={index} index={index}>
+                            {record.map((value, i) => (
+                                <ScoreCell key={i} index={i}>
+                                    {value}
+                                </ScoreCell>
+                            ))}
+                        </ColumnDiv>
+                    ))}
+                </Board>
+            </ProcessBorder>
+        </>
     )
 }
 
 export default ScoreBoard
 
 const ProcessBorder = styled.div<styleProps>`
-    opacity: 0;
+    opacity: ${({ halfOpacity, show }) => (show ? (halfOpacity ? '0.2 !important' : '1') : '0')};
+    //opacity: 0;
     --borderWidth: 5px;
     position: relative;
     border-radius: var(--borderWidth);
@@ -93,7 +125,6 @@ const ProcessBorder = styled.div<styleProps>`
                 return 'linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82)'
             }
         }};
-        //background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
         border-radius: calc(2 * var(--borderWidth));
         z-index: -1;
         animation: animatedgradient 3s ease alternate infinite;
@@ -103,6 +134,8 @@ const ProcessBorder = styled.div<styleProps>`
 `
 
 const Board = styled.div`
+    position: relative;
+    z-index: 3;
     display: flex;
     flex-direction: column;
     width: 575px;
@@ -146,4 +179,43 @@ const ScoreCell = styled.div<styleProps>`
     font-weight: 400;
     font-size: 25px;
     font-style: normal;
+`
+
+const OutCount = styled.div`
+    opacity: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    position: relative;
+    width: 575px;
+    z-index: 4;
+    margin-bottom: 15px;
+    padding-right: 10px;
+`
+
+const Out = styled.div<styleProps>`
+    --borderWidth: 50%;
+    border-radius: var(--borderWidth);
+    width: 10px;
+    height: 10px;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: calc(-1 * var(--borderWidth));
+        left: calc(-1 * var(--borderWidth));
+        height: calc(100% + var(--borderWidth) * 2);
+        width: calc(100% + var(--borderWidth) * 2);
+        background: linear-gradient(100deg, #ff0000, #ff0000, #ff0000, #FF2F2F, #FFC1C1, #FF2F2F, #ff0000, #ff0000, #ff0000);
+        border-radius: calc(2 * var(--borderWidth));
+        animation: animatedgradient 7s ease alternate infinite;
+        background-size: 300% 300%;
+        filter: blur(1px);
+        opacity: ${props => {
+            if (!props.on) {
+                return '20%';
+            }
+        }
+}
 `

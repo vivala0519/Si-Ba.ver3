@@ -5,7 +5,9 @@ import LineUp from './component/LineUp'
 import LineUpSheet from './component/LineUpSheet'
 import ScoreBoard from './component/ScoreBoard'
 import SelectPlayerContainer from './component/SelectPlayerContainer'
-import playButton from './assets/play.svg'
+import playBall from './assets/playball.svg'
+import restart from './assets/restart.svg'
+import pause from './assets/pause.svg'
 import { gameProcess } from './api/gameProcess.js'
 import './App.css'
 
@@ -240,27 +242,75 @@ function App() {
     setHomeLineUpList(dummyData)
   }, [])
 
+  // Report row 배열
+  const [reportArr, setReportArr] = useState([])
+  // reportArr 순회 중인 index
+  const [processIndex, setProcessIndex] = useState(0)
+  // intervalId, timeoutId
+  const [intervalId, setIntervalId] = useState(null)
+  const [timeoutId, setTimeoutId] = useState(null)
+  // 재생 중: true, 일시정지: false
+  const [playState, setPlayState] = useState(true)
+  // 재생 속도 조절 state
+  const [storedSpeed, setStoredSpeed] = useState(100)
+  // play button show state
+  const [showPlayButton, setShowPlayButton] = useState(false)
+
+  const sendSplitReport = (report, index, speed) => {
+    let i = index;
+
+    const interval = setInterval(() => {
+      if (i < report.length) {
+        const nextElement = report[i];
+        setReportRow(nextElement);
+        ++i;
+        setProcessIndex(i)
+      } else {
+        clearInterval(interval);
+      }
+    }, speed);
+
+    setIntervalId(interval)
+
+    return () => clearInterval(interval);
+  };
+
   useEffect(() => {
-    if (report && showScoreBoard) {
-      // 스코어보드 등장하면 0.5초 후 실행
-      setTimeout(() => {
-        const gameReport = report.report
-        const reportArr = [...gameReport]
-        reportArr.push({topBottom: 'finish'})
-
-        const interval = setInterval(() => {
-          if (reportArr.length > 0) {
-            const nextElement = reportArr.shift();
-            setReportRow(nextElement);
-          } else {
-            clearInterval(interval);
-          }
-        }, 100);
-
-        return () => clearInterval(interval);
+    if (showScoreBoard) {
+      const timeoutId = setTimeout(() => {
+        const gameReport = report['report']
+        const tempArr = [...gameReport]
+        tempArr.push({topBottom: 'finish'})
+        setReportArr(tempArr)
+        sendSplitReport(tempArr, 0, storedSpeed)
       }, 500)
+
+      setTimeoutId(timeoutId)
+      return () => clearTimeout(timeoutId)
     }
   }, [showScoreBoard])
+
+  const restartHandler = () => {
+    sendSplitReport(reportArr, processIndex, storedSpeed)
+    setPlayState(!playState)
+  }
+
+  const pauseHandler = () => {
+    if (intervalId) {
+      clearInterval(intervalId)
+    }
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    setPlayState(!playState)
+  }
+
+  const setSpeedHandler = () => {
+    pauseHandler()
+    setTimeout(() => {
+      restartHandler()
+    }, 10)
+  }
 
   return (
     <>
@@ -297,27 +347,42 @@ function App() {
             </div>
           </div>
         </div>
-      : 
-      <>
-        <ScoreBoard showScoreBoard={showScoreBoard} gameReportRow={reportRow}/>
-        <LineUpSheet onPlay={onPlay} setShowScoreBoard={setShowScoreBoard} awayTeam={awayTeam} homeTeam={homeTeam} awayLineUp={awayLineUpList} homeLineUp={homeLineUpList} />
-      </>
+      :
+        <>
+          {showPlayButton && (
+            playState
+              ?
+              <Pause onClick={pauseHandler} onMouseEnter={() => setShowPlayButton(true)} />
+              :
+              <Restart onClick={restartHandler} onMouseEnter={() => setShowPlayButton(true)} />
+          )}
+          {/*<button onClick={() => setSpeedHandler()}></button>*/}
+          <ScoreBoard showScoreBoard={showScoreBoard} gameReportRow={reportRow} showPlayButton={showPlayButton} setShowPlayButton={setShowPlayButton}/>
+          <LineUpSheet
+            onPlay={onPlay}
+            setShowScoreBoard={setShowScoreBoard}
+            awayTeam={awayTeam}
+            homeTeam={homeTeam}
+            awayLineUp={awayLineUpList}
+            homeLineUp={homeLineUpList}
+            gameReportRow={reportRow}
+          />
+          </>
       }
-      {onPlay ? 
-        <></> : 
-        <PlayButton onClick={playButtonHandler} />
-      }
-      {!onPlay ? <footer>footer</footer> : <></>}
+      {!onPlay &&
+        <>
+      <PlayButton onClick={playButtonHandler} />
+      <footer>footer</footer>
+        </>}
     </>
   )
 }
 
 export default App
 
-
 const PlayButton = styled.button`
-  background: url(${playButton}) no-repeat center center;
-  ackground-size: cover;
+  background: url(${playBall}) no-repeat center center;
+  background-size: cover;
   cursor: pointer;
   border: none;
   width: 80px;
@@ -330,4 +395,28 @@ const PlayButton = styled.button`
 
 const Title = styled.header`
   font-size: 25px;
+`
+
+const Restart = styled.button`
+  background: url(${restart}) no-repeat center center;
+  background-size: 100% 100%;
+  cursor: pointer;
+  position: absolute;
+  top: 84px;
+  z-index: 1;
+  border: none;
+  width: 70px;
+  height: 70px;
+`
+
+const Pause = styled.button`
+  background: url(${pause}) no-repeat center center;
+  background-size: 100% 100%;
+  cursor: pointer;
+  position: absolute;
+  top: 84px;
+  z-index: 1;
+  border: none;
+  width: 70px;
+  height: 70px;
 `

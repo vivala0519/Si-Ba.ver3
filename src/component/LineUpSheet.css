@@ -6,6 +6,10 @@
     animation: appearAndDecreaseGap 1s ease-in-out;
 }
 
+.activePlayer {
+    background-color: #ebff0b !important;
+}
+
 @keyframes appearBorder {
     0% {
         border: none;

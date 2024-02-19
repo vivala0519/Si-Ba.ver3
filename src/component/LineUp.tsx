@@ -156,7 +156,7 @@ const PlayerName = styled.div`
 	text-align: center;
     position: relative;
     left: -5px;
-    width: 80px;
+    width: 105px;
 `
 
 const Position = styled.div`

@@ -10,6 +10,7 @@ interface PropsType {
     awayLineUp: Array<LineUp | null>
     onPlay: boolean
     setShowScoreBoard: React.Dispatch<React.SetStateAction<boolean>>
+    gameReportRow: object
 }
 
 interface LineUp {
@@ -19,15 +20,26 @@ interface LineUp {
     year: string
 }
 
+interface GameReportRow {
+    topBottom?: string
+    number?: number
+    changed: boolean
+}
+
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     namelength: number
 }
 
 const LineUpSheet = (props: PropsType) => {
-    const { awayTeam, homeTeam, awayLineUp, homeLineUp, onPlay, setShowScoreBoard } = props
-    // const [startingPitcher, setStartingPitcher] = useState()
+    const { awayTeam, homeTeam, awayLineUp, homeLineUp, onPlay, setShowScoreBoard, gameReportRow } = props
+    // display names for texting animation
     const [awayVisibleNames, setAwayVisibleNames] = useState(Array.from({length: 21 }, () => ''))
     const [homeVisibleNames, setHomeVisibleNames] = useState(Array.from({length: 21 }, () => ''))
+    // active player
+    const [activeTopBottom, setActiveTopBottom] = useState('top')
+    const [activeBatter, setActiveBatter] = useState(0)
+    const [activeHomePitcher, setActiveHomePitcher] = useState(10)
+    const [activeAwayPitcher, setActiveAwayPitcher] = useState(10)
     
     const arrayFromName = (name) => {
         return [...name]
@@ -101,6 +113,26 @@ const LineUpSheet = (props: PropsType) => {
 
         return () => clearTimeout(timeout);
     }, [homeVisibleNames, homeLineUp]);
+
+    useEffect(() => {
+        console.log(gameReportRow)
+        if (gameReportRow) {
+            const { topBottom, number, changed } = gameReportRow as GameReportRow
+            setActiveTopBottom(topBottom)
+            if (number !== undefined) {
+                if (number < 10) {
+                    setActiveBatter(number)
+                }
+            }
+            if (changed) {
+                if (topBottom === 'top') {
+                    setActiveHomePitcher(number)
+                } else {
+                    setActiveAwayPitcher(number)
+                }
+            }
+        }
+    }, [gameReportRow])
     
     // const awayPlayerList = Array.from({ length: 9 }, (_, i) => (
     //     <>
@@ -145,7 +177,9 @@ const LineUpSheet = (props: PropsType) => {
                 <div key='away_sheet'>
                 <Sheet>
                     <SheetDiv key='away_team_name' style={{borderBottom: '0px'}}>{awayTeam ? awayTeam : 'Away'}</SheetDiv>
-                    <StarterPitcher>선발투수 : <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[0])}</div></CursiveText></StarterPitcher>
+                    <StarterPitcher className={activeTopBottom === 'bottom' && activeAwayPitcher === 10 ? 'activePlayer' : ''}>
+                        선발투수 : <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[0])}</div></CursiveText>
+                    </StarterPitcher>
                     <SheetDiv>
                         <PlayerEl key='away_title'>
                             <Td>타순</Td>
@@ -154,7 +188,7 @@ const LineUpSheet = (props: PropsType) => {
                         </PlayerEl>
                         {awayLineUp.map((_, index) => (
                             index < 9 ? 
-                            <PlayerEl key={'away_sheet' + index}>
+                            <PlayerEl key={'away_sheet' + index} className={activeTopBottom === 'top' && activeBatter === index ? 'activePlayer' : ''}>
                                 <Td style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{index + 1}</Td>
                                 <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{awayVisibleNames[index * 2 + 1]}</CursiveTd>
                                 <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black', borderRight: '0px' }}>
@@ -168,14 +202,20 @@ const LineUpSheet = (props: PropsType) => {
                 </Sheet>
                 <BullpenSheet>
                     <Pitcher>대기투수</Pitcher>
-                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[19])}</div></CursiveText></Pitcher>
-                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[20])}</div></CursiveText></Pitcher>
+                    <Pitcher className={activeTopBottom === 'bottom' && activeAwayPitcher === 11 ? 'activePlayer' : ''}>
+                        <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[19])}</div></CursiveText>
+                    </Pitcher>
+                    <Pitcher className={activeTopBottom === 'bottom' && activeAwayPitcher === 12 ? 'activePlayer' : ''}>
+                        <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[20])}</div></CursiveText>
+                    </Pitcher>
                 </BullpenSheet>
                 </div>
                 <div key='home_sheet'>
                 <Sheet>
                     <SheetDiv key='home_team_name' style={{borderBottom: '0px'}}>{homeTeam ? homeTeam : 'Home'}</SheetDiv>
-                    <StarterPitcher>선발투수 : <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[0])}</div></CursiveText></StarterPitcher>
+                    <StarterPitcher className={activeTopBottom === 'top' && activeHomePitcher === 10 ? 'activePlayer' : ''}>
+                        선발투수 : <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[0])}</div></CursiveText>
+                    </StarterPitcher>
                     <SheetDiv>
                         <PlayerEl key='home_title'>
                             <Td>타순</Td>
@@ -184,7 +224,7 @@ const LineUpSheet = (props: PropsType) => {
                         </PlayerEl>
                         {homeLineUp.map((_, index) => (
                             index < 9 ? 
-                            <PlayerEl key={'home_sheet' + index}>
+                            <PlayerEl key={'home_sheet' + index} className={activeTopBottom === 'bottom' && activeBatter === index ? 'activePlayer' : ''}>
                                 <Td style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{index + 1}</Td>
                                 <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{homeVisibleNames[index * 2 + 1]}</CursiveTd>
                                 <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black', borderRight: '0px' }}>
@@ -198,8 +238,12 @@ const LineUpSheet = (props: PropsType) => {
                 </Sheet>
                 <BullpenSheet>
                     <Pitcher>대기투수</Pitcher>
-                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[19])}</div></CursiveText></Pitcher>
-                    <Pitcher><CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[20])}</div></CursiveText></Pitcher>
+                    <Pitcher className={activeTopBottom === 'top' && activeHomePitcher === 11 ? 'activePlayer' : ''}>
+                        <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[19])}</div></CursiveText>
+                    </Pitcher>
+                    <Pitcher className={activeTopBottom === 'top' && activeHomePitcher === 12 ? 'activePlayer' : ''}>
+                        <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[20])}</div></CursiveText>
+                    </Pitcher>
                 </BullpenSheet>
                 </div>
             </SheetContainer>
@@ -218,7 +262,7 @@ const CardBorder = styled.div`
     width: fit-content;
     color: black;
     background-color: white;
-    filter: drop-shadow(7px 7px 37px black);
+    filter: drop-shadow(0px 7px 37px black);
     //--borderWidth: 3px;
     //position: relative;
     //border-radius: var(--borderWidth);

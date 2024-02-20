@@ -116,7 +116,11 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
 
         attacker.batterReport[batterNum].push(result.data)
 
-        console.log(result);
+        // 투구 수 추가
+        const addPitchCount = randomPitchCount(result)
+        defender.pitcherCount += addPitchCount
+
+        // hit or out
         if (result.type === 'hit') {
             console.log(result);
             const runningResult = baseRunning(base, result.data)
@@ -149,6 +153,7 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
                 totalHit: attacker.hit,
                 totalBB: attacker.bb,
                 out: out,
+                pitcherCount: defender.pitcherCount,
             })
             console.log(attacker);
         } else {
@@ -165,6 +170,7 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
                 pitcherNum: defender.pitcher,
                 k: defender.pitcherK,
                 out: out,
+                pitcherCount: defender.pitcherCount,
             })
         }
 
@@ -174,16 +180,13 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
             attacker.batter = 0
         }
 
-        // 투구 수 추가
-        const addPitchCount = randomPitchCount(result)
-        defender.pitcherCount += addPitchCount
-
         // 조건에 따른 투수 교체
         if (defender.pitcher < 12 && (defender.pitcherLostScore > 4 || defender.pitcherCount > 100)) {
             defender.pitcherReport[defender.pitcher] = {count: defender.pitcherCount, lostScore: defender.pitcherLostScore, k: defender.pitcherK}
             defender.pitcher += 1
             defender.pitcherCount = 0
             defender.pitcherLostScore = 0
+            defender.pitcherK = 0
             console.log('pitcher changed-----------------------------------');
             report.push({inning: inning, topBottom: topBottom, number: defender.pitcher, changed: true})
         }

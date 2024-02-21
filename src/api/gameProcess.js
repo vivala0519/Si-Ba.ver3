@@ -154,6 +154,7 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
                 totalBB: attacker.bb,
                 out: out,
                 pitcherCount: defender.pitcherCount,
+                pitcherLost: defender.pitcherLostScore
             })
             console.log(attacker);
         } else {

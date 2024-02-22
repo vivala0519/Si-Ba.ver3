@@ -5,7 +5,6 @@ interface PropsType {
     way: string
     pitcherReportRow: object
     batterReportRow: object
-    setWidth: React.Dispatch<React.SetStateAction<number>>
 }
 
 interface PitcherReport {
@@ -27,9 +26,8 @@ interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 }
 
 const PlayerReport = (props: PropsType) => {
-    const reportRef = useRef(null)
     const containerRef = useRef(null)
-    const { way, pitcherReportRow, batterReportRow, setWidth } = props
+    const { way, pitcherReportRow, batterReportRow } = props
     const batters = Array.from({ length: 9 })
     // const [pitcher, setPitcher] = useState(10)
     const [ballCount, setBallCount] = useState([0, 0, 0])
@@ -41,11 +39,6 @@ const PlayerReport = (props: PropsType) => {
         0: ['null'], 1: ['null'], 2: ['null'], 3: ['null'], 4: ['null'], 5: ['null'], 6: ['null'], 7: ['null'], 8: ['null']
     })
     const [batterTotalReport, setBatterTotalReport] = useState(['', '', '', '', '', '', '', '', ''])
-
-    // 리포트 너비 최신화
-    useEffect(() => {
-        setWidth(reportRef.current?.offsetWidth)
-    }, [reportRef.current?.offsetWidth]);
 
     // 스크롤
     useEffect(() => {
@@ -139,7 +132,7 @@ const PlayerReport = (props: PropsType) => {
     }, [batterReportRow])
 
     return (
-        <Report way={way} ref={reportRef}>
+        <Report way={way}>
             <Title>Report</Title>
             <SheetContainer ref={containerRef}>
                 <Sheet>
@@ -218,8 +211,6 @@ const PlayerReport = (props: PropsType) => {
 export default PlayerReport
 
 const Report = styled.div<styleProps>`
-    position: relative;
-    top: -40px;
     display:flex;
     flex-direction: column;
     padding: 0px 30px 40px 30px;
@@ -376,8 +367,7 @@ const PitcherReportCell = styled.span`
 `
 
 const K = styled.span<styleProps>`
-    font-size: 27px;
-    font-family: "Nanum Pen Script", cursive;
+    font-family: "Protest Revolution", sans-serif;
     font-weight: 400;
     font-style: normal;
     color: #D12600;
@@ -395,9 +385,9 @@ const BatterReportCell = styled.span<styleProps>`
     align-items: center;
     width: 45px;
     height: 30px;
-    font-size: 23px;
-    font-family: "Nanum Pen Script", cursive;
-    font-weight: 400;
+    font-size: 18px;
+    font-family: "Hahmlet", serif;
+    font-optical-sizing: auto;
     font-style: normal;
     color: ${props => {
         if (props.hit === 'hit') {

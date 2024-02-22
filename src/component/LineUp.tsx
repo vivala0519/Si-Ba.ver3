@@ -150,6 +150,9 @@ const LineUpNumber = styled.div`
     margin: 2px;
     text-align: center;
     width: 48px;
+    font-family: "Hahmlet", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 `
 
 const PlayerName = styled.div`
@@ -157,11 +160,17 @@ const PlayerName = styled.div`
     position: relative;
     left: -5px;
     width: 105px;
+    font-family: "Hahmlet", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 `
 
 const Position = styled.div`
 	text-align: center;
     width: 20px;
+    font-family: "Hahmlet", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 `
 
 const Average = styled.div`

@@ -30,7 +30,7 @@ const OutCountainer = styled.div`
     justify-content: flex-start;
     gap: 11px;
     position: relative;
-    width: 575px;
+    width: 100%;
     z-index: 4;
     margin-bottom: 15px;
     left: 21px;

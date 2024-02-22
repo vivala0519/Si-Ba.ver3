@@ -5,7 +5,8 @@ import LineUp from './component/LineUp'
 import LineUpCard from './component/report/LineUpCard.tsx'
 import ScoreBoard from './component/report/scoreBoard/ScoreBoard.tsx'
 import SelectPlayerContainer from './component/SelectPlayerContainer.tsx'
-import PlayerReport from "./component/report/PlayerReport.tsx";
+import PlayerReport from './component/report/PlayerReport.tsx';
+import Footer from './component/Footer.tsx'
 import playBall from './assets/playball.svg'
 import restart from './assets/restart.svg'
 import pause from './assets/pause.svg'
@@ -14,7 +15,6 @@ import './App.css'
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>  {
   showButton?: boolean
-  moveReportValue?: number
 }
 
 function App() {
@@ -262,10 +262,6 @@ function App() {
   const [storedSpeed, setStoredSpeed] = useState(100)
   // play button show state
   const [showPlayButton, setShowPlayButton] = useState(false)
-  // report 별 다른 width 로 인한 위치 조정 위한 state
-  const [awayWidth, setAwayWidth] = useState(180)
-  const [homeWidth, setHomeWidth] = useState(180)
-  const [moveReportValue, setMoveReportValue] = useState(0)
 
   const sendSplitReport = (report, index, speed) => {
     let i = index;
@@ -323,15 +319,11 @@ function App() {
     }, 10)
   }
 
-  useEffect(() => {
-    setMoveReportValue((awayWidth - homeWidth) / 2)
-  }, [awayWidth, homeWidth]);
-
   return (
     <>
       {!onPlay ? 
         <div className={disappear ? 'onPlay' : ''}>
-        <Title>Simulation of Baseball</Title>
+        <Title>Simulator of Baseball</Title>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
           <div className='container'>
             <div>
@@ -361,49 +353,54 @@ function App() {
                 />
             </div>
           </div>
+          {!onPlay &&
+            <>
+              <PlayButton onClick={playButtonHandler} />
+              <Footer/>
+            </>}
         </div>
       :
         <>
-          <ScoreBoard showScoreBoard={showScoreBoard} gameReportRow={reportRow} showPlayButton={showPlayButton} setShowPlayButton={setShowPlayButton}/>
-          {playState
-            ?
-            <Pause showButton={showPlayButton} onClick={pauseHandler} onMouseEnter={() => setShowPlayButton(true)} />
-            :
-            <Restart showButton={showPlayButton} onClick={restartHandler} onMouseEnter={() => setShowPlayButton(true)} />
-          }
-          {/*<button onClick={() => setSpeedHandler()}></button>*/}
-          <ReportBody moveReportValue={moveReportValue}>
-            <PlayerReport
-              key={'awayReport'}
-              way={'away'}
-              pitcherReportRow={reportRow?.topBottom === 'bottom' && reportRow}
-              batterReportRow={reportRow?.topBottom === 'top' && reportRow}
-              setWidth={setAwayWidth}
-            />
-            <LineUpCard
-              onPlay={onPlay}
-              setShowScoreBoard={setShowScoreBoard}
-              awayTeam={awayTeam}
-              homeTeam={homeTeam}
-              awayLineUp={awayLineUpList}
-              homeLineUp={homeLineUpList}
-              gameReportRow={reportRow}
-            />
-            <PlayerReport
-              key={'homeReport'}
-              way={'home'}
-              pitcherReportRow={reportRow?.topBottom === 'top'&& reportRow}
-              batterReportRow={reportRow?.topBottom === 'bottom' && reportRow}
-              setWidth={setHomeWidth}
-            />
-          </ReportBody>
-          </>
+          <Report>
+            <div/>
+            <ReportHead>
+              <ScoreBoard showScoreBoard={showScoreBoard} gameReportRow={reportRow} showPlayButton={showPlayButton}
+                          setShowPlayButton={setShowPlayButton}/>
+              {playState
+                  ?
+                  <Pause showButton={showPlayButton} onClick={pauseHandler}
+                         onMouseEnter={() => setShowPlayButton(true)}/>
+                  :
+                  <Restart showButton={showPlayButton} onClick={restartHandler}
+                           onMouseEnter={() => setShowPlayButton(true)}/>
+              }
+              {/*<button onClick={() => setSpeedHandler()}></button>*/}
+            </ReportHead>
+            <div/>
+              <PlayerReport
+                  key={'awayReport'}
+                  way={'away'}
+                  pitcherReportRow={reportRow?.topBottom === 'bottom' && reportRow}
+                  batterReportRow={reportRow?.topBottom === 'top' && reportRow}
+              />
+              <LineUpCard
+                  onPlay={onPlay}
+                  setShowScoreBoard={setShowScoreBoard}
+                  awayTeam={awayTeam}
+                  homeTeam={homeTeam}
+                  awayLineUp={awayLineUpList}
+                  homeLineUp={homeLineUpList}
+                  gameReportRow={reportRow}
+              />
+              <PlayerReport
+                  key={'homeReport'}
+                  way={'home'}
+                  pitcherReportRow={reportRow?.topBottom === 'top' && reportRow}
+                  batterReportRow={reportRow?.topBottom === 'bottom' && reportRow}
+              />
+          </Report>
+        </>
       }
-      {!onPlay &&
-        <>
-      <PlayButton onClick={playButtonHandler} />
-      <footer>footer</footer>
-        </>}
     </>
   )
 }
@@ -427,13 +424,21 @@ const Title = styled.header`
   font-size: 25px;
 `
 
+const Report = styled.div`
+  display: grid;
+  grid-template-rows: 150px 3fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-row-gap: 15px;
+  justify-content: center;
+  justify-items: center;
+`
+
+const ReportHead = styled.div`
+  padding-left: 4%;
+`
+
 const ReportBody = styled.div<styleProps>`
-  display: flex;
-  gap: 50px;
-  position: relative;
-  right: ${props => {
-    return props.moveReportValue + 'px';
-  }};
+    grid-area: main;
 `
 
 const Restart = styled.button<styleProps>`

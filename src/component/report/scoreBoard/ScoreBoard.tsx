@@ -111,7 +111,7 @@ const BoardRoof = styled.div<styleProps>`
     opacity: ${({ show }) => (show ? '1' : '0')};
     display: flex;
     justify-content: flex-start;
-    width: 575px;
+    width: 100%;
     position: relative;
     top: 10px;
 `
@@ -130,8 +130,8 @@ const ProcessBorder = styled.div<styleProps>`
         position: absolute;
         top: calc(-1 * var(--borderWidth));
         left: calc(-1 * var(--borderWidth));
-        height: calc(100% + var(--borderWidth) * 2);
-        width: calc(100% + var(--borderWidth) * 2);
+        height: 105%;
+        width: 97%;
         background: ${props => {
             if (props?.topBottom === 'top') {
                 return 'linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8)'
@@ -154,7 +154,7 @@ const Board = styled.div`
     z-index: 3;
     display: flex;
     flex-direction: column;
-    width: 575px;
+    width: 96%;
     height: 124px;
     background: repeating-linear-gradient(to right, #666666, black 82%, #3f3f3f 18%);
     border: 3mm inset black;

@@ -265,8 +265,6 @@ const LineUpCard = (props: PropsType) => {
 export default LineUpCard
 
 const CardBorder = styled.div`
-    position: relative;
-    top: -40px;
     display:flex;
     flex-direction: column;
     padding: 0px 10px 40px 10px;
@@ -324,6 +322,9 @@ const SheetDiv = styled.div`
     justify-content: space-around;
     font-size: 18px;
     border: 1px solid black;
+    font-family: "Hahmlet", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 `
 
 const PlayerEl = styled.div`
@@ -339,6 +340,9 @@ const Td = styled.div`
     font-size: 18px;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
+    font-family: "Hahmlet", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 `
 
 const CursiveTd = styled.div`
@@ -391,6 +395,9 @@ const StarterPitcher = styled.div<styleProps>`
     min-height: 41px;
     justify-items: center;
     align-items: center;
+    font-family: "Hahmlet", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
     background-color: ${props => {
         if (props.isActive) {
             const ballCount = props.ballCount
@@ -418,6 +425,9 @@ const Pitcher = styled.div<styleProps>`
     border: 1px solid black;
     border-bottom: 0px;
     min-height: 41px;
+    font-family: "Hahmlet", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
     background-color: ${props => {
         if (props.isActive) {
             const ballCount = props.ballCount

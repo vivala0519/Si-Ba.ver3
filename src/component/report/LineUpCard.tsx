@@ -397,13 +397,13 @@ const StarterPitcher = styled.div<styleProps>`
             if (ballCount <= 20) {
                 return '#ebff0b !important';        
             } else if (ballCount <= 40) {
-                return '#FFD80B !important';
+                return '#d9cb53 !important';
             } else if (ballCount <= 60) {
-                return '#FFAC0B !important';
+                return '#d9b553 !important';
             } else if (ballCount <= 80) {
-                return '#FF800B !important';
+                return '#d9a653 !important';
             } else {
-                return '#FF280B !important';
+                return '#d95e53 !important';
             }
         }
     }}
@@ -424,13 +424,13 @@ const Pitcher = styled.div<styleProps>`
             if (ballCount <= 20) {
                 return '#ebff0b !important';
             } else if (ballCount <= 40) {
-                return '#FFD80B !important';
+                return '#d9cb53 !important';
             } else if (ballCount <= 60) {
-                return '#FFAC0B !important';
+                return '#d9b553 !important';
             } else if (ballCount <= 80) {
-                return '#FF800B !important';
+                return '#d9a653 !important';
             } else {
-                return '#FF280B !important';
+                return '#d95e53 !important';
             }
         }
     }}

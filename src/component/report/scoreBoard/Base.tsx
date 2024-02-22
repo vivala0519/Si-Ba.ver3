@@ -35,7 +35,7 @@ const BaseContainer = styled.div`
 
 const Bases = styled.div`
     display: flex;
-    gap: 18px;
+    gap: 20px;
     flex-direction: row-reverse;
     position: relative;
     left: 15px;
@@ -63,7 +63,7 @@ const BaseEl = styled.div<styleProps>`
     }};
     top: ${props => {
         if (props.index === 1) {
-            return '-35px';
+            return '-36px';
         }
     }}
 }

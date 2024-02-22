@@ -117,10 +117,10 @@ const PlayerReport = (props: PropsType) => {
                 if (tempReport[number][0] === 'null') {
                     tempReport[number] = tempReport[number].slice(1)
                 }
-                let atBat = tempReport[number].length
-                let hit = tempReport[number].filter(bat => ['안타', '2루타', '3루타', '홈런'].includes(bat)).length
-                let hr = tempReport[number].filter(bat => ['홈런'].includes(bat)).length
-                let bb = tempReport[number].filter(bat => ['볼넷'].includes(bat)).length
+                const atBat = tempReport[number].length
+                const hit = tempReport[number].filter(bat => ['안타', '2루타', '3루타', '홈런'].includes(bat)).length
+                const hr = tempReport[number].filter(bat => ['홈런'].includes(bat)).length
+                const bb = tempReport[number].filter(bat => ['볼넷'].includes(bat)).length
                 let defaultString = `${atBat - bb}타수 ${hit}안타`
 
                 if (hr) {
@@ -143,7 +143,6 @@ const PlayerReport = (props: PropsType) => {
             <Title>Report</Title>
             <SheetContainer ref={containerRef}>
                 <Sheet>
-                    <SheetDiv />
                     <PitcherRow way={way}>
                         <span>
                         {[...Array(kCount[0])].map((_, index) => (
@@ -158,7 +157,7 @@ const PlayerReport = (props: PropsType) => {
                     </PitcherRow>
                     <SheetDiv>
                         {/*<PlayerEl>*/}
-                            <Td style={{border: '0px'}}></Td>
+                        {/*    <Td style={{border: '0px'}}></Td>*/}
                         {/*</PlayerEl>*/}
                         {batters.map((_, index) => (
                             index < 9 &&
@@ -250,32 +249,26 @@ const Title = styled.div`
     align-items: flex-end;
 `
 
-const SheetContainer = styled.div`
+const SheetContainer = styled.div<styleProps>`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     gap: 14px;
     max-width: 386px;
-    overflow-x: scroll;
-    //scrollbar-width: thin;
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    /* 스크롤바 전체 영역 */
+    
     &::-webkit-scrollbar {
-        height: 15px;
-        border-radius: 3px;
-        //background-color: yellow;
-        //background: rgba(255, 255, 255, 0.3);
+        height: 8px;
     }
     &::-webkit-scrollbar-track {
-        background: black;
+        background: white;
     }
-
     &::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 5px;
+        background: #e9e9e9;
+        border-radius: 10px;
     }
-
     &::-webkit-scrollbar-button {
         display: none;
     }
@@ -283,18 +276,21 @@ const SheetContainer = styled.div`
 
 const Sheet = styled.div`
     display: grid;
-    grid-template-rows: 1fr 1fr 10fr 2fr;
+    grid-template-rows: 1fr 9fr 2fr;
     justify-content: center;
     border: 2px solid transparent;
     border-radius: 3px;
+    margin-top: 39px;
 `
 
 const SheetDiv = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 11px;
+    gap: 10px;
     font-size: 19px;
     border: 1px solid transparent;
+    max-height: 367px;
+    margin-top: 44px;
 `
 //
 // const PlayerEl = styled.div`
@@ -326,14 +322,14 @@ const BatterLeftSide = styled.span`
     //gap: 3px;
 `
 
-const Td = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 19px;
-    border: 1px solid black;
-    height: 30px;
-`
+// const Td = styled.div`
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     font-size: 19px;
+//     border: 1px solid black;
+//     height: 30px;
+// `
 
 const PitcherRow = styled.span<styleProps>`
     display: flex;
@@ -346,6 +342,7 @@ const PitcherRow = styled.span<styleProps>`
     font-style: normal;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
+    min-height: 43px;
     flex-direction: ${props => {
         if (props.way === 'away') {
             return 'row-reverse';
@@ -428,5 +425,5 @@ const BatterReportCell = styled.span<styleProps>`
 
 const BullpenSheet = styled.div`
     border: 2px solid transparent;
-    margin-top: 5px;
+    margin-top: 10px;
 `

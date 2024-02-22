@@ -1,5 +1,7 @@
 import React, { useEffect, useState, DetailedHTMLProps, HTMLAttributes } from 'react'
 import styled from 'styled-components'
+import Base from "./Base.tsx";
+import OutCount from "./OutCount.tsx";
 import './ScoreBoard.css'
 
 interface PropsType {
@@ -10,6 +12,7 @@ interface PropsType {
 }
 interface GameReportRow {
     topBottom?: string
+    base?: Array<number>
     out?: number
 }
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -25,6 +28,7 @@ const ScoreBoard = (props: PropsType) => {
     const boardHead = ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'R', 'H', 'B']
     const [awayRecord, setAwayRecord] = useState(['Away', '', '', '', '', '', '', '', '', '', '-', '-', '-', '0', '0', '0'])
     const [homeRecord, setHomeRecord] = useState(['Home', '', '', '', '', '', '', '', '', '', '-', '-', '-', '0', '0', '0'])
+    const [baseState, setBaseState] = useState([])
     const [outCount, setOutCount] = useState([false, false, false])
 
     const scoringFunc = (record, gameReportRow) => {
@@ -44,7 +48,11 @@ const ScoreBoard = (props: PropsType) => {
 
     useEffect(() => {
         if (gameReportRow) {
-            const { topBottom, out } = gameReportRow as GameReportRow
+            const { topBottom, out, base } = gameReportRow as GameReportRow
+            // 베이스 갱신
+            if (base) {
+                setBaseState(base)
+            }
             // 아웃카운트 갱신
             if (out) {
                 const tempOutCount = [false, false, false]
@@ -69,11 +77,10 @@ const ScoreBoard = (props: PropsType) => {
 
     return (
         <>
-            <OutCount className={showScoreBoard && 'show'}>
-                {outCount.map((value, i) => (
-                    <Out key={i} on={value} />
-                ))}
-            </OutCount>
+            <BoardRoof className={showScoreBoard && 'show'} show={showScoreBoard}>
+                <Base base={baseState}/>
+            </BoardRoof>
+            <OutCount showScoreBoard={showScoreBoard} outCount={outCount} />
             <ProcessBorder
                 className={showScoreBoard && 'show'}
                 topBottom={gameReportRow ? gameReportRow['topBottom'] : 'none'}
@@ -100,10 +107,19 @@ const ScoreBoard = (props: PropsType) => {
 
 export default ScoreBoard
 
+const BoardRoof = styled.div<styleProps>`
+    opacity: ${({ show }) => (show ? '1' : '0')};
+    display: flex;
+    justify-content: flex-start;
+    width: 575px;
+    position: relative;
+    top: 10px;
+`
+
 const ProcessBorder = styled.div<styleProps>`
-    opacity: ${({ halfOpacity, show }) => (show ? (halfOpacity ? '0.2 !important' : '1') : '0')};
-    //opacity: 0;
-    --borderWidth: 5px;
+    opacity: ${({ show }) => (show ? '1' : '0')};
+    filter: ${({ halfOpacity }) => halfOpacity ? 'brightness(0.5)' : ''};
+    --borderWidth: 2px;
     position: relative;
     border-radius: var(--borderWidth);
     z-index: revert;
@@ -140,7 +156,7 @@ const Board = styled.div`
     flex-direction: column;
     width: 575px;
     height: 124px;
-    background: repeating-linear-gradient(to right, #3f3f3f, black 82%, #3f3f3f 18%);
+    background: repeating-linear-gradient(to right, #666666, black 82%, #3f3f3f 18%);
     border: 3mm inset black;
     //margin-bottom: 15px;
     color: white;
@@ -179,43 +195,4 @@ const ScoreCell = styled.div<styleProps>`
     font-weight: 400;
     font-size: 25px;
     font-style: normal;
-`
-
-const OutCount = styled.div`
-    opacity: 0;
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    position: relative;
-    width: 575px;
-    z-index: 4;
-    margin-bottom: 15px;
-    padding-right: 10px;
-`
-
-const Out = styled.div<styleProps>`
-    --borderWidth: 50%;
-    border-radius: var(--borderWidth);
-    width: 10px;
-    height: 10px;
-    position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        top: calc(-1 * var(--borderWidth));
-        left: calc(-1 * var(--borderWidth));
-        height: calc(100% + var(--borderWidth) * 2);
-        width: calc(100% + var(--borderWidth) * 2);
-        background: linear-gradient(100deg, #ff0000, #ff0000, #ff0000, #FF2F2F, #FFC1C1, #FF2F2F, #ff0000, #ff0000, #ff0000);
-        border-radius: calc(2 * var(--borderWidth));
-        animation: animatedgradient 7s ease alternate infinite;
-        background-size: 300% 300%;
-        filter: blur(1px);
-        opacity: ${props => {
-            if (!props.on) {
-                return '20%';
-            }
-        }
-}
 `

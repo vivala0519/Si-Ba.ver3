@@ -153,12 +153,12 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
                 totalHit: attacker.hit,
                 totalBB: attacker.bb,
                 out: out,
+                pitcherNum: defender.pitcher,
                 pitcherCount: defender.pitcherCount,
-                pitcherLost: defender.pitcherLostScore
+                lostScore: defender.pitcherLostScore
             })
             console.log(attacker);
         } else {
-            console.log(result);
             if (result.data === '삼진') {
                 defender.pitcherK += 1
             }
@@ -172,6 +172,7 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
                 k: defender.pitcherK,
                 out: out,
                 pitcherCount: defender.pitcherCount,
+                lostScore: defender.pitcherLostScore
             })
         }
 

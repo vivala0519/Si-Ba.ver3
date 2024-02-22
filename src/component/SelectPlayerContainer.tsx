@@ -78,7 +78,7 @@ const SelectPlayerContainer = (props) => {
 
     // 선택된 player Func
     useEffect(() => {
-        console.log('select: ', playerList[selectedIdx]);
+        // console.log('select: ', playerList[selectedIdx]);
         
     }, [selectedIdx, playerList])
 

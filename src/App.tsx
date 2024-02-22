@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect, DetailedHTMLProps, HTMLAttributes} from 'react'
 import styled from 'styled-components'
 import Swal from "sweetalert2"
 import LineUp from './component/LineUp'
-import LineUpSheet from './component/LineUpSheet'
-import ScoreBoard from './component/ScoreBoard'
-import SelectPlayerContainer from './component/SelectPlayerContainer'
+import LineUpCard from './component/report/LineUpCard.tsx'
+import ScoreBoard from './component/report/scoreBoard/ScoreBoard.tsx'
+import SelectPlayerContainer from './component/SelectPlayerContainer.tsx'
+import PlayerReport from "./component/report/PlayerReport.tsx";
 import playBall from './assets/playball.svg'
 import restart from './assets/restart.svg'
 import pause from './assets/pause.svg'
 import { gameProcess } from './api/gameProcess.js'
 import './App.css'
+
+interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>  {
+  showButton?: boolean
+  moveReportValue?: number
+}
 
 function App() {
 
@@ -19,6 +25,7 @@ function App() {
     avg: number
     year: string
   }
+
   const dummyData = [
     {
       "name": "소크라테스",
@@ -255,6 +262,10 @@ function App() {
   const [storedSpeed, setStoredSpeed] = useState(100)
   // play button show state
   const [showPlayButton, setShowPlayButton] = useState(false)
+  // report 별 다른 width 로 인한 위치 조정 위한 state
+  const [awayWidth, setAwayWidth] = useState(180)
+  const [homeWidth, setHomeWidth] = useState(180)
+  const [moveReportValue, setMoveReportValue] = useState(0)
 
   const sendSplitReport = (report, index, speed) => {
     let i = index;
@@ -312,6 +323,10 @@ function App() {
     }, 10)
   }
 
+  useEffect(() => {
+    setMoveReportValue((awayWidth - homeWidth) / 2)
+  }, [awayWidth, homeWidth]);
+
   return (
     <>
       {!onPlay ? 
@@ -349,24 +364,39 @@ function App() {
         </div>
       :
         <>
-          {showPlayButton && (
-            playState
-              ?
-              <Pause onClick={pauseHandler} onMouseEnter={() => setShowPlayButton(true)} />
-              :
-              <Restart onClick={restartHandler} onMouseEnter={() => setShowPlayButton(true)} />
-          )}
-          {/*<button onClick={() => setSpeedHandler()}></button>*/}
           <ScoreBoard showScoreBoard={showScoreBoard} gameReportRow={reportRow} showPlayButton={showPlayButton} setShowPlayButton={setShowPlayButton}/>
-          <LineUpSheet
-            onPlay={onPlay}
-            setShowScoreBoard={setShowScoreBoard}
-            awayTeam={awayTeam}
-            homeTeam={homeTeam}
-            awayLineUp={awayLineUpList}
-            homeLineUp={homeLineUpList}
-            gameReportRow={reportRow}
-          />
+          {playState
+            ?
+            <Pause showButton={showPlayButton} onClick={pauseHandler} onMouseEnter={() => setShowPlayButton(true)} />
+            :
+            <Restart showButton={showPlayButton} onClick={restartHandler} onMouseEnter={() => setShowPlayButton(true)} />
+          }
+          {/*<button onClick={() => setSpeedHandler()}></button>*/}
+          <ReportBody moveReportValue={moveReportValue}>
+            <PlayerReport
+              key={'awayReport'}
+              way={'away'}
+              pitcherReportRow={reportRow?.topBottom === 'bottom' && reportRow}
+              batterReportRow={reportRow?.topBottom === 'top' && reportRow}
+              setWidth={setAwayWidth}
+            />
+            <LineUpCard
+              onPlay={onPlay}
+              setShowScoreBoard={setShowScoreBoard}
+              awayTeam={awayTeam}
+              homeTeam={homeTeam}
+              awayLineUp={awayLineUpList}
+              homeLineUp={homeLineUpList}
+              gameReportRow={reportRow}
+            />
+            <PlayerReport
+              key={'homeReport'}
+              way={'home'}
+              pitcherReportRow={reportRow?.topBottom === 'top'&& reportRow}
+              batterReportRow={reportRow?.topBottom === 'bottom' && reportRow}
+              setWidth={setHomeWidth}
+            />
+          </ReportBody>
           </>
       }
       {!onPlay &&
@@ -397,26 +427,49 @@ const Title = styled.header`
   font-size: 25px;
 `
 
-const Restart = styled.button`
+const ReportBody = styled.div<styleProps>`
+  display: flex;
+  gap: 50px;
+  position: relative;
+  right: ${props => {
+    return props.moveReportValue + 'px';
+  }};
+`
+
+const Restart = styled.button<styleProps>`
+  visibility: ${props => {
+    if (props.showButton) {
+      return 'visible';
+    } else {
+      return 'hidden';
+    }
+  }};
   background: url(${restart}) no-repeat center center;
   background-size: 100% 100%;
   cursor: pointer;
-  position: absolute;
-  top: 84px;
+  position: relative;
+  top: -105px;
   z-index: 1;
   border: none;
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
 `
 
-const Pause = styled.button`
+const Pause = styled.button<styleProps>`
+  visibility: ${props => {
+    if (props.showButton) {
+      return 'visible';
+    } else {
+      return 'hidden';
+    }
+  }};
   background: url(${pause}) no-repeat center center;
   background-size: 100% 100%;
   cursor: pointer;
-  position: absolute;
-  top: 84px;
+  position: relative;
+  top: -105px;
   z-index: 1;
   border: none;
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
 `

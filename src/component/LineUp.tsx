@@ -69,14 +69,14 @@ const LineUp = (props: PropsType) => {
     }
 
     useEffect(() => {
-        console.log(team);
+        // console.log(team);
     }, [team])
 
     useEffect(() => {
         // 라인업에 추가 후 addedPlayer 초기화
         const selectedPlace = selectedArea?.split(way)[1]
         if (addedPlayer && selectedPlace) {
-            console.log('add - ', addedPlayer);
+            // console.log('add - ', addedPlayer);
 
             lineUpList[selectedPlace] = addedPlayer
             const copiedLineUp = [...lineUpList]

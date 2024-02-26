@@ -1,4 +1,3 @@
-// import React, { DetailedHTMLProps, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import './ScoreBoard.css'
 import {DetailedHTMLProps, HTMLAttributes} from "react";

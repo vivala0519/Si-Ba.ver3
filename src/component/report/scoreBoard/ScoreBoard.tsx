@@ -1,7 +1,7 @@
 import React, { useEffect, useState, DetailedHTMLProps, HTMLAttributes } from 'react'
 import styled from 'styled-components'
-import Base from "./Base.tsx";
-import OutCount from "./OutCount.tsx";
+import Base from "./Base.tsx"
+import OutCount from "./OutCount.tsx"
 import './ScoreBoard.css'
 
 interface PropsType {

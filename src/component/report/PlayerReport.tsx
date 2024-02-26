@@ -63,8 +63,6 @@ const PlayerReport = (props: PropsType) => {
     // pitcher's report
     useEffect(() => {
         if (pitcherReportRow) {
-            // const topBottom = way === 'away' ? 'bottom' : 'top'
-            console.log(pitcherReportRow)
             const { pitcherNum, k, result, lostScore, pitcherCount } = pitcherReportRow as PitcherReport
 
             const idx = pitcherNum === 10 ? 0 : (pitcherNum === 11 ? 1 : 2)
@@ -283,12 +281,6 @@ const SheetDiv = styled.div`
     max-height: 367px;
     margin-top: 44px;
 `
-//
-// const PlayerEl = styled.div`
-//     display: grid;
-//     grid-template-columns: 1fr 1fr 4fr;
-//     height: 39px;
-// `
 
 const BatterRow = styled.span<styleProps>`
     display: flex;
@@ -312,15 +304,6 @@ const BatterLeftSide = styled.span`
     display: flex;
     //gap: 3px;
 `
-
-// const Td = styled.div`
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     font-size: 19px;
-//     border: 1px solid black;
-//     height: 30px;
-// `
 
 const PitcherRow = styled.span<styleProps>`
     display: flex;
@@ -401,19 +384,8 @@ const BatterReportCell = styled.span<styleProps>`
     }};
 `
 
-// const Pitcher = styled.div`
-//     display: flex;
-//     flex-direction: row;
-//     gap: 10px;
-//     align-items: center;
-//     justify-content: center;
-//     font-size: 19px;
-//     border: 1px solid transparent;
-//     border-bottom: 0px;
-//     min-height: 33px;
-// `
-
 const BullpenSheet = styled.div`
     border: 2px solid transparent;
-    margin-top: 10px;
+    //margin-top: 3%;
+    margin-top: 13px;
 `

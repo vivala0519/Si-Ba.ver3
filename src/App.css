@@ -41,7 +41,7 @@
 .container {
   display: flex;
   justify-content: center;
-  gap: 585px;
+  gap: 80px;
   margin-top: 20px;
 }
 

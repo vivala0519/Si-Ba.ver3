@@ -259,9 +259,15 @@ function App() {
   // 재생 중: true, 일시정지: false
   const [playState, setPlayState] = useState(true)
   // 재생 속도 조절 state
-  const [storedSpeed, setStoredSpeed] = useState(100)
+  const [storedSpeed, setStoredSpeed] = useState(1)
+  // 속도 리스트
+  const speedList = [1000, 500, 200, 100]
+  // 속도 button text
+  const speedButton = ['x1', 'x2', 'x5', 'x10']
   // play button show state
   const [showPlayButton, setShowPlayButton] = useState(false)
+  // game finish flag
+  const [gameFinish, setGameFinish] = useState(false)
 
   const sendSplitReport = (report, index, speed) => {
     let i = index;
@@ -272,6 +278,9 @@ function App() {
         setReportRow(nextElement);
         ++i;
         setProcessIndex(i)
+        if (nextElement.topBottom === 'finish') {
+          setGameFinish(true)
+        }
       } else {
         clearInterval(interval);
       }
@@ -289,7 +298,7 @@ function App() {
         const tempArr = [...gameReport]
         tempArr.push({topBottom: 'finish'})
         setReportArr(tempArr)
-        sendSplitReport(tempArr, 0, storedSpeed)
+        sendSplitReport(tempArr, 0, speedList[storedSpeed])
       }, 500)
 
       setTimeoutId(timeoutId)
@@ -297,9 +306,9 @@ function App() {
     }
   }, [showScoreBoard])
 
-  const restartHandler = () => {
-    sendSplitReport(reportArr, processIndex, storedSpeed)
-    setPlayState(!playState)
+  const restartHandler = (val) => {
+    setPlayState(true)
+    sendSplitReport(reportArr, processIndex, val)
   }
 
   const pauseHandler = () => {
@@ -309,14 +318,17 @@ function App() {
     if (timeoutId) {
       clearTimeout(timeoutId)
     }
-    setPlayState(!playState)
+    setPlayState(false)
   }
 
   const setSpeedHandler = () => {
     pauseHandler()
+    const speed = storedSpeed + 1 === 4 ? 0 : storedSpeed + 1
+    setStoredSpeed(speed)
+
     setTimeout(() => {
-      restartHandler()
-    }, 10)
+      restartHandler(speedList[speed])
+    }, 100)
   }
 
   return (
@@ -366,15 +378,18 @@ function App() {
             <ReportHead>
               <ScoreBoard showScoreBoard={showScoreBoard} gameReportRow={reportRow} showPlayButton={showPlayButton}
                           setShowPlayButton={setShowPlayButton}/>
-              {playState
+              {!gameFinish && <ButtonList>
+                {playState
                   ?
                   <Pause showButton={showPlayButton} onClick={pauseHandler}
-                         onMouseEnter={() => setShowPlayButton(true)}/>
+                    onMouseEnter={() => setShowPlayButton(true)}/>
                   :
-                  <Restart showButton={showPlayButton} onClick={restartHandler}
-                           onMouseEnter={() => setShowPlayButton(true)}/>
-              }
-              {/*<button onClick={() => setSpeedHandler()}></button>*/}
+                  <Restart showButton={showPlayButton} onClick={() => restartHandler(speedList[storedSpeed])}
+                    onMouseEnter={() => setShowPlayButton(true)}/>
+                }
+                <SpeedUp showButton={showPlayButton} onClick={setSpeedHandler}
+                  onMouseEnter={() => setShowPlayButton(true)}>{speedButton[storedSpeed]}</SpeedUp>
+              </ButtonList>}
             </ReportHead>
             <div/>
               <PlayerReport
@@ -414,6 +429,7 @@ const PlayButton = styled.button`
   border: none;
   width: 80px;
   height: 80px;
+  margin-top: 20px;
   &:hover,
   &:focus {
       outline: none;
@@ -437,8 +453,20 @@ const ReportHead = styled.div`
   padding-left: 4%;
 `
 
-const ReportBody = styled.div<styleProps>`
-    grid-area: main;
+const ButtonList = styled.div<styleProps>`
+  visibility: ${props => {
+    if (props.showButton) {
+      return 'visible';
+    } else {
+      return 'hidden';
+    }
+  }};
+  position: relative;
+  top: -90%;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
 `
 
 const Restart = styled.button<styleProps>`
@@ -452,8 +480,6 @@ const Restart = styled.button<styleProps>`
   background: url(${restart}) no-repeat center center;
   background-size: 100% 100%;
   cursor: pointer;
-  position: relative;
-  top: -105px;
   z-index: 1;
   border: none;
   width: 50px;
@@ -471,10 +497,29 @@ const Pause = styled.button<styleProps>`
   background: url(${pause}) no-repeat center center;
   background-size: 100% 100%;
   cursor: pointer;
-  position: relative;
-  top: -105px;
   z-index: 1;
   border: none;
   width: 50px;
   height: 50px;
+`
+
+const SpeedUp = styled.span<styleProps>`
+  visibility: ${props => {
+    if (props.showButton) {
+      return 'visible';
+    } else {
+      return 'hidden';
+    }
+  }};
+  cursor: pointer;
+  position: relative;
+  top: -12px;
+  font-family: "Road Rage", sans-serif;
+  font-weight: 400;
+  font-size: 50px;
+  font-style: normal;
+  width: 50px;
+  height: 50px;
+  color: #FFC61B;
+  letter-spacing: 8px;
 `

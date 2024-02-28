@@ -6,6 +6,7 @@ import LineUpCard from './component/report/LineUpCard.tsx'
 import ScoreBoard from './component/report/scoreBoard/ScoreBoard.tsx'
 import SelectPlayerContainer from './component/SelectPlayerContainer.tsx'
 import PlayerReport from './component/report/PlayerReport.tsx';
+import Header from './component/Header.tsx'
 import Footer from './component/Footer.tsx'
 import playBall from './assets/playball.svg'
 import restart from './assets/restart.svg'
@@ -15,6 +16,7 @@ import './App.css'
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>  {
   showButton?: boolean
+  $ready?: boolean
 }
 
 function App() {
@@ -223,6 +225,7 @@ function App() {
   const [disappear, setDisappear] = useState(false)
   const [report, setReport] = useState<object | null>(null)
   const [reportRow, setReportRow] = useState<object | null>(null)
+  const [onReady, setOnReady] = useState(false)
 
   const playButtonHandler = async () => {
     const homeLineUpNullCount = homeLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
@@ -243,6 +246,13 @@ function App() {
     setReport(gameResult)
     console.log(gameResult)
   }
+
+  useEffect(() => {
+    const homeLineUpNullCount = homeLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
+    const awayLineUpNullCount = awayLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
+
+    setOnReady(homeLineUpNullCount === 1 || awayLineUpNullCount === 1)
+  }, [homeLineUpList, awayLineUpList]);
 
   useEffect(() => {
     setAwayLineUpList(dummyData)
@@ -333,9 +343,10 @@ function App() {
 
   return (
     <>
-      {!onPlay ? 
+      {!onPlay ?
+      <>
         <div className={disappear ? 'onPlay' : ''}>
-        <Title>Simulator of Baseball</Title>
+          <Header />
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
           <div className='container'>
             <div>
@@ -349,8 +360,12 @@ function App() {
                 setSelectedArea={setSelectedArea}
                 lineUpList={awayLineUpList}
                 setLineUpList={setAwayLineUpList}
+                onReady={onReady}
                 />
             </div>
+            <PlayButtonContainer $ready={onReady}>
+              <PlayButton className={onReady ? "play-button show" : "play-button"} onClick={playButtonHandler}/>
+            </PlayButtonContainer>
             <div>
               <LineUp
                 way='Home'
@@ -362,15 +377,13 @@ function App() {
                 setSelectedArea={setSelectedArea}
                 lineUpList={homeLineUpList}
                 setLineUpList={setHomeLineUpList}
+                onReady={onReady}
                 />
             </div>
           </div>
-          {!onPlay &&
-            <>
-              <PlayButton onClick={playButtonHandler} />
-              <Footer/>
-            </>}
         </div>
+          <Footer onReady={onReady}/>
+          </>
       :
         <>
           <Report>
@@ -422,6 +435,18 @@ function App() {
 
 export default App
 
+const PlayButtonContainer = styled.div<styleProps>`
+  display: flex;
+  align-items: center;
+  width: ${(props) => {
+    if (props.$ready) {
+      return '80px';
+    } else {
+      return '40px';
+    }
+  }};
+`
+
 const PlayButton = styled.button`
   background: url(${playBall}) no-repeat center center;
   background-size: cover;
@@ -436,10 +461,6 @@ const PlayButton = styled.button`
   }
 `
 
-const Title = styled.header`
-  font-size: 25px;
-`
-
 const Report = styled.div`
   display: grid;
   grid-template-rows: 150px 3fr;
@@ -447,6 +468,7 @@ const Report = styled.div`
   grid-row-gap: 15px;
   justify-content: center;
   justify-items: center;
+  padding-top: 3em;
 `
 
 const ReportHead = styled.div`
@@ -520,6 +542,6 @@ const SpeedUp = styled.span<styleProps>`
   font-style: normal;
   width: 50px;
   height: 50px;
-  color: #FFC61B;
+  color: #BB2649;
   letter-spacing: 8px;
 `

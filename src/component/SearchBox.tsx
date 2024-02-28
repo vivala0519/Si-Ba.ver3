@@ -20,6 +20,6 @@ const SearchPlayer = styled.input`
     text-align: center;
     height: 30px;
     width: 200px;
-    border: 2px solid #ffbe98;
+    border: 2px solid #BB2649;
     border-radius: 50% 20% / 10% 40%;
 `

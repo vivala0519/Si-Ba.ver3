@@ -56,6 +56,6 @@ const Box = styled.select<BoxProps>`
     height: 30px;
 
     &:hover {
-        background-color: #ffbe98;
+        background-color: #BB2649;
     }
 `

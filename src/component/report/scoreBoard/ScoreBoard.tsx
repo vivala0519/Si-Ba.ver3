@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Base from "./Base.tsx"
 import OutCount from "./OutCount.tsx"
 import './ScoreBoard.css'
+import help from '../../../assets/help.svg'
 
 interface PropsType {
     showScoreBoard: boolean
@@ -30,6 +31,8 @@ const ScoreBoard = (props: PropsType) => {
     const [homeRecord, setHomeRecord] = useState(['Home', '', '', '', '', '', '', '', '', '', '-', '-', '-', '0', '0', '0'])
     const [baseState, setBaseState] = useState([])
     const [outCount, setOutCount] = useState([false, false, false])
+    const [showHelp, setShowHelp] = useState(false)
+    const helpText = '- 투수 교체 조건 : 투구 수 100개 이상 또는 5실점 이상\n- 경기 진행 중 현재 투수 배경색 : 투구 수에 따른 피로도'
 
     const scoringFunc = (record, gameReportRow) => {
         const { inning, inningScore, totalScore, totalHit, totalBB } = gameReportRow
@@ -101,6 +104,11 @@ const ScoreBoard = (props: PropsType) => {
                     ))}
                 </Board>
             </ProcessBorder>
+            <Help
+                onMouseEnter={() => setShowHelp(true)}
+                onMouseLeave={() => setShowHelp(false)}
+            />
+            {showHelp && <HelpContent>{ helpText }</HelpContent>}
         </>
     )
 }
@@ -195,4 +203,28 @@ const ScoreCell = styled.div<styleProps>`
     font-weight: 400;
     font-size: 25px;
     font-style: normal;
+`
+
+const Help = styled.div`
+    background: url(${help}) no-repeat center center;
+    background-size: 100% 100%;
+    cursor: pointer;
+    position: relative;
+    left: 580px;
+    bottom: 41px;
+    width: 25px;
+    height: 30px;
+`
+
+const HelpContent = styled.p`
+    font-size: 18px;
+    font-family: "Hahmlet", serif;
+    font-style: normal;
+    font-weight: 800;
+    color: #5a5a5a;
+    position: absolute;
+    left: 64%;
+    bottom: 84%;
+    white-space: pre-line;
+    text-align: left;
 `

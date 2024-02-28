@@ -1,16 +1,28 @@
 #root {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
   @media (max-width: 821px) {
     justify-content: normal;
   }
 }
+.play-button {
+  /* 숨김 상태 스타일 */
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.5s, transform 0.5s;
+}
 
+.play-button.show {
+  /* 표시 상태 스타일 */
+  opacity: 1;
+  transform: scale(1);
+}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -41,8 +53,7 @@
 .container {
   display: flex;
   justify-content: center;
-  gap: 80px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .card {

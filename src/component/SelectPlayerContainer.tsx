@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import {DetailedHTMLProps, HTMLAttributes, useEffect, useState} from 'react'
 import DropDownBox from './DropDownBox'
 import SearchBox from './SearchBox'
 import styled from 'styled-components'
@@ -11,6 +11,10 @@ interface Player {
     position: string
     name: string
     year: string
+}
+
+interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+    selected?: string
 }
 
 const SelectPlayerContainer = (props) => {
@@ -89,7 +93,7 @@ const SelectPlayerContainer = (props) => {
 
     return (
         <div>
-            <SelectContainer>
+            <SelectContainer selected={selectedArea}>
                 {selectedArea ? 
                     selectMode ? 
                     <>
@@ -106,7 +110,7 @@ const SelectPlayerContainer = (props) => {
                         <SearchBox />
                     </>
                 :
-                    <div>select area for add</div> 
+                    <SelectAreaHelp>select area for add</SelectAreaHelp>
                 }
             </SelectContainer>
             {/* <div>
@@ -117,11 +121,14 @@ const SelectPlayerContainer = (props) => {
 }
 export default SelectPlayerContainer
 
-const SelectContainer = styled.div`
+const SelectContainer = styled.div<styleProps>`
     display: flex;
     align-items: center;
     justify-content: center;
     height: 50px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    margin-right: ${props => props.selected && '-50px'};
 `
 
 // const ViewDetailStat = styled.div`
@@ -141,8 +148,8 @@ const AddBatter = styled.button`
     background-size: contain;
     cursor: pointer;
     border: none;
-    width: 70px;
-    height: 40px;
+    width: 53px;
+    height: 32px;
     &:hover,
     &:focus {
         outline: none;
@@ -155,8 +162,8 @@ const AddPitcher = styled.button`
     background-size: contain;
     cursor: pointer;
     border: none;
-    width: 70px;
-    height: 40px;
+    width: 53px;
+    height: 32px;
     &:hover,
     &:focus {
         outline: none;
@@ -175,4 +182,9 @@ const ChangeMode = styled.button`
     &:focus {
         outline: none;
     }
+`
+
+const SelectAreaHelp = styled.div`
+    margin-top: 10px;
+    margin-bottom: 10px;
 `

@@ -1,6 +1,7 @@
-import React, { DetailedHTMLProps, HTMLAttributes, useEffect } from 'react'
+import React, { useState, DetailedHTMLProps, HTMLAttributes, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import './LineUp.css'
+import styles from './TeamName.module.scss'
 
 interface PropsType {
     way: string
@@ -12,11 +13,16 @@ interface PropsType {
     setAddedPlayer: React.Dispatch<React.SetStateAction<object | null>>
     lineUpList: Array<LineUp | null>
     setLineUpList: React.Dispatch<React.SetStateAction<Array<LineUp | null> | null>>
+    onReady: boolean
 }
 
 interface PlayerProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    $hover: boolean
-    selected: boolean
+    $hover?: boolean
+    selected?: boolean
+    focused?: boolean
+    onReady?: boolean
+    way?: string
+    teamName?: string
 }
 
 interface LineUp {
@@ -28,7 +34,7 @@ interface LineUp {
 
 const LineUp = (props: PropsType) => {
     // props
-    const { way, selectedArea, setSelectedArea, addedPlayer, setAddedPlayer, lineUpList, setLineUpList, team, setTeam } = props;
+    const { way, selectedArea, setSelectedArea, addedPlayer, setAddedPlayer, lineUpList, setLineUpList, team, setTeam, onReady } = props;
     
     const playerList = Array.from({ length: 13 }, (_, i) => (
         <Player
@@ -42,14 +48,16 @@ const LineUp = (props: PropsType) => {
                 <SeperatorLine key='seperator-line'/>
             :
                 <>
-                    <LineUpNumber>{i === 10 ? '선발' : i === 11 ? '중계' : i === 12 ? '마무리' : `${i + 1}번`}</LineUpNumber>
-                    <PlayerName>{lineUpList[i] ? `${lineUpList[i]?.year.slice(2)}  ${lineUpList[i]?.name}` : ''}</PlayerName>
+                    <LineUpNumber selected={selectedArea === way + i}>{i === 10 ? '선발' : i === 11 ? '중계' : i === 12 ? '마무리' : `${i + 1}`}</LineUpNumber>
+                    <PlayerName selected={selectedArea === way + i}>{lineUpList[i] ? `${lineUpList[i]?.year.slice(2)}  ${lineUpList[i]?.name}` : ''}</PlayerName>
                     {i < 10 ? <Position>{lineUpList[i] ? `${lineUpList[i]?.position}` : ''}</Position> : <Position/>}
                     {i < 10 ? <Average>{lineUpList[i] ? `0${lineUpList[i]?.avg}` : ''}</Average> : <Average/>}
                 </>
             }
         </Player>
     ));
+
+    const [focused, setFocused] = useState(false)
 
     const clickHandler = (i:number) => {
         if (i === 9) {
@@ -91,31 +99,90 @@ const LineUp = (props: PropsType) => {
 
     return (
         <>
-            <div style={{display: 'flex', flexDirection: 'column', width: '270px'}}>
-                <TeamName placeholder={way} onChange={(event) => setTeam(event.target.value)} maxLength={13} />
+            <LineUpContainer onReady={onReady} way={way}>
+                <TeamNameContainer>
+                    <TeamNameBorder className={focused && styles.title}>
+                        <TeamName
+                            onChange={(event) => setTeam(event.target.value)}
+                            maxLength={13}
+                            onFocus={() => setFocused(true)}
+                            onBlur={() => setFocused(false)}
+                        />
+                        <WayText focused={focused} teamName={team}>{way}</WayText>
+                    </TeamNameBorder>
+                </TeamNameContainer>
                 { playerList }
-            </div>
+            </LineUpContainer>
         </>
     )
 }
 
 export default LineUp
 
-const TeamName = styled.input`
-    type: text;
+const LineUpContainer = styled.div<PlayerProps>`
+    display: flex;
+    flex-direction: column;
+    width: 270px;
+    transition: transform 0.5s;
+    transform: ${props => props.onReady && (props.way === 'Away' ? 'translateX(-50px)' : 'translateX(50px)')};
+`
+
+const TeamNameContainer = styled.div`
     position: relative;
-    left: 22px;
-    text-align: center;
-    margin-bottom: 4px;
+    left: 20px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    width: 240px;
     height: 40px;
-    width: 81%;
-    border: 2px solid #ffbe98;
-    border-radius: 50% 20% / 10% 40%;
+    border: 2px outset #BB2649;
+    border-radius: 3px;
+`
+
+const TeamNameBorder = styled.div`
+    width: 240px;
+    height: 40px;
+`
+
+const TeamName = styled.input`
+    font-family: "Hahmlet", serif;
+    font-style: normal;
+    left: 9px;
+    text-align: center;
+    border: none;
+    font-size: 17px;
+    height: 90%;
+    outline: none;
     ::placeholder {
         color: red;
         opacity: 1;
     }
     z-index: 0;
+`
+
+const WayText = styled.span<PlayerProps>`
+    position: relative;
+    top: ${props => {
+        if (props.focused) {
+            return '-72px';
+        } else {
+            if (props.teamName) {
+                return '-67px';
+            } else {
+                return '-30px';
+            }
+        }
+    }};
+    font-family: "Hahmlet", serif;
+    font-style: normal;
+    pointer-events: none;
+    color: ${props => {
+        if (props.teamName || props.focused) {
+            return '#BB2649';
+        } else {
+            return '#888888';
+        }
+    }};
+    transition: top 0.3s ease;
 `
 
 const Player = styled.div<PlayerProps>`
@@ -129,33 +196,34 @@ const Player = styled.div<PlayerProps>`
         props.selected &&
         css`
         // background-image: url('../assets/selected-player.svg');
-        //   background-color: #ffbe98;
+        //   background-color: #BB2649;
         // background: url('../assets/selected-player.svg') 0 0 no-repeat;
     `}
 
     &:hover {
-        // background-color: ${props => props.$hover ? '#ffbe98' : 'transparent'};
-        border: ${props => props.$hover && !props.selected ? '3px solid #ffbe98' : '3px solid transparent'};
+        // background-color: ${props => props.$hover ? '#BB2649' : 'transparent'};
+        border: ${props => props.$hover && !props.selected ? '3px solid #BB2649' : '3px solid transparent'};
         border-radius: 5px;
         cursor: ${props => props.$hover ? 'pointer' : 'default'};
     }
 `
 
 const SeperatorLine = styled.hr`
-    border: 1px solid #ffbe98;
+    border: 1px solid #BB2649;
     width: 100%;
 `
 
-const LineUpNumber = styled.div`
+const LineUpNumber = styled.div<PlayerProps>`
     margin: 2px;
     text-align: center;
     width: 48px;
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
+    color: ${props => props.selected && 'white'}
 `
 
-const PlayerName = styled.div`
+const PlayerName = styled.div<PlayerProps>`
 	text-align: center;
     position: relative;
     left: -5px;
@@ -163,6 +231,7 @@ const PlayerName = styled.div`
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
+    color: ${props => props.selected && 'white'}
 `
 
 const Position = styled.div`

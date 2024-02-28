@@ -8,9 +8,9 @@
 }
 
 .selected {
-    background-image: url("../assets/selected-player.svg");
-    background-size: 110% 120%;
-    background-position-y: -2px;
+    background-image: url("../assets/selected.svg");
+    background-size: 101% 120%;
+    background-position-y: 1px;
     transform: translateX(-5px);
     opacity: 100%;
 }

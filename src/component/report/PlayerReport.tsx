@@ -279,7 +279,7 @@ const SheetDiv = styled.div`
     font-size: 19px;
     border: 1px solid transparent;
     max-height: 367px;
-    margin-top: 44px;
+    margin-top: 10%;
 `
 
 const BatterRow = styled.span<styleProps>`
@@ -387,5 +387,5 @@ const BatterReportCell = styled.span<styleProps>`
 const BullpenSheet = styled.div`
     border: 2px solid transparent;
     //margin-top: 3%;
-    margin-top: 13px;
+    margin-top: 2.5%;
 `

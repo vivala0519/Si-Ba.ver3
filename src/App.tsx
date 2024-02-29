@@ -203,16 +203,7 @@ function App() {
 "obp": ".355",
 "year": "1982"
 },
-{
-"name": "라가레스",
-"team": "MBC",
-"position": "P",
-"G": "12",
-"Inning": "35.1",
-"avg": ".308",
-"obp": ".355",
-"year": "1982"
-}
+null
   ]
 
   const [awayTeam, setAwayTeam] = useState<string | null>(null)

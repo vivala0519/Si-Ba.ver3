@@ -12,20 +12,30 @@ interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 }
 const Footer = (props: PropsType) => {
     const { onReady } = props
+    const [showNextUpdate, setShowNextUpdate] = useState(false)
     const [showDescription, setShowDescription] = useState(false)
+    const nextUpdate = '- 병살타 케이스 추가\n- 연장전 추가'
     const description = '테마: 최신 선수정보 시즌 2023'
 
     return (
         <>
             <FooterContainer onReady={onReady}>
                 <FooterEl>
+                    <span
+                        onMouseEnter={() => setShowNextUpdate(true)}
+                        onMouseLeave={() => setShowNextUpdate(false)}
+                        style={{position: "relative"}}
+                    >
+                        <NextUpdate $show={showNextUpdate}>{nextUpdate}</NextUpdate>
+                        <Link style={{cursor: 'default'}}>업데이트 예정 ver.3.1</Link>
+                    </span>
                     {/*GitHub*/}
                     <span>
-                        Developed by.<Link href="https://github.com/vivala0519" target="_blank" rel="noopener noreferrer">Dzeko</Link>
+                        Developed by. <Link href="https://github.com/vivala0519" target="_blank" rel="noopener noreferrer">Dzeko</Link>
                     </span>
                     {/*Velog*/}
                     <span>
-                        Contact.<Link href="https://velog.io/@vivala0519/Si-Ba-ver.3-preface" target="_blank" rel="noopener noreferrer">vivala0519</Link>
+                        Contact. <Link href="https://velog.io/@vivala0519/Si-Ba-ver.3-preface" target="_blank" rel="noopener noreferrer">vivala0519</Link>
                     </span>
                 </FooterEl>
                 {/*year's color*/}
@@ -49,7 +59,7 @@ const FooterContainer = styled.div<styleProps>`
     flex-direction: row;
     align-items: flex-end;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 50px;
     width: ${props => props.onReady ? '720px' : '580px'}
 `
 
@@ -61,6 +71,7 @@ const FooterEl = styled.span`
     color: #5a5a5a;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
 `
 
 const Link = styled.a`
@@ -79,9 +90,38 @@ const YearsColour = styled.div`
     transition: transform 0.3s ease;
 
     &:hover {
-        transform: scale(3);
+        transform: scale(3) translateY(-20px) translateX(-15px);
     }
 `
+
+const NextUpdate = styled.p<styleProps>`
+    display: ${props => props.$show ? 'block' : 'none'};
+    font-size: 14px;
+    font-family: "Hahmlet", serif;
+    font-style: normal;
+    font-weight: 600;
+    color: white;
+    width: 135px;
+    position: absolute;
+    bottom: 62.5%;
+    left: 57%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 5px;
+    border-radius: 5px;
+    white-space: pre;
+    text-align: left;
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -38%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 10px;
+        border-style: solid;
+        border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+    }
+`;
 
 const Description = styled.p<styleProps>`
     display: ${props => props.$show ? 'block' : 'none'};
@@ -89,12 +129,13 @@ const Description = styled.p<styleProps>`
     font-family: "Hahmlet", serif;
     font-style: normal;
     font-weight: 600;
+    color: black;
     width: 80px;
     position: absolute;
     bottom: 55px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 5px;
     border-radius: 5px;
 `;

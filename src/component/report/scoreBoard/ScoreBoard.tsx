@@ -222,9 +222,9 @@ const HelpContent = styled.p`
     font-style: normal;
     font-weight: 800;
     color: #5a5a5a;
-    position: absolute;
-    left: 64%;
-    bottom: 84%;
+    position: relative;
+    left: 99%;
+    bottom: 97%;
     white-space: pre-line;
     text-align: left;
 `

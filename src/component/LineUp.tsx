@@ -244,7 +244,7 @@ const PlayerName = styled.div<PlayerProps>`
 
 const Position = styled.div`
 	text-align: center;
-    width: 20px;
+    width: 27px;
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;

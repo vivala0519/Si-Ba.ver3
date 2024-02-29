@@ -1,10 +1,19 @@
-import React from 'react'
+import React, {DetailedHTMLProps, HTMLAttributes} from 'react'
 import styled from 'styled-components'
 import styles from './Title.module.scss'
 
-const Header = () => {
+interface PropsType {
+    onReady: boolean
+}
+
+interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+    onReady?: boolean
+}
+
+const Header = (props: PropsType) => {
+    const { onReady } = props
     return (
-        <HeaderContainer>
+        <HeaderContainer onReady={onReady}>
             <Title className={styles.title}>
                 <span>야구</span>
                 <span>놀자</span>
@@ -16,7 +25,7 @@ const Header = () => {
 
 export default Header
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<styleProps>`
     position: relative;
     display: flex;
     flex-direction: row;
@@ -24,34 +33,45 @@ const HeaderContainer = styled.div`
     margin-top: 50px;
     margin-bottom: 120px;
     left: 10px;
+    width: ${props => props.onReady ? '720px' : '580px'}
 `
 
 const Title = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font-size: 12px;
-    font-family: "Hahmlet", serif;
-    font-style: normal;
-    font-weight: 400;
     color: #5a5a5a;
     width: 80px;
     height: 80px;
-    border: 1px solid #BB2649;
+    cursor: default;
+    & > * {
+        //font-family: "Giants-Inline", serif;
+        //font-family: "HeirofLightBold", serif;
+        font-family: "KBO-Dia-Gothic_bold", serif;
+        font-style: normal;
+        font-size: 25px;
+        font-weight: 300;
+    }
 `
 
 const SubTitle = styled.div`
-    font-size: 24px;
+    font-size: 15px;
+    //font-family: "Giants-Inline", serif;
+    //font-family: "HeirofLightBold", serif;
+    //font-family: "KBO-Dia-Gothic_bold", serif;
     font-family: "Hahmlet", serif;
     font-style: normal;
     font-weight: 400;
     position: absolute;
     left: 90px;
-    top: 47px;
+    top: 46px;
 `
 
 const YearColor = styled.span`
-    font-size: 24px;
+    font-size: 20px;
+    //font-family: "Giants-Inline", serif;
+    //font-family: "HeirofLightBold", serif;
+    //font-family: "KBO-Dia-Gothic_bold", serif;
     font-family: "Hahmlet", serif;
     font-style: normal;
     font-weight: 400;

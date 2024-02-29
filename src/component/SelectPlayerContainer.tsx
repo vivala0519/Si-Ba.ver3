@@ -110,7 +110,7 @@ const SelectPlayerContainer = (props) => {
                         <SearchBox />
                     </>
                 :
-                    <SelectAreaHelp>select area for add</SelectAreaHelp>
+                    <SelectAreaHelp>선수 등록을 위해 영역을 선택해 주세요</SelectAreaHelp>
                 }
             </SelectContainer>
             {/* <div>
@@ -185,6 +185,11 @@ const ChangeMode = styled.button`
 `
 
 const SelectAreaHelp = styled.div`
+    font-family: "Hahmlet", serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
     margin-top: 10px;
     margin-bottom: 10px;
+    //color: #BB2649;
 `

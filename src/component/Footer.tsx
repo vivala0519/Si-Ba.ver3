@@ -1,4 +1,4 @@
-import React, {DetailedHTMLProps, HTMLAttributes} from 'react'
+import React, {useState, DetailedHTMLProps, HTMLAttributes} from 'react'
 import styled from 'styled-components'
 import panton from '../assets/panton.jpg'
 
@@ -8,9 +8,12 @@ interface PropsType {
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     onReady?: boolean
+    $show?: boolean
 }
 const Footer = (props: PropsType) => {
     const { onReady } = props
+    const [showDescription, setShowDescription] = useState(false)
+    const description = '테마: 최신 선수정보 시즌 2023'
 
     return (
         <>
@@ -26,7 +29,9 @@ const Footer = (props: PropsType) => {
                     </span>
                 </FooterEl>
                 {/*year's color*/}
-                <YearsColour />
+                <YearsColour onMouseEnter={() => setShowDescription(true)} onMouseLeave={() => setShowDescription(false)}>
+                    <Description $show={showDescription}>{description}</Description>
+                </YearsColour>
             </FooterContainer>
             <CopyRight onReady={onReady}>
                 {/*Copyright*/}
@@ -66,12 +71,33 @@ const Link = styled.a`
     cursor: pointer;
 `
 
-const YearsColour = styled.img`
+const YearsColour = styled.div`
     background: url(${panton}) no-repeat center center;
     background-size: 100% 100%;
     width: 40px;
     height: 60px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(3);
+    }
 `
+
+const Description = styled.p<styleProps>`
+    display: ${props => props.$show ? 'block' : 'none'};
+    font-size: 5px;
+    font-family: "Hahmlet", serif;
+    font-style: normal;
+    font-weight: 600;
+    width: 80px;
+    position: absolute;
+    bottom: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    border-radius: 5px;
+`;
 
 const CopyRight = styled.span<styleProps>`
     font-size: 12px;

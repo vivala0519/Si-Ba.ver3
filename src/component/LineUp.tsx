@@ -23,6 +23,8 @@ interface PlayerProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, 
     onReady?: boolean
     way?: string
     teamName?: string
+    pitcher?: boolean
+    num?: number
 }
 
 interface LineUp {
@@ -38,20 +40,22 @@ const LineUp = (props: PropsType) => {
     
     const playerList = Array.from({ length: 13 }, (_, i) => (
         <Player
-            className={`player ${selectedArea === way + i ? 'selected' : ''}`}
+            className={`player ${selectedArea === way + i ? 'selected' + way : ''}`}
             key={way + i}
             selected={selectedArea ? selectedArea === way + i : false}
             onClick={() => clickHandler(i)}
             $hover={i !== 9}
+            way={way}
+            num={i}
         >
             {i === 9 ? 
                 <SeperatorLine key='seperator-line'/>
             :
                 <>
-                    <LineUpNumber selected={selectedArea === way + i}>{i === 10 ? '선발' : i === 11 ? '중계' : i === 12 ? '마무리' : `${i + 1}`}</LineUpNumber>
-                    <PlayerName selected={selectedArea === way + i}>{lineUpList[i] ? `${lineUpList[i]?.year.slice(2)}  ${lineUpList[i]?.name}` : ''}</PlayerName>
+                    <LineUpNumber selected={selectedArea === way + i} num={i}>{i === 10 ? '선발' : i === 11 ? '중계' : i === 12 ? '마무리' : `${i + 1}`}</LineUpNumber>
+                    <PlayerName selected={selectedArea === way + i} way={way}>{lineUpList[i] ? `${lineUpList[i]?.year.slice(2)}  ${lineUpList[i]?.name}` : ''}</PlayerName>
                     {i < 10 ? <Position>{lineUpList[i] ? `${lineUpList[i]?.position}` : ''}</Position> : <Position/>}
-                    {i < 10 ? <Average>{lineUpList[i] ? `0${lineUpList[i]?.avg}` : ''}</Average> : <Average/>}
+                    {i < 10 ? <Average way={way}>{lineUpList[i] ? `0${lineUpList[i]?.avg}` : ''}</Average> : <Average pitcher={i > 9}/>}
                 </>
             }
         </Player>
@@ -100,7 +104,7 @@ const LineUp = (props: PropsType) => {
     return (
         <>
             <LineUpContainer onReady={onReady} way={way}>
-                <TeamNameContainer>
+                <TeamNameContainer way={way}>
                     <TeamNameBorder className={focused && styles.title}>
                         <TeamName
                             onChange={(event) => setTeam(event.target.value)}
@@ -127,9 +131,9 @@ const LineUpContainer = styled.div<PlayerProps>`
     transform: ${props => props.onReady && (props.way === 'Away' ? 'translateX(-50px)' : 'translateX(50px)')};
 `
 
-const TeamNameContainer = styled.div`
+const TeamNameContainer = styled.div<PlayerProps>`
     position: relative;
-    left: 20px;
+    left: ${props => (props.way === 'Away' ? '12px' : '18px')};
     margin-bottom: 30px;
     margin-top: 20px;
     width: 240px;
@@ -188,20 +192,24 @@ const WayText = styled.span<PlayerProps>`
 const Player = styled.div<PlayerProps>`
     display: flex;
     justify-content: space-between;
+    gap: 11px;
     align-items: center;
     margin: 2px;
     border: 3px solid transparent;
+    position: relative;
+    
+    flex-direction: ${props => {
+        if (props.way === 'Away') {
+            return 'row-reverse';
+        }
+    }};
 
     ${(props) =>
         props.selected &&
         css`
-        // background-image: url('../assets/selected-player.svg');
-        //   background-color: #BB2649;
-        // background: url('../assets/selected-player.svg') 0 0 no-repeat;
     `}
 
     &:hover {
-        // background-color: ${props => props.$hover ? '#BB2649' : 'transparent'};
         border: ${props => props.$hover && !props.selected ? '3px solid #BB2649' : '3px solid transparent'};
         border-radius: 5px;
         cursor: ${props => props.$hover ? 'pointer' : 'default'};
@@ -209,14 +217,14 @@ const Player = styled.div<PlayerProps>`
 `
 
 const SeperatorLine = styled.hr`
-    border: 1px solid #BB2649;
+    border: 2px outset #BB2649;
     width: 100%;
 `
 
 const LineUpNumber = styled.div<PlayerProps>`
     margin: 2px;
     text-align: center;
-    width: 48px;
+    width: ${props => props.num < 9 ? '40px' : '48px'};
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -226,8 +234,8 @@ const LineUpNumber = styled.div<PlayerProps>`
 const PlayerName = styled.div<PlayerProps>`
 	text-align: center;
     position: relative;
-    left: -5px;
-    width: 105px;
+    left: ${props => props.way === 'Home' && '-5px'};
+    width: 106px;
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -242,8 +250,14 @@ const Position = styled.div`
     font-style: normal;
 `
 
-const Average = styled.div`
+const Average = styled.div<PlayerProps>`
 	text-align: center;
     width: 40px;
-    margin-right: 10px;
+    margin-right: ${props => props.way === 'Away' ? '10px' : '20px'};
+    margin-left: ${props => props.way === 'Away' && '10px'};
+    display: ${props => {
+        if (props.pitcher) {
+            return 'none';
+        }
+    }};
 `

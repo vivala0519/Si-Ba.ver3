@@ -7,10 +7,32 @@
     opacity: 90%;
 }
 
-.selected {
+.selectedHome {
     background-image: url("../assets/selected.svg");
     background-size: 101% 120%;
     background-position-y: 1px;
     transform: translateX(-5px);
+    opacity: 100%;
+}
+
+.selectedAway {
+    /*background-image: url("../assets/selected.svg");*/
+    background-size: 101% 120%;
+    background-position-y: 1px;
+    transform: translateX(5px);
+    opacity: 100%;
+}
+
+.selectedAway::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/selected.svg");
+    background-size: 101% 120%;
+    background-position-y: 1px;
+    transform: scaleX(-1);
     opacity: 100%;
 }

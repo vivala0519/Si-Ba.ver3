@@ -16,7 +16,7 @@ $main-color: #BB2649;
   right: 0;
 }
 
-.title {
+.play {
   @extend %full-fill;
   width: $box-size;
   height: $box-size;
@@ -35,6 +35,14 @@ $main-color: #BB2649;
 
   &::before {
     animation-delay: $anime-time * -.5;
+  }
+
+  // for debug
+  &:hover {
+    &::after,
+    &::before {
+      background-color: rgba(#BB2649, .7);
+    }
   }
 
 }

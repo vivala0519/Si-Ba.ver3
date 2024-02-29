@@ -8,6 +8,7 @@ import SelectPlayerContainer from './component/SelectPlayerContainer.tsx'
 import PlayerReport from './component/report/PlayerReport.tsx';
 import Header from './component/Header.tsx'
 import Footer from './component/Footer.tsx'
+import styles from './Play.module.scss'
 import playBall from './assets/playball.svg'
 import restart from './assets/restart.svg'
 import pause from './assets/pause.svg'
@@ -346,7 +347,7 @@ function App() {
       {!onPlay ?
       <>
         <div className={disappear ? 'onPlay' : ''}>
-          <Header />
+          <Header onReady={onReady}/>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
           <div className='container'>
             <div>
@@ -364,7 +365,7 @@ function App() {
                 />
             </div>
             <PlayButtonContainer $ready={onReady}>
-              <PlayButton className={onReady ? "play-button show" : "play-button"} onClick={playButtonHandler}/>
+              <PlayButton className={`${styles.play} ${onReady ? 'play-button show' : 'play-button'}`} onClick={playButtonHandler}>Play Ball!</PlayButton>
             </PlayButtonContainer>
             <div>
               <LineUp
@@ -436,6 +437,8 @@ function App() {
 export default App
 
 const PlayButtonContainer = styled.div<styleProps>`
+  position: relative;
+  top: 190px;
   display: flex;
   align-items: center;
   width: ${(props) => {
@@ -445,11 +448,19 @@ const PlayButtonContainer = styled.div<styleProps>`
       return '40px';
     }
   }};
+  height: 80px;
 `
 
 const PlayButton = styled.button`
-  background: url(${playBall}) no-repeat center center;
-  background-size: cover;
+  //background: url(${playBall}) no-repeat center center;
+  //background-size: cover;
+  //font-family: "Giants-Inline", serif;
+  //font-family: "HeirofLightBold", serif;
+  font-family: "KBO-Dia-Gothic_bold", serif;
+  //font-family: "Hahmlet", serif;
+  font-style: normal;
+  font-weight: 400;
+  color: #BB2649;
   cursor: pointer;
   border: none;
   width: 80px;

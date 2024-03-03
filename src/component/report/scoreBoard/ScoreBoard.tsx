@@ -1,4 +1,4 @@
-import React, { useEffect, useState, DetailedHTMLProps, HTMLAttributes } from 'react'
+import { useEffect, useState, DetailedHTMLProps, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import Base from "./Base.tsx"
 import OutCount from "./OutCount.tsx"
@@ -175,7 +175,7 @@ const Board = styled.div`
 const ColumnDiv = styled.div<styleProps>`
     display: flex;
     height: ${props => {
-        if (props.$ === 0) {
+        if (props.$index === 0) {
             return '30px';
         } else {
             return '35px';

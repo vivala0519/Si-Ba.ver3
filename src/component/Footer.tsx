@@ -1,4 +1,4 @@
-import React, {useState, DetailedHTMLProps, HTMLAttributes} from 'react'
+import {useState, DetailedHTMLProps, HTMLAttributes} from 'react'
 import styled from 'styled-components'
 import panton from '../assets/panton.jpg'
 

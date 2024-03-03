@@ -1,4 +1,4 @@
-import React, {useState, useEffect, DetailedHTMLProps, HTMLAttributes} from 'react'
+import {useState, useEffect, DetailedHTMLProps, HTMLAttributes} from 'react'
 import styled from 'styled-components'
 import Swal from "sweetalert2"
 import LineUp from './component/LineUp'
@@ -402,8 +402,8 @@ null
               <PlayerReport
                   key={'awayReport'}
                   way={'away'}
-                  pitcherReportRow={reportRow?.topBottom === 'bottom' && reportRow}
-                  batterReportRow={reportRow?.topBottom === 'top' && reportRow}
+                  pitcherReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
+                  batterReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
               />
               <LineUpCard
                   onPlay={onPlay}
@@ -417,8 +417,8 @@ null
               <PlayerReport
                   key={'homeReport'}
                   way={'home'}
-                  pitcherReportRow={reportRow?.topBottom === 'top' && reportRow}
-                  batterReportRow={reportRow?.topBottom === 'bottom' && reportRow}
+                  pitcherReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
+                  batterReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
               />
           </Report>
         </>

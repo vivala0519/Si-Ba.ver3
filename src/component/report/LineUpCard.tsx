@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, { useEffect, useState, DetailedHTMLProps, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import './LineUpCard.css'

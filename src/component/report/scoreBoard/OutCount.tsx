@@ -8,7 +8,7 @@ interface PropsType {
 }
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    on?: boolean
+    $on?: boolean
 }
 
 const OutCount = (props: PropsType) => {
@@ -16,7 +16,7 @@ const OutCount = (props: PropsType) => {
     return (
         <OutCountainer className={showScoreBoard && 'show'}>
             {outCount.map((value, i) => (
-                <OutEl key={i} on={value} />
+                <OutEl key={i} $on={value} />
             ))}
         </OutCountainer>
     )
@@ -57,7 +57,7 @@ const OutEl = styled.div<styleProps>`
         background-size: 300% 300%;
         filter: blur(1px);
         opacity: ${props => {
-            if (!props.on) {
+            if (!props.$on) {
                 return '20%';
             }
         }

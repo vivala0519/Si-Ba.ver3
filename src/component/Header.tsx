@@ -7,13 +7,13 @@ interface PropsType {
 }
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    onReady?: boolean
+    $ready?: boolean
 }
 
 const Header = (props: PropsType) => {
     const { onReady } = props
     return (
-        <HeaderContainer onReady={onReady}>
+        <HeaderContainer $ready={onReady}>
             <Title className={styles.title}>
                 <span>야구</span>
                 <span>놀자</span>
@@ -33,7 +33,7 @@ const HeaderContainer = styled.div<styleProps>`
     margin-top: 50px;
     margin-bottom: 150px;
     left: 10px;
-    width: ${props => props.onReady ? '720px' : '580px'}
+    width: ${props => props.$ready ? '720px' : '580px'}
 `
 
 const Title = styled.div`

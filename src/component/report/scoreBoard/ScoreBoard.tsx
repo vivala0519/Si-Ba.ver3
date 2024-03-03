@@ -17,11 +17,10 @@ interface GameReportRow {
     out?: number
 }
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    index?: number
-    topBottom?: string
-    on?: boolean
-    show?: boolean
-    halfOpacity?: boolean
+    $index?: number
+    $topBottom?: string
+    $show?: boolean
+    $halfOpacity?: boolean
 }
 
 const ScoreBoard = (props: PropsType) => {
@@ -80,23 +79,23 @@ const ScoreBoard = (props: PropsType) => {
 
     return (
         <>
-            <BoardRoof className={showScoreBoard && 'show'} show={showScoreBoard}>
+            <BoardRoof className={showScoreBoard && 'show'} $show={showScoreBoard}>
                 <Base base={baseState}/>
             </BoardRoof>
             <OutCount showScoreBoard={showScoreBoard} outCount={outCount} />
             <ProcessBorder
                 className={showScoreBoard && 'show'}
-                topBottom={gameReportRow ? gameReportRow['topBottom'] : 'none'}
-                halfOpacity={showPlayButton}
-                show={showScoreBoard}
+                $topBottom={gameReportRow ? gameReportRow['topBottom'] : 'none'}
+                $halfOpacity={showPlayButton}
+                $show={showScoreBoard}
                 onMouseEnter={() => showScoreBoard && setShowPlayButton(true)}
                 onMouseLeave={() => showScoreBoard && setShowPlayButton(false)}
             >
                 <Board>
                     {[boardHead, awayRecord, homeRecord].map((record, index) => (
-                        <ColumnDiv key={index} index={index}>
+                        <ColumnDiv key={index} $index={index}>
                             {record.map((value, i) => (
-                                <ScoreCell key={i} index={i}>
+                                <ScoreCell key={i} $index={i}>
                                     {value}
                                 </ScoreCell>
                             ))}
@@ -116,7 +115,7 @@ const ScoreBoard = (props: PropsType) => {
 export default ScoreBoard
 
 const BoardRoof = styled.div<styleProps>`
-    opacity: ${({ show }) => (show ? '1' : '0')};
+    opacity: ${({ $show }) => ($show ? '1' : '0')};
     display: flex;
     justify-content: flex-start;
     width: 100%;
@@ -125,8 +124,8 @@ const BoardRoof = styled.div<styleProps>`
 `
 
 const ProcessBorder = styled.div<styleProps>`
-    opacity: ${({ show }) => (show ? '1' : '0')};
-    filter: ${({ halfOpacity }) => halfOpacity ? 'brightness(0.5)' : ''};
+    opacity: ${({ $show }) => ($show ? '1' : '0')};
+    filter: ${({ $halfOpacity }) => $halfOpacity ? 'brightness(0.5)' : ''};
     --borderWidth: 2px;
     position: relative;
     border-radius: var(--borderWidth);
@@ -141,9 +140,9 @@ const ProcessBorder = styled.div<styleProps>`
         height: 105%;
         width: 97%;
         background: ${props => {
-            if (props?.topBottom === 'top') {
+            if (props?.$topBottom === 'top') {
                 return 'linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8)'
-            } else if (props?.topBottom === 'bottom') {
+            } else if (props?.$topBottom === 'bottom') {
                 return 'linear-gradient(60deg, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82)'
             } else {
                 return 'linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82)'
@@ -176,7 +175,7 @@ const Board = styled.div`
 const ColumnDiv = styled.div<styleProps>`
     display: flex;
     height: ${props => {
-        if (props.index === 0) {
+        if (props.$ === 0) {
             return '30px';
         } else {
             return '35px';
@@ -193,7 +192,7 @@ const ScoreCell = styled.div<styleProps>`
     align-items: center;
     border: 1px solid white;
     width: ${props => {
-        if (props.index === 0) {
+        if (props.$index === 0) {
             return '60px'
         } else {
             return '34px'

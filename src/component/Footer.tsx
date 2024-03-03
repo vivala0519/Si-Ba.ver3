@@ -7,7 +7,7 @@ interface PropsType {
 }
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    onReady?: boolean
+    $ready?: boolean
     $show?: boolean
 }
 const Footer = (props: PropsType) => {
@@ -19,7 +19,7 @@ const Footer = (props: PropsType) => {
 
     return (
         <>
-            <FooterContainer onReady={onReady}>
+            <FooterContainer $ready={onReady}>
                 <FooterEl>
                     <span
                         onMouseEnter={() => setShowNextUpdate(true)}
@@ -43,7 +43,7 @@ const Footer = (props: PropsType) => {
                     <Description $show={showDescription}>{description}</Description>
                 </YearsColour>
             </FooterContainer>
-            <CopyRight onReady={onReady}>
+            <CopyRight $ready={onReady}>
                 {/*Copyright*/}
                 Copyright 2024 Dzeko. All rights reserved.
             </CopyRight>
@@ -60,7 +60,7 @@ const FooterContainer = styled.div<styleProps>`
     align-items: flex-end;
     justify-content: flex-end;
     margin-top: 50px;
-    width: ${props => props.onReady ? '720px' : '580px'}
+    width: ${props => props.$ready ? '720px' : '580px'}
 `
 
 const FooterEl = styled.span`
@@ -149,5 +149,5 @@ const CopyRight = styled.span<styleProps>`
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
-    width: ${props => props.onReady ? '720px' : '580px'}
+    width: ${props => props.$ready ? '720px' : '580px'}
 `

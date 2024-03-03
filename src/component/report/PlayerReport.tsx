@@ -20,8 +20,8 @@ interface BatterReport {
     result?: string
 }
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    way?: string
-    hit?: string
+    $way?: string
+    $hit?: string
     value?: string
 }
 
@@ -130,11 +130,11 @@ const PlayerReport = (props: PropsType) => {
     }, [batterReportRow])
 
     return (
-        <Report way={way}>
+        <Report $way={way}>
             <Title>Report</Title>
             <SheetContainer ref={containerRef}>
                 <Sheet>
-                    <PitcherRow way={way}>
+                    <PitcherRow $way={way}>
                         <span>
                         {[...Array(kCount[0])].map((_, index) => (
                             <K key={index}>K</K>
@@ -152,16 +152,16 @@ const PlayerReport = (props: PropsType) => {
                         {/*</PlayerEl>*/}
                         {batters.map((_, index) => (
                             index < 9 &&
-                            <BatterRow way={way}>
+                            <BatterRow $way={way}>
                                 <BatterLeftSide>
                                 {
                                 batterReport[index].map(cell => {
                                     if (['삼진', '땅볼', '뜬공'].includes(cell)) {
-                                        return (<BatterReportCell hit={'out'}>{cell}</BatterReportCell>)
+                                        return (<BatterReportCell $hit={'out'}>{cell}</BatterReportCell>)
                                     } else if (['볼넷', '안타', '2루타', '3루타', '홈런'].includes(cell)) {
-                                        return (<BatterReportCell hit={'hit'}>{cell}</BatterReportCell>)
+                                        return (<BatterReportCell $hit={'hit'}>{cell}</BatterReportCell>)
                                     } else {
-                                        return (<BatterReportCell hit={'initial'}>{cell}</BatterReportCell>)
+                                        return (<BatterReportCell $hit={'initial'}>{cell}</BatterReportCell>)
                                     }
                                 })
                                 }
@@ -173,7 +173,7 @@ const PlayerReport = (props: PropsType) => {
                     {/*<Pitcher/>*/}
                     <BullpenSheet>
                         {/*    <Pitcher />*/}
-                        <PitcherRow way={way}>
+                        <PitcherRow $way={way}>
                             <span>
                                 {[...Array(kCount[1])].map((_, index) => (
                                     <K key={index}>K</K>
@@ -186,7 +186,7 @@ const PlayerReport = (props: PropsType) => {
                                 {ballCount[1] > 0 && <PitcherReportCell>투구 수: {ballCount[1]}</PitcherReportCell>}
                             </PitcherReport>
                         </PitcherRow>
-                        <PitcherRow way={way}>
+                        <PitcherRow $way={way}>
                             <span>
                                 {[...Array(kCount[2])].map((_, index) => (
                                     <K key={index}>K</K>
@@ -217,7 +217,7 @@ const Report = styled.div<styleProps>`
     background-color: white;
     z-index: 1;
     filter: ${props => {
-        if (props.way === 'home') {
+        if (props.$way === 'home') {
             return 'drop-shadow(4px 3px 5px grey)'
         } else {
             return 'drop-shadow(-4px 3px 5px grey)'
@@ -279,13 +279,13 @@ const SheetDiv = styled.div`
     font-size: 19px;
     border: 1px solid transparent;
     max-height: 367px;
-    margin-top: 10%;
+    margin-top: 36px;
 `
 
 const BatterRow = styled.span<styleProps>`
     display: flex;
     flex-direction: ${props => {
-        if (props.way === 'away') {
+        if (props.$way === 'away') {
             return 'row-reverse';
         }
     }};
@@ -316,19 +316,19 @@ const PitcherRow = styled.span<styleProps>`
     font-style: normal;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
-    min-height: 43px;
+    min-height: 49px;
     flex-direction: ${props => {
-        if (props.way === 'away') {
+        if (props.$way === 'away') {
             return 'row-reverse';
         }
     }};
     padding-left: ${props => {
-        if (props.way === 'home') {
+        if (props.$way === 'home') {
             return '8px';
         }
     }};
     padding-right: ${props => {
-        if (props.way === 'away') {
+        if (props.$way === 'away') {
             return '8px';
         }
     }};
@@ -373,12 +373,12 @@ const BatterReportCell = styled.span<styleProps>`
     font-optical-sizing: auto;
     font-style: normal;
     color: ${props => {
-        if (props.hit === 'hit') {
+        if (props.$hit === 'hit') {
             return '#2C8BA8';
         }
     }};
     visibility: ${props => {
-        if (props.hit === 'initial') {
+        if (props.$hit === 'initial') {
             return 'hidden';
         }
     }};
@@ -387,5 +387,5 @@ const BatterReportCell = styled.span<styleProps>`
 const BullpenSheet = styled.div`
     border: 2px solid transparent;
     //margin-top: 3%;
-    margin-top: 2.5%;
+    //margin-top: 2.5%;
 `

@@ -3,12 +3,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
   @media (max-width: 821px) {
-    justify-content: normal;
+    /*justify-content: normal;*/
+    align-items: flex-start;
+    /*width: 90%;*/
   }
 }
 .play-button {

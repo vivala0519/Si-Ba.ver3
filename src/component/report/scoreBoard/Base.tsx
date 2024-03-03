@@ -8,7 +8,7 @@ interface PropsType {
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     on?: number
-    index?: number
+    $index?: number
 }
 
 const Base = (props: PropsType) => {
@@ -17,7 +17,7 @@ const Base = (props: PropsType) => {
         <BaseContainer>
             <Bases>
                 {base.map((value, i) => (
-                    <BaseEl key={i} on={value} index={i} />
+                    <BaseEl key={i} on={value} $index={i} />
                 ))}
             </Bases>
             <Infield />
@@ -61,7 +61,7 @@ const BaseEl = styled.div<styleProps>`
         }
     }};
     top: ${props => {
-        if (props.index === 1) {
+        if (props.$index === 1) {
             return '-36px';
         }
     }}

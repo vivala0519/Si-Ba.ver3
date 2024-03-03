@@ -16,7 +16,7 @@ import { gameProcess } from './api/gameProcess.js'
 import './App.css'
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>  {
-  showButton?: boolean
+  $showButton?: boolean
   $ready?: boolean
 }
 
@@ -386,13 +386,13 @@ null
               {!gameFinish && <ButtonList>
                 {playState
                   ?
-                  <Pause showButton={showPlayButton} onClick={pauseHandler}
+                  <Pause $showButton={showPlayButton} onClick={pauseHandler}
                     onMouseEnter={() => setShowPlayButton(true)}/>
                   :
-                  <Restart showButton={showPlayButton} onClick={() => restartHandler(speedList[storedSpeed])}
+                  <Restart $showButton={showPlayButton} onClick={() => restartHandler(speedList[storedSpeed])}
                     onMouseEnter={() => setShowPlayButton(true)}/>
                 }
-                <SpeedUp showButton={showPlayButton} onClick={setSpeedHandler}
+                <SpeedUp $showButton={showPlayButton} onClick={setSpeedHandler}
                   onMouseEnter={() => setShowPlayButton(true)}>{speedButton[storedSpeed]}</SpeedUp>
               </ButtonList>}
             </ReportHead>
@@ -479,7 +479,7 @@ const ReportHead = styled.div`
 
 const ButtonList = styled.div<styleProps>`
   visibility: ${props => {
-    if (props.showButton) {
+    if (props.$showButton) {
       return 'visible';
     } else {
       return 'hidden';
@@ -495,7 +495,7 @@ const ButtonList = styled.div<styleProps>`
 
 const Restart = styled.button<styleProps>`
   visibility: ${props => {
-    if (props.showButton) {
+    if (props.$showButton) {
       return 'visible';
     } else {
       return 'hidden';
@@ -512,7 +512,7 @@ const Restart = styled.button<styleProps>`
 
 const Pause = styled.button<styleProps>`
   visibility: ${props => {
-    if (props.showButton) {
+    if (props.$showButton) {
       return 'visible';
     } else {
       return 'hidden';
@@ -529,7 +529,7 @@ const Pause = styled.button<styleProps>`
 
 const SpeedUp = styled.span<styleProps>`
   visibility: ${props => {
-    if (props.showButton) {
+    if (props.$showButton) {
       return 'visible';
     } else {
       return 'hidden';

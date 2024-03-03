@@ -29,9 +29,9 @@ interface GameReportRow {
 }
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-    namelength?: number
-    isActive?: boolean
-    ballCount?: number
+    $namelength?: number
+    $isActive?: boolean
+    $ballCount?: number
 }
 
 const LineUpCard = (props: PropsType) => {
@@ -187,7 +187,7 @@ const LineUpCard = (props: PropsType) => {
                 <div key='away_sheet'>
                 <Sheet>
                     <SheetDiv key='away_team_name' style={{borderBottom: '0px'}}>{awayTeam ? awayTeam : 'Away'}</SheetDiv>
-                    <StarterPitcher isActive={activeTopBottom === 'bottom' && activeAwayPitcher === 10} ballCount={awayPitcherCount}>
+                    <StarterPitcher $isActive={activeTopBottom === 'bottom' && activeAwayPitcher === 10} $ballCount={awayPitcherCount}>
                         선발투수 : <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[0])}</div></CursiveText>
                     </StarterPitcher>
                     <SheetDiv>
@@ -202,7 +202,7 @@ const LineUpCard = (props: PropsType) => {
                                 <Td style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{index + 1}</Td>
                                 <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{awayVisibleNames[index * 2 + 1]}</CursiveTd>
                                 <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black', borderRight: '0px' }}>
-                                    <LetterSpacedByLength namelength={awayLineUp[index].name.length}>{awayVisibleNames[index * 2 + 2]}</LetterSpacedByLength>
+                                    <LetterSpacedByLength $namelength={awayLineUp[index].name.length}>{awayVisibleNames[index * 2 + 2]}</LetterSpacedByLength>
                                 </CursiveTd>
                             </PlayerEl>
                             : <></>
@@ -212,10 +212,10 @@ const LineUpCard = (props: PropsType) => {
                 </Sheet>
                 <BullpenSheet>
                     <Pitcher>대기투수</Pitcher>
-                    <Pitcher isActive={activeTopBottom === 'bottom' && activeAwayPitcher === 11} ballCount={awayPitcherCount}>
+                    <Pitcher $isActive={activeTopBottom === 'bottom' && activeAwayPitcher === 11} $ballCount={awayPitcherCount}>
                         <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[19])}</div></CursiveText>
                     </Pitcher>
-                    <Pitcher isActive={activeTopBottom === 'bottom' && activeAwayPitcher === 12} ballCount={awayPitcherCount}>
+                    <Pitcher $isActive={activeTopBottom === 'bottom' && activeAwayPitcher === 12} $ballCount={awayPitcherCount}>
                         <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(awayVisibleNames[20])}</div></CursiveText>
                     </Pitcher>
                 </BullpenSheet>
@@ -223,7 +223,7 @@ const LineUpCard = (props: PropsType) => {
                 <div key='home_sheet'>
                 <Sheet>
                     <SheetDiv key='home_team_name' style={{borderBottom: '0px'}}>{homeTeam ? homeTeam : 'Home'}</SheetDiv>
-                    <StarterPitcher isActive={activeTopBottom === 'top' && activeHomePitcher === 10} ballCount={homePitcherCount}>
+                    <StarterPitcher $isActive={activeTopBottom === 'top' && activeHomePitcher === 10} $ballCount={homePitcherCount}>
                         선발투수 : <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[0])}</div></CursiveText>
                     </StarterPitcher>
                     <SheetDiv>
@@ -238,7 +238,7 @@ const LineUpCard = (props: PropsType) => {
                                 <Td style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{index + 1}</Td>
                                 <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black' }}>{homeVisibleNames[index * 2 + 1]}</CursiveTd>
                                 <CursiveTd style={{ borderBottom: index === 8 ? '0px' : '1px solid black', borderRight: '0px' }}>
-                                    <LetterSpacedByLength namelength={homeLineUp[index].name.length}>{homeVisibleNames[index * 2 + 2]}</LetterSpacedByLength>
+                                    <LetterSpacedByLength $namelength={homeLineUp[index].name.length}>{homeVisibleNames[index * 2 + 2]}</LetterSpacedByLength>
                                 </CursiveTd>
                             </PlayerEl>
                             : <></>
@@ -248,10 +248,10 @@ const LineUpCard = (props: PropsType) => {
                 </Sheet>
                 <BullpenSheet>
                     <Pitcher>대기투수</Pitcher>
-                    <Pitcher isActive={activeTopBottom === 'top' && activeHomePitcher === 11} ballCount={homePitcherCount}>
+                    <Pitcher $isActive={activeTopBottom === 'top' && activeHomePitcher === 11} $ballCount={homePitcherCount}>
                         <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[19])}</div></CursiveText>
                     </Pitcher>
-                    <Pitcher isActive={activeTopBottom === 'top' && activeHomePitcher === 12} ballCount={homePitcherCount}>
+                    <Pitcher $isActive={activeTopBottom === 'top' && activeHomePitcher === 12} $ballCount={homePitcherCount}>
                         <CursiveText><div style={{display: 'flex', gap: '15px'}}>{characterSpanByName(homeVisibleNames[20])}</div></CursiveText>
                     </Pitcher>
                 </BullpenSheet>
@@ -360,7 +360,7 @@ const CursiveTd = styled.div`
 const LetterSpacedByLength = styled.span<styleProps>`
     position: relative;
     left: ${props => {
-        if (props.namelength < 4) {
+        if (props.$namelength < 4) {
             return '18px'
         } else {
             return '8px'
@@ -370,7 +370,7 @@ const LetterSpacedByLength = styled.span<styleProps>`
     font-weight: 400;
     font-style: normal;
     letter-spacing: ${props => {
-        if (props.namelength < 4) {
+        if (props.$namelength < 4) {
             return '1.3em'
         } else {
             return '0.6em'
@@ -399,8 +399,8 @@ const StarterPitcher = styled.div<styleProps>`
     font-optical-sizing: auto;
     font-style: normal;
     background-color: ${props => {
-        if (props.isActive) {
-            const ballCount = props.ballCount
+        if (props.$isActive) {
+            const ballCount = props.$ballCount
             if (ballCount <= 20) {
                 return '#ebff0b !important';        
             } else if (ballCount <= 40) {
@@ -429,8 +429,8 @@ const Pitcher = styled.div<styleProps>`
     font-optical-sizing: auto;
     font-style: normal;
     background-color: ${props => {
-        if (props.isActive) {
-            const ballCount = props.ballCount
+        if (props.$isActive) {
+            const ballCount = props.$ballCount
             if (ballCount <= 20) {
                 return '#ebff0b !important';
             } else if (ballCount <= 40) {

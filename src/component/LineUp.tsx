@@ -19,12 +19,12 @@ interface PropsType {
 interface PlayerProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     $hover?: boolean
     selected?: boolean
-    focused?: boolean
-    onReady?: boolean
-    way?: string
-    teamName?: string
-    pitcher?: boolean
-    num?: number
+    $focused?: boolean
+    $ready?: boolean
+    $way?: string
+    $teamName?: string
+    $pitcher?: boolean
+    $num?: number
 }
 
 interface LineUp {
@@ -45,17 +45,17 @@ const LineUp = (props: PropsType) => {
             selected={selectedArea ? selectedArea === way + i : false}
             onClick={() => clickHandler(i)}
             $hover={i !== 9}
-            way={way}
-            num={i}
+            $way={way}
+            $num={i}
         >
             {i === 9 ? 
                 <SeperatorLine key='seperator-line'/>
             :
                 <>
-                    <LineUpNumber selected={selectedArea === way + i} num={i}>{i === 10 ? '선발' : i === 11 ? '중계' : i === 12 ? '마무리' : `${i + 1}`}</LineUpNumber>
-                    <PlayerName selected={selectedArea === way + i} way={way}>{lineUpList[i] ? `${lineUpList[i]?.year.slice(2)}  ${lineUpList[i]?.name}` : ''}</PlayerName>
+                    <LineUpNumber selected={selectedArea === way + i} $num={i}>{i === 10 ? '선발' : i === 11 ? '중계' : i === 12 ? '마무리' : `${i + 1}`}</LineUpNumber>
+                    <PlayerName selected={selectedArea === way + i} $way={way}>{lineUpList[i] ? `${lineUpList[i]?.year.slice(2)}  ${lineUpList[i]?.name}` : ''}</PlayerName>
                     {i < 10 ? <Position>{lineUpList[i] ? `${lineUpList[i]?.position}` : ''}</Position> : <Position/>}
-                    {i < 10 ? <Average way={way}>{lineUpList[i] ? `0${lineUpList[i]?.avg}` : ''}</Average> : <Average pitcher={i > 9}/>}
+                    {i < 10 ? <Average $way={way} $pitcher={false}>{lineUpList[i] ? `0${lineUpList[i]?.avg}` : ''}</Average> : <Average $pitcher={true}/>}
                 </>
             }
         </Player>
@@ -103,8 +103,8 @@ const LineUp = (props: PropsType) => {
 
     return (
         <>
-            <LineUpContainer onReady={onReady} way={way}>
-                <TeamNameContainer way={way}>
+            <LineUpContainer $ready={onReady} $way={way}>
+                <TeamNameContainer $way={way}>
                     <TeamNameBorder className={focused && styles.title}>
                         <TeamName
                             onChange={(event) => setTeam(event.target.value)}
@@ -112,7 +112,7 @@ const LineUp = (props: PropsType) => {
                             onFocus={() => setFocused(true)}
                             onBlur={() => setFocused(false)}
                         />
-                        <WayText focused={focused} teamName={team}>{way}</WayText>
+                        <WayText $focused={focused} $teamName={team}>{way}</WayText>
                     </TeamNameBorder>
                 </TeamNameContainer>
                 { playerList }
@@ -128,12 +128,12 @@ const LineUpContainer = styled.div<PlayerProps>`
     flex-direction: column;
     width: 270px;
     transition: transform 0.5s;
-    transform: ${props => props.onReady && (props.way === 'Away' ? 'translateX(-50px)' : 'translateX(50px)')};
+    transform: ${props => props.$ready && (props.$way === 'Away' ? 'translateX(-50px)' : 'translateX(50px)')};
 `
 
 const TeamNameContainer = styled.div<PlayerProps>`
     position: relative;
-    left: ${props => (props.way === 'Away' ? '12px' : '18px')};
+    left: ${props => (props.$way === 'Away' ? '12px' : '18px')};
     margin-bottom: 30px;
     margin-top: 20px;
     width: 240px;
@@ -166,10 +166,10 @@ const TeamName = styled.input`
 const WayText = styled.span<PlayerProps>`
     position: relative;
     top: ${props => {
-        if (props.focused) {
+        if (props.$focused) {
             return '-72px';
         } else {
-            if (props.teamName) {
+            if (props.$teamName) {
                 return '-67px';
             } else {
                 return '-30px';
@@ -180,7 +180,7 @@ const WayText = styled.span<PlayerProps>`
     font-style: normal;
     pointer-events: none;
     color: ${props => {
-        if (props.teamName || props.focused) {
+        if (props.$teamName || props.$focused) {
             return '#BB2649';
         } else {
             return '#888888';
@@ -199,7 +199,7 @@ const Player = styled.div<PlayerProps>`
     position: relative;
     
     flex-direction: ${props => {
-        if (props.way === 'Away') {
+        if (props.$way === 'Away') {
             return 'row-reverse';
         }
     }};
@@ -224,7 +224,7 @@ const SeperatorLine = styled.hr`
 const LineUpNumber = styled.div<PlayerProps>`
     margin: 2px;
     text-align: center;
-    width: ${props => props.num < 9 ? '40px' : '48px'};
+    width: ${props => props.$num < 9 ? '40px' : '48px'};
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -234,7 +234,7 @@ const LineUpNumber = styled.div<PlayerProps>`
 const PlayerName = styled.div<PlayerProps>`
 	text-align: center;
     position: relative;
-    left: ${props => props.way === 'Home' && '-5px'};
+    left: ${props => props.$way === 'Home' && '-5px'};
     width: 106px;
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
@@ -253,10 +253,10 @@ const Position = styled.div`
 const Average = styled.div<PlayerProps>`
 	text-align: center;
     width: 40px;
-    margin-right: ${props => props.way === 'Away' ? '10px' : '20px'};
-    margin-left: ${props => props.way === 'Away' && '10px'};
+    margin-right: ${props => props.$way === 'Away' ? '10px' : '20px'};
+    margin-left: ${props => props.$way === 'Away' && '10px'};
     display: ${props => {
-        if (props.pitcher) {
+        if (props.$pitcher) {
             return 'none';
         }
     }};

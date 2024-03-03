@@ -50,7 +50,7 @@ function App() {
   {
     "name": "소크라테스",
     "team": "MBC",
-    "position": "C",
+    "position": "LF",
     "avg": ".254",
     "obp": ".343",
     "slg": ".479",
@@ -247,7 +247,9 @@ null
   }, [homeLineUpList, awayLineUpList]);
 
   useEffect(() => {
+    // @ts-ignore
     setAwayLineUpList(dummyData)
+    // @ts-ignore
     setHomeLineUpList(dummyData)
   }, [])
 

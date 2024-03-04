@@ -39,13 +39,22 @@ const SelectPlayerContainer = (props) => {
             if (positionNumber > 9) {
                 fromWhere = 'pitchers'
             }
-            
-            const fileName = `../stat_scraper/${fromWhere}/${year}.json`
-            const data = await import(fileName).then(module => module.default)
-            setPlayerListByYear(data)
-            const teams = [...new Set(data.map((player:Player) => player.team))].sort() as string[]
-            setTeamList(teams)
-            return data
+
+            const fileName = `/src/stat_scraper/${fromWhere}/${year}.json`
+
+            try {
+                const response = await fetch(fileName)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                const data = await response.json()
+                setPlayerListByYear(data)
+                const teams = [...new Set(data.map((player) => player.team))].sort() as string[]
+                setTeamList(teams)
+                return data;
+            } catch (error) {
+                console.error('Failed to fetch the JSON data:', error)
+            }
         }
     }
 
@@ -61,6 +70,7 @@ const SelectPlayerContainer = (props) => {
     useEffect(() => {
         importJsonByYear(year);
     }, [year, selectedArea])
+
     // 연도에 따라 팀 리스트 바뀌면 default [0] 설정
     useEffect(() => {
         setTeam(teamList[0])

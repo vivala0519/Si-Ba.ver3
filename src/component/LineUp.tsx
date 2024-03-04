@@ -228,6 +228,7 @@ const LineUpNumber = styled.div<PlayerProps>`
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
+    font-weight: 700;
     color: ${props => props.selected && 'white'}
 `
 
@@ -239,6 +240,7 @@ const PlayerName = styled.div<PlayerProps>`
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
+    font-weight: 700;
     color: ${props => props.selected && 'white'}
 `
 
@@ -248,10 +250,12 @@ const Position = styled.div`
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
+    font-weight: 700;
 `
 
 const Average = styled.div<PlayerProps>`
 	text-align: center;
+    font-weight: 700;
     width: 40px;
     margin-right: ${props => props.$way === 'Away' ? '10px' : '20px'};
     margin-left: ${props => props.$way === 'Away' && '10px'};

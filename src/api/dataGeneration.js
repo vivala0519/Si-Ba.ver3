@@ -5,20 +5,30 @@ export const gameDataGeneration = async () => {
 // OBA 데이터 생성
 const obaGeneration = async () => {
   // 연도별 wOBA data 불러오기
-  const fileName = `../stat_scraper/wOBA.json`
-  window.wOBAdata = await import(fileName).then(module => module.default)
+  const fileName = `/src/stat_scraper/wOBA.json`
 
-  const wOBA_Map = new Map()
+  try {
+    const response = await fetch(fileName)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    window.wOBAdata = await response.json()
 
-  for (const key in window.wOBAdata) {
-    wOBA_Map.set(key, window.wOBAdata[key])
+    const wOBA_Map = new Map()
+
+    for (const key in window.wOBAdata) {
+      wOBA_Map.set(key, window.wOBAdata[key])
+    }
+
+    // 모든 연도 평균 wOBA, OZ
+    const valuesArray = Array.from(wOBA_Map.values())
+    const totalValue = valuesArray.reduce((acc, val) => acc + val, 0)
+    window.avgOBA = Math.round(totalValue / wOBA_Map.size * 1000) / 1000
+    window.ozByAvgOBA = window.avgOBA / (1 - window.avgOBA)
+
+  } catch (error) {
+    console.error('Failed to fetch the JSON data:', error);
   }
-
-  // 모든 연도 평균 wOBA, OZ
-  const valuesArray = Array.from(wOBA_Map.values())
-  const totalValue = valuesArray.reduce((acc, val) => acc + val, 0)
-  window.avgOBA = Math.round(totalValue / wOBA_Map.size * 1000) / 1000
-  window.ozByAvgOBA = window.avgOBA / (1 - window.avgOBA)
 }
 
 // 베이스러닝 데이터

@@ -339,7 +339,7 @@ null
     <>
       {!onPlay ?
       <>
-        <div className={disappear ? 'onPlay' : ''}>
+        <div className={disappear ? 'onPlay' : ''} style={{display: 'flex', flexDirection: 'column'}}>
           <Header onReady={onReady}/>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
           <div className='container'>

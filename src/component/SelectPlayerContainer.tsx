@@ -44,12 +44,11 @@ const SelectPlayerContainer = (props) => {
 
             try {
                 const response = await fetch(fileName)
-                console.log(response)
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`)
                 }
+
                 const data = await response.json()
-                console.log(data)
                 setPlayerListByYear(data)
                 const teams = [...new Set(data.map((player) => player.team))].sort() as string[]
                 setTeamList(teams)
@@ -104,31 +103,26 @@ const SelectPlayerContainer = (props) => {
 
 
     return (
-        <div>
-            <SelectContainer selected={selectedArea}>
-                {selectedArea ? 
-                    selectMode ? 
-                    <>
-                        {/* <ChangeMode onClick={() => setSelectMode(!selectMode)}>search</ChangeMode> */}
-                        <DropDownBox type='Year' state={year} setState={setYear} propList={yearList} width={120}/>
-                        <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={120}/>
-                        <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={177}/>
-                        {/* <ViewDetailStat /> */}
-                        {Number(selectedArea.slice(4)) > 9 ? <AddPitcher onClick={addPlayer} /> : <AddBatter onClick={addPlayer} />}
-                    </>
-                    : 
-                    <>
-                        <ChangeMode onClick={() => setSelectMode(!selectMode)}>list</ChangeMode>
-                        <SearchBox />
-                    </>
+        <SelectContainer selected={selectedArea}>
+            {selectedArea ?
+                selectMode ?
+                <>
+                    {/* <ChangeMode onClick={() => setSelectMode(!selectMode)}>search</ChangeMode> */}
+                    <DropDownBox type='Year' state={year} setState={setYear} propList={yearList} width={120}/>
+                    <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={120}/>
+                    <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={177}/>
+                    {/* <ViewDetailStat /> */}
+                    {Number(selectedArea.slice(4)) > 9 ? <AddPitcher onClick={addPlayer} /> : <AddBatter onClick={addPlayer} />}
+                </>
                 :
-                    <SelectAreaHelp>선수 등록을 위해 영역을 선택해 주세요</SelectAreaHelp>
-                }
-            </SelectContainer>
-            {/* <div>
-                <SearchBox />
-            </div> */}
-        </div>
+                <>
+                    <ChangeMode onClick={() => setSelectMode(!selectMode)}>list</ChangeMode>
+                    <SearchBox />
+                </>
+            :
+                <SelectAreaHelp>선수 등록을 위해 영역을 선택해 주세요</SelectAreaHelp>
+            }
+        </SelectContainer>
     )
 }
 export default SelectPlayerContainer
@@ -141,6 +135,8 @@ const SelectContainer = styled.div<styleProps>`
     margin-top: 25px;
     margin-bottom: 15px;
     margin-right: ${props => props.selected && '-50px'};
+    position: relative;
+    z-index: 1;
 `
 
 // const ViewDetailStat = styled.div`

@@ -342,6 +342,7 @@ null
         <div className={disappear ? 'onPlay' : ''} style={{display: 'flex', flexDirection: 'column'}}>
           <Header onReady={onReady}/>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
+          {/*SearchBoxContainer*/}
           <div className='container'>
             <div>
               <LineUp

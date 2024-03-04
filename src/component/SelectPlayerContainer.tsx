@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import changeModeButton from '../assets/change-mode.svg'
 import addBatterButton from '../assets/add-batter.svg'
 import addPitcherButton from '../assets/add-pitcher.svg'
+import data from '../api/data'
 
 interface Player {
     team: string
@@ -40,23 +41,27 @@ const SelectPlayerContainer = (props) => {
                 fromWhere = 'pitchers'
             }
 
-            const fileName = `/src/stat_scraper/${fromWhere}/${year}.json`
-
-            try {
-                const response = await fetch(fileName)
-                console.log(response)
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`)
-                }
-                const data = await response.json()
-                console.log(data)
-                setPlayerListByYear(data)
-                const teams = [...new Set(data.map((player) => player.team))].sort() as string[]
-                setTeamList(teams)
-                return data;
-            } catch (error) {
-                console.error('Failed to fetch the JSON data:', error)
-            }
+            // const fileName = `/src/stat_scraper/${fromWhere}/${year}.json`
+            console.log(data);
+            setPlayerListByYear(data)
+            const teams = [...new Set(data.map((player) => player.team))].sort() as string[]
+            setTeamList(teams)
+            return data;
+            // try {
+            //     const response = await fetch(fileName)
+            //     console.log(response)
+            //     if (!response.ok) {
+            //         throw new Error(`HTTP error! status: ${response.status}`)
+            //     }
+            //     const data = await response.json()
+            //     console.log(data)
+            //     setPlayerListByYear(data)
+            //     const teams = [...new Set(data.map((player) => player.team))].sort() as string[]
+            //     setTeamList(teams)
+            //     return data;
+            // } catch (error) {
+            //     console.error('Failed to fetch the JSON data:', error)
+            // }
         }
     }
 

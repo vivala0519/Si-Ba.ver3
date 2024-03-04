@@ -44,10 +44,12 @@ const SelectPlayerContainer = (props) => {
 
             try {
                 const response = await fetch(fileName)
+                console.log(response)
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`)
                 }
                 const data = await response.json()
+                console.log(data)
                 setPlayerListByYear(data)
                 const teams = [...new Set(data.map((player) => player.team))].sort() as string[]
                 setTeamList(teams)

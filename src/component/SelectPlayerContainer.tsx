@@ -69,7 +69,31 @@ const SelectPlayerContainer = (props) => {
 
     // 연도에 따른 data json 가져오기
     useEffect(() => {
-        importJsonByYear(year);
+        // importJsonByYear(year);
+        const fetchData = async () => {
+            const positionNumber = selectedArea.slice(4)
+            let fromWhere = 'batters';
+            if (positionNumber > 9) {
+                fromWhere = 'pitchers';
+            }
+            const fileName = `/src/stat_scraper/${fromWhere}/${year}.json`;
+
+            try {
+                const response = await fetch(fileName);
+                const data = await response.json();
+                setPlayerListByYear(data)
+                const teams = [...new Set(data.map((player) => player.team))].sort() as string[]
+                setTeamList(teams)
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        if (year && selectedArea) {
+
+            fetchData();
+        }
+
     }, [year, selectedArea])
 
     // 연도에 따라 팀 리스트 바뀌면 default [0] 설정

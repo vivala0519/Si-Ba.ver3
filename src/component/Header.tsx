@@ -86,4 +86,6 @@ const YearColor = styled.span`
     font-style: normal;
     font-weight: 400;
     color: #BB2649;
+    position: relative;
+    top: 1px;
 `

@@ -138,6 +138,9 @@ const Description = styled.p<styleProps>`
     background-color: rgba(255, 255, 255, 0.9);
     padding: 5px;
     border-radius: 5px;
+    @media (max-width: 821px) {
+        left: 8%;
+    }
 `;
 
 const CopyRight = styled.span<styleProps>`

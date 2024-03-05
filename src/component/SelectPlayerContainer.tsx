@@ -1,6 +1,8 @@
 import {DetailedHTMLProps, HTMLAttributes, useEffect, useState} from 'react'
 import DropDownBox from './DropDownBox'
 import SearchBox from './SearchBox'
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore'
+import { db } from '/firebase.js'
 import styled from 'styled-components'
 import changeModeButton from '../assets/change-mode.svg'
 import addBatterButton from '../assets/add-batter.svg'
@@ -40,22 +42,31 @@ const SelectPlayerContainer = (props) => {
                 fromWhere = 'pitchers'
             }
 
-            const fileName = `/src/stat_scraper/${fromWhere}/${year}.json`
+            const dataSnapshot = doc(db, fromWhere, year)
+            const response = await getDoc(dataSnapshot)
+            const dataArray = Object.values(response.data())
 
-            try {
-                const response = await fetch(fileName)
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`)
-                }
+            setPlayerListByYear(dataArray)
+            const teams = [...new Set(dataArray.map((player) => player.team))].sort() as string[]
+            setTeamList(teams)
 
-                const data = await response.json()
-                setPlayerListByYear(data)
-                const teams = [...new Set(data.map((player) => player.team))].sort() as string[]
-                setTeamList(teams)
-                return data;
-            } catch (error) {
-                console.error('Failed to fetch the JSON data:', error)
-            }
+
+            // const fileNasme = `/src/stat_scraper/${fromWhere}/${year}.json`
+
+            // try {
+            //     const response = await fetch(fileName)
+            //     if (!response.ok) {
+            //         throw new Error(`HTTP error! status: ${response.status}`)
+            //     }
+            //
+            //     const data = await response.json()
+            //     setPlayerListByYear(data)
+            //     const teams = [...new Set(data.map((player) => player.team))].sort() as string[]
+            //     setTeamList(teams)
+            //     return data;
+            // } catch (error) {
+            //     console.error('Failed to fetch the JSON data:', error)
+            // }
         }
     }
 

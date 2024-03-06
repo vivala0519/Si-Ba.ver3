@@ -9,7 +9,6 @@ import PlayerReport from './component/report/PlayerReport.tsx';
 import Header from './component/Header.tsx'
 import Footer from './component/Footer.tsx'
 import styles from './Play.module.scss'
-import playBall from './assets/playball.svg'
 import restart from './assets/restart.svg'
 import pause from './assets/pause.svg'
 import { gameProcess } from './api/gameProcess.js'
@@ -446,8 +445,6 @@ const PlayButtonContainer = styled.div<styleProps>`
 `
 
 const PlayButton = styled.button`
-  //background: url(${playBall}) no-repeat center center;
-  //background-size: cover;
   //font-family: "Giants-Inline", serif;
   //font-family: "HeirofLightBold", serif;
   font-family: "KBO-Dia-Gothic_bold", serif;
@@ -497,13 +494,6 @@ const ButtonList = styled.div<styleProps>`
 `
 
 const Restart = styled.button<styleProps>`
-  visibility: ${props => {
-    if (props.$showButton) {
-      return 'visible';
-    } else {
-      return 'hidden';
-    }
-  }};
   background: url(${restart}) no-repeat center center;
   background-size: 100% 100%;
   cursor: pointer;
@@ -511,6 +501,13 @@ const Restart = styled.button<styleProps>`
   border: none;
   width: 50px;
   height: 50px;
+  visibility: ${props => {
+    if (props.$showButton) {
+      return 'visible';
+    } else {
+      return 'hidden';
+    }
+  }};
 `
 
 const Pause = styled.button<styleProps>`

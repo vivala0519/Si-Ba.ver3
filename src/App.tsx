@@ -494,8 +494,8 @@ const ButtonList = styled.div<styleProps>`
 `
 
 const Restart = styled.button<styleProps>`
-  background: url(${restart}) no-repeat center center;
-  background-size: 100% 100%;
+  background: url(${restart}) no-repeat center center !important;
+  background-size: 100% 100% !important;;
   cursor: pointer;
   z-index: 1;
   border: none;

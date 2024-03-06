@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Base from "./Base.tsx"
 import OutCount from "./OutCount.tsx"
 import './ScoreBoard.css'
-import help from '../../../assets/help.svg'
+import help from '@/assets/help.svg'
 
 interface PropsType {
     showScoreBoard: boolean

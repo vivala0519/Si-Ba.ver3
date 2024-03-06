@@ -9,8 +9,8 @@ import PlayerReport from './component/report/PlayerReport.tsx';
 import Header from './component/Header.tsx'
 import Footer from './component/Footer.tsx'
 import styles from './Play.module.scss'
-import restart from './assets/restart.svg'
-import pause from './assets/pause.svg'
+import restart from '@/assets/restart.svg'
+import pause from '@/assets/pause.svg'
 import { gameProcess } from './api/gameProcess.js'
 import './App.css'
 
@@ -493,9 +493,9 @@ const ButtonList = styled.div<styleProps>`
   align-items: center;
 `
 
-const Restart = styled.button<styleProps>`
+const Restart = styled.div<styleProps>`
   background: url(${restart}) no-repeat center center !important;
-  background-size: 100% 100% !important;;
+  background-size: 100% 100% !important;
   cursor: pointer;
   z-index: 1;
   border: none;
@@ -510,14 +510,7 @@ const Restart = styled.button<styleProps>`
   }};
 `
 
-const Pause = styled.button<styleProps>`
-  visibility: ${props => {
-    if (props.$showButton) {
-      return 'visible';
-    } else {
-      return 'hidden';
-    }
-  }};
+const Pause = styled.div<styleProps>`
   background: url(${pause}) no-repeat center center;
   background-size: 100% 100%;
   cursor: pointer;
@@ -525,6 +518,13 @@ const Pause = styled.button<styleProps>`
   border: none;
   width: 50px;
   height: 50px;
+  visibility: ${props => {
+    if (props.$showButton) {
+      return 'visible';
+    } else {
+      return 'hidden';
+    }
+  }};
 `
 
 const SpeedUp = styled.span<styleProps>`

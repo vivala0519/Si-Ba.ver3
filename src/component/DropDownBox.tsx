@@ -45,10 +45,10 @@ const DropDownBox = (props: BoxProps) => {
             const playersDisplayTextList = (propList || []).filter((player): player is Player => typeof player !== 'string').map((player: Player) => {
                 return `${player.position !== 'P' ? player.position : ''} ${player.name}`;
             });            
-            setListElement(playersDisplayTextList?.map((el, idx) => <option key={idx}>{el}</option>));
+            setListElement(playersDisplayTextList?.map((el, idx) => <span key={idx}>{el}</span>));
         } else {
             //@ts-expect-error: must string
-            setListElement(propList?.map((el, idx) => <option key={idx}>{el}</option>))
+            setListElement(propList?.map((el, idx) => <span key={idx}>{el}</span>))
         }
     }, [propList])
 

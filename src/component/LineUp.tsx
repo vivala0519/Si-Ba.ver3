@@ -154,6 +154,7 @@ const TeamName = styled.input`
     text-align: center;
     border: none;
     font-size: 17px;
+    width: 100%;
     height: 90%;
     outline: none;
     ::placeholder {

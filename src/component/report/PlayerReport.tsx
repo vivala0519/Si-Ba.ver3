@@ -157,11 +157,11 @@ const PlayerReport = (props: PropsType) => {
                                 {
                                 batterReport[index].map(cell => {
                                     if (['삼진', '땅볼', '뜬공'].includes(cell)) {
-                                        return (<BatterReportCell key={'reportCell' + index} $hit={'out'}>{cell}</BatterReportCell>)
+                                        return (<BatterReportCell $hit={'out'}>{cell}</BatterReportCell>)
                                     } else if (['볼넷', '안타', '2루타', '3루타', '홈런'].includes(cell)) {
-                                        return (<BatterReportCell key={'reportCell' + index} $hit={'hit'}>{cell}</BatterReportCell>)
+                                        return (<BatterReportCell $hit={'hit'}>{cell}</BatterReportCell>)
                                     } else {
-                                        return (<BatterReportCell key={'reportCell' + index} $hit={'initial'}>{cell}</BatterReportCell>)
+                                        return (<BatterReportCell $hit={'initial'}>{cell}</BatterReportCell>)
                                     }
                                 })
                                 }

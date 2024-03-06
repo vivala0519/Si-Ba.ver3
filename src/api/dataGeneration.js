@@ -1,3 +1,6 @@
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '../../firebase.js'
+
 export const gameDataGeneration = async () => {
   await obaGeneration()
   await baseRunningCaseGeneration()
@@ -5,30 +8,22 @@ export const gameDataGeneration = async () => {
 // OBA 데이터 생성
 const obaGeneration = async () => {
   // 연도별 wOBA data 불러오기
-  const fileName = `/src/stat_scraper/wOBA.json`
+  const dataSnapshot = doc(db, 'wOBA', '0')
+  const response = await getDoc(dataSnapshot)
 
-  try {
-    const response = await fetch(fileName)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    window.wOBAdata = await response.json()
+  window.wOBAdata = response.data()
 
-    const wOBA_Map = new Map()
+  const wOBA_Map = new Map()
 
-    for (const key in window.wOBAdata) {
-      wOBA_Map.set(key, window.wOBAdata[key])
-    }
-
-    // 모든 연도 평균 wOBA, OZ
-    const valuesArray = Array.from(wOBA_Map.values())
-    const totalValue = valuesArray.reduce((acc, val) => acc + val, 0)
-    window.avgOBA = Math.round(totalValue / wOBA_Map.size * 1000) / 1000
-    window.ozByAvgOBA = window.avgOBA / (1 - window.avgOBA)
-
-  } catch (error) {
-    console.error('Failed to fetch the JSON data:', error);
+  for (const key in window.wOBAdata) {
+    wOBA_Map.set(key, window.wOBAdata[key])
   }
+
+  // 모든 연도 평균 wOBA, OZ
+  const valuesArray = Array.from(wOBA_Map.values())
+  const totalValue = valuesArray.reduce((acc, val) => acc + val, 0)
+  window.avgOBA = Math.round(totalValue / wOBA_Map.size * 1000) / 1000
+  window.ozByAvgOBA = window.avgOBA / (1 - window.avgOBA)
 }
 
 // 베이스러닝 데이터

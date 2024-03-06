@@ -143,7 +143,7 @@ const TeamNameContainer = styled.div<PlayerProps>`
 `
 
 const TeamNameBorder = styled.div`
-    width: 95%;
+    width: 100%;
     height: 40px;
 `
 

@@ -84,8 +84,9 @@
 .dropdownItem {
     cursor: pointer;
     padding: 10px 18px;
+    height: 100%;
 }
-  
+
 .dropdownItem:not(:last-child) {
     border-bottom: 1px solid #e1e1e1;
 }

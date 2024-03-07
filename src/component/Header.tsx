@@ -1,7 +1,8 @@
 import {DetailedHTMLProps, HTMLAttributes} from 'react'
 import styled from 'styled-components'
 import styles from './Title.module.scss'
-import icon from '../assets/home-icon.jpg'
+import whiteIcon from '../assets/home-icon-white.jpg'
+import blackIcon from '../assets/home-icon-black.jpg'
 
 interface PropsType {
     onReady: boolean
@@ -59,9 +60,15 @@ const Title = styled.div`
     };
     
     &::before {
-        background: url(${icon}) no-repeat center center;
-        background-size: 100% 100%; 
-    }
+        @media (prefers-color-scheme: light) {
+            background: url(${whiteIcon}) no-repeat center center;
+            background-size: 100% 100%;
+        }
+        @media (prefers-color-scheme: dark) {
+            background: url(${blackIcon}) no-repeat center center;
+            background-size: 100% 100%;
+        }
+    };
 `
 
 const SubTitle = styled.div`

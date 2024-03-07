@@ -5,6 +5,7 @@ export const gameDataGeneration = async () => {
   await obaGeneration()
   await baseRunningCaseGeneration()
 }
+
 // OBA 데이터 생성
 const obaGeneration = async () => {
   // 연도별 wOBA data 불러오기

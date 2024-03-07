@@ -23,7 +23,7 @@ const baseRunning = (beforeBase, data) => {
 
 // 투수 vs 타자 대결 func.
 const singleCombat = (batter, pitcher) => {
-    console.log(batter, pitcher)
+    // console.log(batter, pitcher)
     // 일 대 일 결과 도출을 위해 필요한 데이터
     const batterObp = Number(batter.obp)
     const pitcherObp = Number(pitcher.obp)
@@ -67,7 +67,7 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
         const pitcher = defender.lineUp[pitcherNum]
 
         const result = singleCombat(batter, pitcher)
-        console.log(result);
+        // console.log(result);
 
         attacker.batterReport[batterNum].push(result.data)
 
@@ -77,9 +77,9 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
 
         // hit or out
         if (result.type === 'hit') {
-            console.log(result);
+            // console.log(result);
             const runningResult = baseRunning(base, result.data)
-            console.log(runningResult)
+            // console.log(runningResult)
             // 잔루
             base = runningResult.slice(0, 3)
             if (result.data === '볼넷') {
@@ -112,7 +112,7 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
                 pitcherCount: defender.pitcherCount,
                 lostScore: defender.pitcherLostScore
             })
-            console.log(attacker);
+            // console.log(attacker);
         } else {
             if (result.data === '삼진') {
                 defender.pitcherK += 1
@@ -144,7 +144,7 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
             defender.pitcherCount = 0
             defender.pitcherLostScore = 0
             defender.pitcherK = 0
-            console.log('pitcher changed-----------------------------------');
+            // console.log('pitcher changed-----------------------------------');
             report.push({inning: inning, topBottom: topBottom, number: defender.pitcher, changed: true})
         }
     }
@@ -166,13 +166,13 @@ export const gameProcess = async (home, away) => {
 
     for (inning; inning < 10; inning++) {
         // away 공격 / home 수비
-        console.log(inning, '회 초');
+        // console.log(inning, '회 초');
         inningProcess(awayInfo, homeInfo, inning, inningScore.away, gameReport, 'top')
         // 마지막 투수 report 기록
         if (inning === 9 && !homeInfo.pitcherReport[homeInfo.pitcher]) {
             homeInfo.pitcherReport[homeInfo.pitcher] = {count: homeInfo.pitcherCount, lostScore: homeInfo.pitcherLostScore, k: homeInfo.pitcherK}
         }
-        console.log(inning, '회 말');
+        // console.log(inning, '회 말');
         // home 공격 / away 수비
         // 9회말 진행 조건
         if (inning === 9 && awayInfo.score < homeInfo.score) {

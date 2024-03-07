@@ -28,182 +28,182 @@ function App() {
     year: string
   }
 
-  const dummyData = [
-    {
-      "name": "소크라테스",
-      "team": "MBC",
-      "position": "C",
-      "avg": ".254",
-      "obp": ".343",
-      "slg": ".479",
-      "total_hit": "36",
-      "double_hit": "5",
-      "triple_hit": "0",
-      "home_run": "9",
-      "BB": "21",
-      "SB": "2",
-      "Dead_Ball": "0",
-      "one_hit": 22,
-      "year": "1982"
-  }, 
-  {
-    "name": "소크라테스",
-    "team": "MBC",
-    "position": "LF",
-    "avg": ".254",
-    "obp": ".343",
-    "slg": ".479",
-    "total_hit": "36",
-    "double_hit": "5",
-    "triple_hit": "0",
-    "home_run": "9",
-    "BB": "21",
-    "SB": "2",
-    "Dead_Ball": "0",
-    "one_hit": 22,
-    "year": "1982"
-}, 
-{
-  "name": "소크라테스",
-  "team": "MBC",
-  "position": "C",
-  "avg": ".254",
-  "obp": ".343",
-  "slg": ".479",
-  "total_hit": "36",
-  "double_hit": "5",
-  "triple_hit": "0",
-  "home_run": "9",
-  "BB": "21",
-  "SB": "2",
-  "Dead_Ball": "0",
-  "one_hit": 22,
-  "year": "1982"
-}, 
-{
-"name": "소크라테스",
-"team": "MBC",
-"position": "C",
-"avg": ".254",
-"obp": ".343",
-"slg": ".479",
-"total_hit": "36",
-"double_hit": "5",
-"triple_hit": "0",
-"home_run": "9",
-"BB": "21",
-"SB": "2",
-"Dead_Ball": "0",
-"one_hit": 22,
-"year": "1982"
-}, 
-{
-"name": "필",
-"team": "MBC",
-"position": "C",
-"avg": ".254",
-"obp": ".343",
-"slg": ".479",
-"total_hit": "36",
-"double_hit": "5",
-"triple_hit": "0",
-"home_run": "9",
-"BB": "21",
-"SB": "2",
-"Dead_Ball": "0",
-"one_hit": 22,
-"year": "1982"
-}, 
-{
-"name": "한유섬",
-"team": "MBC",
-"position": "C",
-"avg": ".254",
-"obp": ".343",
-"slg": ".479",
-"total_hit": "36",
-"double_hit": "5",
-"triple_hit": "0",
-"home_run": "9",
-"BB": "21",
-"SB": "2",
-"Dead_Ball": "0",
-"one_hit": 22,
-"year": "1982"
-}, 
-{
-"name": "최정",
-"team": "MBC",
-"position": "C",
-"avg": ".254",
-"obp": ".343",
-"slg": ".479",
-"total_hit": "36",
-"double_hit": "5",
-"triple_hit": "0",
-"home_run": "9",
-"BB": "21",
-"SB": "2",
-"Dead_Ball": "0",
-"one_hit": 22,
-"year": "1982"
-}, 
-{
-"name": "라가레스",
-"team": "MBC",
-"position": "C",
-"avg": ".254",
-"obp": ".343",
-"slg": ".479",
-"total_hit": "36",
-"double_hit": "5",
-"triple_hit": "0",
-"home_run": "9",
-"BB": "21",
-"SB": "2",
-"Dead_Ball": "0",
-"one_hit": 22,
-"year": "1982"
-}, 
-{
-"name": "소크라테스",
-"team": "MBC",
-"position": "C",
-"avg": ".254",
-"obp": ".343",
-"slg": ".479",
-"total_hit": "36",
-"double_hit": "5",
-"triple_hit": "0",
-"home_run": "9",
-"BB": "21",
-"SB": "2",
-"Dead_Ball": "0",
-"one_hit": 22,
-"year": "1982"
-}, null, 
-{
-"name": "스트레일리",
-"team": "MBC",
-"position": "P",
-"G": "12",
-"Inning": "35.1",
-"avg": ".308",
-"obp": ".355",
-"year": "1982"
-},
-{
-"name": "이승호",
-"team": "MBC",
-"position": "P",
-"G": "12",
-"Inning": "35.1",
-"avg": ".308",
-"obp": ".355",
-"year": "1982"
-},
-null
-  ]
+//   const dummyData = [
+//     {
+//       "name": "소크라테스",
+//       "team": "MBC",
+//       "position": "C",
+//       "avg": ".254",
+//       "obp": ".343",
+//       "slg": ".479",
+//       "total_hit": "36",
+//       "double_hit": "5",
+//       "triple_hit": "0",
+//       "home_run": "9",
+//       "BB": "21",
+//       "SB": "2",
+//       "Dead_Ball": "0",
+//       "one_hit": 22,
+//       "year": "1982"
+//   },
+//   {
+//     "name": "소크라테스",
+//     "team": "MBC",
+//     "position": "LF",
+//     "avg": ".254",
+//     "obp": ".343",
+//     "slg": ".479",
+//     "total_hit": "36",
+//     "double_hit": "5",
+//     "triple_hit": "0",
+//     "home_run": "9",
+//     "BB": "21",
+//     "SB": "2",
+//     "Dead_Ball": "0",
+//     "one_hit": 22,
+//     "year": "1982"
+// },
+// {
+//   "name": "소크라테스",
+//   "team": "MBC",
+//   "position": "C",
+//   "avg": ".254",
+//   "obp": ".343",
+//   "slg": ".479",
+//   "total_hit": "36",
+//   "double_hit": "5",
+//   "triple_hit": "0",
+//   "home_run": "9",
+//   "BB": "21",
+//   "SB": "2",
+//   "Dead_Ball": "0",
+//   "one_hit": 22,
+//   "year": "1982"
+// },
+// {
+// "name": "소크라테스",
+// "team": "MBC",
+// "position": "C",
+// "avg": ".254",
+// "obp": ".343",
+// "slg": ".479",
+// "total_hit": "36",
+// "double_hit": "5",
+// "triple_hit": "0",
+// "home_run": "9",
+// "BB": "21",
+// "SB": "2",
+// "Dead_Ball": "0",
+// "one_hit": 22,
+// "year": "1982"
+// },
+// {
+// "name": "필",
+// "team": "MBC",
+// "position": "C",
+// "avg": ".254",
+// "obp": ".343",
+// "slg": ".479",
+// "total_hit": "36",
+// "double_hit": "5",
+// "triple_hit": "0",
+// "home_run": "9",
+// "BB": "21",
+// "SB": "2",
+// "Dead_Ball": "0",
+// "one_hit": 22,
+// "year": "1982"
+// },
+// {
+// "name": "한유섬",
+// "team": "MBC",
+// "position": "C",
+// "avg": ".254",
+// "obp": ".343",
+// "slg": ".479",
+// "total_hit": "36",
+// "double_hit": "5",
+// "triple_hit": "0",
+// "home_run": "9",
+// "BB": "21",
+// "SB": "2",
+// "Dead_Ball": "0",
+// "one_hit": 22,
+// "year": "1982"
+// },
+// {
+// "name": "최정",
+// "team": "MBC",
+// "position": "C",
+// "avg": ".254",
+// "obp": ".343",
+// "slg": ".479",
+// "total_hit": "36",
+// "double_hit": "5",
+// "triple_hit": "0",
+// "home_run": "9",
+// "BB": "21",
+// "SB": "2",
+// "Dead_Ball": "0",
+// "one_hit": 22,
+// "year": "1982"
+// },
+// {
+// "name": "라가레스",
+// "team": "MBC",
+// "position": "C",
+// "avg": ".254",
+// "obp": ".343",
+// "slg": ".479",
+// "total_hit": "36",
+// "double_hit": "5",
+// "triple_hit": "0",
+// "home_run": "9",
+// "BB": "21",
+// "SB": "2",
+// "Dead_Ball": "0",
+// "one_hit": 22,
+// "year": "1982"
+// },
+// {
+// "name": "소크라테스",
+// "team": "MBC",
+// "position": "C",
+// "avg": ".254",
+// "obp": ".343",
+// "slg": ".479",
+// "total_hit": "36",
+// "double_hit": "5",
+// "triple_hit": "0",
+// "home_run": "9",
+// "BB": "21",
+// "SB": "2",
+// "Dead_Ball": "0",
+// "one_hit": 22,
+// "year": "1982"
+// }, null,
+// {
+// "name": "스트레일리",
+// "team": "MBC",
+// "position": "P",
+// "G": "12",
+// "Inning": "35.1",
+// "avg": ".308",
+// "obp": ".355",
+// "year": "1982"
+// },
+// {
+// "name": "이승호",
+// "team": "MBC",
+// "position": "P",
+// "G": "12",
+// "Inning": "35.1",
+// "avg": ".308",
+// "obp": ".355",
+// "year": "1982"
+// },
+// null
+//   ]
 
   const [awayTeam, setAwayTeam] = useState<string | null>(null)
   const [homeTeam, setHomeTeam] = useState<string | null>(null)
@@ -235,7 +235,7 @@ null
       setOnPlay(true)
     }, 1000)
     setReport(gameResult)
-    console.log(gameResult)
+    // console.log(gameResult)
   }
 
   useEffect(() => {
@@ -245,12 +245,12 @@ null
     setOnReady(homeLineUpNullCount === 1 || awayLineUpNullCount === 1)
   }, [homeLineUpList, awayLineUpList]);
 
-  useEffect(() => {
-    // @ts-ignore
-    setAwayLineUpList(dummyData)
-    // @ts-ignore
-    setHomeLineUpList(dummyData)
-  }, [])
+  // useEffect(() => {
+  //   // @ts-ignore
+  //   setAwayLineUpList(dummyData)
+  //   // @ts-ignore
+  //   setHomeLineUpList(dummyData)
+  // }, [])
 
   // Report row 배열
   const [reportArr, setReportArr] = useState([])

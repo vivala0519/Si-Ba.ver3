@@ -89,6 +89,9 @@ const LineUp = (props: PropsType) => {
         const selectedPlace = selectedArea?.split(way)[1]
         if (addedPlayer && selectedPlace) {
             // console.log('add - ', addedPlayer);
+            if (addedPlayer['position'] !== 'P' && Number(selectedPlace) > 8) {
+                return
+            }
 
             lineUpList[selectedPlace] = addedPlayer
             const copiedLineUp = [...lineUpList]

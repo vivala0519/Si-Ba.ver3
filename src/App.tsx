@@ -262,7 +262,7 @@ function App() {
   // 재생 중: true, 일시정지: false
   const [playState, setPlayState] = useState(true)
   // 재생 속도 조절 state
-  const [storedSpeed, setStoredSpeed] = useState(1)
+  const [storedSpeed, setStoredSpeed] = useState(2)
   // 속도 리스트
   const speedList = [1000, 500, 200, 100]
   // 속도 button text

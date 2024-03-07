@@ -4,7 +4,7 @@
 }
 
 .help {
-    background-image: url("../../../assets/help.svg");
+    background-image: url("@/assets/help.svg");
     background-size: 100% 100%;
 }
 

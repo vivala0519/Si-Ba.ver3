@@ -242,7 +242,7 @@ function App() {
     const homeLineUpNullCount = homeLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
     const awayLineUpNullCount = awayLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
 
-    setOnReady(homeLineUpNullCount === 1 || awayLineUpNullCount === 1)
+    setOnReady(homeLineUpNullCount === 1 && awayLineUpNullCount === 1)
   }, [homeLineUpList, awayLineUpList]);
 
   // useEffect(() => {

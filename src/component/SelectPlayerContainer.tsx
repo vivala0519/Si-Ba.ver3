@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import changeModeButton from '../assets/change-mode.svg'
 import addBatterButton from '../assets/add-batter.svg'
 import addPitcherButton from '../assets/add-pitcher.svg'
+import './SelectPlayerContainer.css'
 
 interface Player {
     team: string
@@ -17,6 +18,7 @@ interface Player {
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     selected?: string
+    $width?: string
 }
 
 const SelectPlayerContainer = (props) => {
@@ -26,29 +28,33 @@ const SelectPlayerContainer = (props) => {
     const yearList = Array.from({ length: 2023 - 1982 + 1 }, (_, i) => String(2023 - i))
 
     const [selectMode, setSelectMode] = useState(true)
-    const [playerListByYear, setPlayerListByYear] = useState([])
     const [teamList, setTeamList] = useState<string[]>([])
     const [playerList, setPlayerList] = useState<Player[]>([])
     const [year, setYear] = useState<string>('2023')
     const [team, setTeam] = useState<string>('')
     const [player, setPlayer] = useState<string>('')
-    const [selectedIdx, setSelectedIdx] = useState<number>(0);
+    const [selectedIdx, setSelectedIdx] = useState<number>(0)
+    const [batterList, setBatterList] = useState<Player[]>([])
+    const [pitcherList, setPitcherList] = useState<Player[]>([])
+    const [loadingFlag, setLoadingFlag] = useState(false)
 
     const importJsonByYear = async (year: string) => {
-        if (year && selectedArea) {
-            const positionNumber = selectedArea.slice(4)
-            let fromWhere = 'batters'
-            if (positionNumber > 9) {
-                fromWhere = 'pitchers'
-            }
+        if (year) {
+            setLoadingFlag(true)
+            const batterDataSnapshot = doc(db, 'batters', year)
+            const batterResponse = await getDoc(batterDataSnapshot)
+            const batterDataArray = Object.values(batterResponse.data())
 
-            const dataSnapshot = doc(db, fromWhere, year)
-            const response = await getDoc(dataSnapshot)
-            const dataArray = Object.values(response.data())
+            const pitcherDataSnapshot = doc(db, 'pitchers', year)
+            const pitcherResponse = await getDoc(pitcherDataSnapshot)
+            const pitcherDataArray = Object.values(pitcherResponse.data())
 
-            setPlayerListByYear(dataArray)
-            const teams = [...new Set(dataArray.map((player) => player.team))].sort() as string[]
+            setBatterList(batterDataArray)
+            setPitcherList(pitcherDataArray)
+
+            const teams = [...new Set(batterDataArray.map((player) => player.team))].sort() as string[]
             setTeamList(teams)
+            setLoadingFlag(false)
 
 
             // const fileNasme = `/src/stat_scraper/${fromWhere}/${year}.json`
@@ -81,7 +87,7 @@ const SelectPlayerContainer = (props) => {
     // 연도에 따른 data json 가져오기
     useEffect(() => {
         importJsonByYear(year);
-    }, [year, selectedArea])
+    }, [year])
 
     // 연도에 따라 팀 리스트 바뀌면 default [0] 설정
     useEffect(() => {
@@ -89,18 +95,39 @@ const SelectPlayerContainer = (props) => {
     }, [teamList])
     //
     useEffect(() => {
-        const playersDataByTeam:Player[] = playerListByYear.filter((player) => {
-            if (team === player.team) {
-                return player
-            }
-        })
-        // 포지션 순으로 정렬
-        const orderByPosition = ['DH', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF']
-        const sortedList:Player[] = playersDataByTeam.sort((a, b) => orderByPosition.indexOf(a.position) - orderByPosition.indexOf(b.position));
+        if (selectedArea) {
+            const positionNumber = selectedArea.slice(4)
+            let playersDataByTeam = []
+            const fromList = positionNumber > 9 ? pitcherList : batterList
+            playersDataByTeam = fromList.filter((player) => {
+                if (team === player.team) {
+                    return player
+                }
+            })
 
-        setPlayerList(sortedList)
-        setSelectedIdx(0);
-    }, [teamList, team, playerListByYear])
+            let sortedList:Player[] = []
+            if (positionNumber < 10) {
+                // 타자는 포지션 순으로 정렬
+                const orderByPosition = ['DH', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF']
+                sortedList = playersDataByTeam.sort((a, b) => orderByPosition.indexOf(a.position) - orderByPosition.indexOf(b.position))
+            } else {
+                // 투수는 이름 순
+                sortedList = playersDataByTeam.sort((a, b) => {
+                    if (a.name < b.name) {
+                        return -1;
+                    } else if (a.name > b.name) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            }
+
+            setPlayerList(sortedList)
+            setSelectedIdx(0);
+        }
+
+    }, [teamList, team, selectedArea])
 
     // 선택된 player Func
     useEffect(() => {
@@ -120,8 +147,14 @@ const SelectPlayerContainer = (props) => {
                     <>
                         {/* <ChangeMode onClick={() => setSelectMode(!selectMode)}>search</ChangeMode> */}
                         <DropDownBox type='Year' state={year} setState={setYear} propList={yearList} width={120}/>
-                        <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={120}/>
-                        <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={177}/>
+                        {!loadingFlag ?
+                            <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={120}/>
+                            :
+                            <LoadingBox className={"dropdown"} $width={'120px'}><div className={'loading-data'} style={{backgroundColor: '#a8a8a8', width: '120px', height: '40px'}}/></LoadingBox>}
+                        {!loadingFlag ?
+                            <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={177}/>
+                            :
+                            <LoadingBox className={"dropdown"} $width={'177px'}><div className={'loading-data'} style={{backgroundColor: '#a8a8a8', width: '177px', height: '40px'}}/></LoadingBox>}
                         {/* <ViewDetailStat /> */}
                         {Number(selectedArea.slice(4)) > 9 ? <AddPitcher onClick={addPlayer} /> : <AddBatter onClick={addPlayer} />}
                     </>
@@ -201,6 +234,15 @@ const ChangeMode = styled.button`
     &:focus {
         outline: none;
     }
+`
+
+const LoadingBox = styled.div<styleProps>`
+    display: flex;
+    width: ${props => props.$width};
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    color: #BB2649;
 `
 
 const SelectAreaHelp = styled.div`

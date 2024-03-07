@@ -1,0 +1,4 @@
+.loading-data {
+    background-image: url("@/assets/loading-data.svg");
+    background-size: 100% 100%;
+}

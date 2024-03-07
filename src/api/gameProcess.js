@@ -1,4 +1,4 @@
-import { gameDataGeneration } from "./dataGeneration.js";
+import { gameDataGeneration, gameData } from "./dataGeneration.js";
 import { choiceByWeight, extractRunResult, extractOutResult, randomPitchCount } from "./randomByProbability.js";
 
 const baseRunning = (beforeBase, data) => {
@@ -159,38 +159,6 @@ export const gameProcess = async (home, away) => {
 
     let inning = 1
 
-    const gameData = {
-        inning: 1,
-        homeInfo: {
-            batter: 0,
-            pitcher: 10,
-            score: 0,
-            hit: 0,
-            bb: 0,
-            pitcherCount: 0,
-            batterReport: {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: []},
-            pitcherReport: {10: null, 11: null, 12: null},
-            pitcherK: 0,
-            pitcherLostScore: 0,
-            lineUp: 'home',
-        },
-        awayInfo: {
-            batter: 0,
-            pitcher: 10,
-            score: 0,
-            hit: 0,
-            bb: 0,
-            pitcherCount: 0,
-            batterReport: {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: []},
-            pitcherReport: {10: null, 11: null, 12: null},
-            pitcherK: 0,
-            pitcherLostScore: 0,
-            lineUp: 'away',
-        },
-        inningScore: {away: [], home: []},
-        gameReport: [],
-    }
-
     const { homeInfo, awayInfo, inningScore, gameReport } = gameData
 
     homeInfo.lineUp = home
@@ -217,5 +185,5 @@ export const gameProcess = async (home, away) => {
             }
         }
     }
-    return {report: gameReport, info: {home: homeInfo, away: awayInfo}}
+    return {report: gameReport, scoreRecord: inningScore, info: {home: homeInfo, away: awayInfo}}
 }

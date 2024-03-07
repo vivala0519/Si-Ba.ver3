@@ -73,7 +73,7 @@ const SelectPlayerContainer = (props) => {
 
     // 선수 추가 Func
     const addPlayer = () => {
-        if (Number(selectedArea?.slice(4)) < 13 && year) {
+        if (Number(selectedArea?.slice(4)) < 13) {
             playerList[selectedIdx].year = year
             setAddedPlayer(playerList[selectedIdx]);
             setPrevAddedPlayer(playerList[selectedIdx])

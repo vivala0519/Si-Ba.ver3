@@ -1,4 +1,4 @@
-import React, { useEffect, useState, DetailedHTMLProps, HTMLAttributes } from 'react'
+import { useEffect, useState, DetailedHTMLProps, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import Base from "./Base.tsx"
 import OutCount from "./OutCount.tsx"
@@ -8,9 +8,7 @@ interface PropsType {
     showScoreBoard: boolean
     gameReportRow: object
     showPlayButton: boolean
-    gameFinished: boolean
     setShowPlayButton: React.Dispatch<React.SetStateAction<boolean>>
-    setOnPlay: React.Dispatch<React.SetStateAction<boolean>>
 }
 interface GameReportRow {
     topBottom?: string
@@ -25,13 +23,12 @@ interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 }
 
 const ScoreBoard = (props: PropsType) => {
-    const { showScoreBoard, gameReportRow, showPlayButton, setShowPlayButton, gameFinished, setOnPlay } = props
+    const { showScoreBoard, gameReportRow, showPlayButton, setShowPlayButton } = props
     const boardHead = ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'R', 'H', 'B']
     const [awayRecord, setAwayRecord] = useState(['Away', '', '', '', '', '', '', '', '', '', '-', '-', '-', '0', '0', '0'])
     const [homeRecord, setHomeRecord] = useState(['Home', '', '', '', '', '', '', '', '', '', '-', '-', '-', '0', '0', '0'])
     const [baseState, setBaseState] = useState([])
     const [outCount, setOutCount] = useState([false, false, false])
-    const [hoverHome, setHoverHome] = useState(false)
     const [showHelp, setShowHelp] = useState(false)
     const helpText = '- 투수 교체 조건 : 투구 수 100개 이상 또는 5실점 이상\n- 경기 진행 중 현재 투수 배경색 : 투구 수에 따른 피로도'
 
@@ -83,16 +80,6 @@ const ScoreBoard = (props: PropsType) => {
         <>
             <BoardRoof className={showScoreBoard && 'show'} $show={showScoreBoard}>
                 <Base base={baseState}/>
-                {gameFinished &&
-                    <ToHome
-                        className={!hoverHome && 'to-home'}
-                        onClick={() => setOnPlay(false)}
-                        onMouseEnter={() => setHoverHome(true)}
-                        onMouseLeave={() => setHoverHome(false)}
-                    >
-                        {hoverHome && 'Home'}
-                    </ToHome>
-                }
             </BoardRoof>
             <OutCount showScoreBoard={showScoreBoard} outCount={outCount} />
             <ProcessBorder
@@ -134,20 +121,6 @@ const BoardRoof = styled.div<styleProps>`
     width: 100%;
     position: relative;
     top: 10px;
-`
-
-const ToHome = styled.div`
-    position: absolute;
-    left: 86%;
-    top: -26px;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    color: #BB2649;
-    font-family: "Hahmlet", serif;
-    font-style: normal;
-    font-weight: 800;
-    font-size: 20px;
 `
 
 const ProcessBorder = styled.div<styleProps>`

@@ -8,11 +8,6 @@
     background-size: 100% 100%;
 }
 
-.to-home {
-    background-image: url("@/assets/home.svg");
-    background-size: 100% 100%;
-}
-
 @keyframes appear {
     100% {
         opacity: 1;

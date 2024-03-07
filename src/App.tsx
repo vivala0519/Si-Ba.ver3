@@ -270,7 +270,7 @@ function App() {
   // play button show state
   const [showPlayButton, setShowPlayButton] = useState(false)
   // game finish flag
-  const [gameFinish, setGameFinish] = useState(false)
+  const [gameFinished, setGameFinished] = useState(false)
 
   const sendSplitReport = (report, index, speed) => {
     let i = index;
@@ -282,7 +282,7 @@ function App() {
         ++i;
         setProcessIndex(i)
         if (nextElement.topBottom === 'finish') {
-          setGameFinish(true)
+          setGameFinished(true)
         }
       } else {
         clearInterval(interval);
@@ -334,6 +334,15 @@ function App() {
     }, 100)
   }
 
+  useEffect(() => {
+    if (!onPlay) {
+      setGameFinished(false)
+      setShowScoreBoard(false)
+      setDisappear(false)
+      setReport(null)
+    }
+  }, [onPlay]);
+
   return (
     <>
       {!onPlay ?
@@ -383,9 +392,15 @@ function App() {
           <Report>
             <div/>
             <ReportHead>
-              <ScoreBoard showScoreBoard={showScoreBoard} gameReportRow={reportRow} showPlayButton={showPlayButton}
-                          setShowPlayButton={setShowPlayButton}/>
-              {!gameFinish && <ButtonList>
+              <ScoreBoard
+                showScoreBoard={showScoreBoard}
+                gameReportRow={reportRow}
+                showPlayButton={showPlayButton}
+                setShowPlayButton={setShowPlayButton}
+                gameFinished={gameFinished}
+                setOnPlay={setOnPlay}
+              />
+              {!gameFinished && <ButtonList>
                 {playState
                   ?
                   <Pause className='pause' $showButton={showPlayButton} onClick={pauseHandler}

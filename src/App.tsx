@@ -342,7 +342,7 @@ function App() {
           <Header onReady={onReady}/>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
           {/*SearchBoxContainer*/}
-          <div className='container'>
+          <div className={onReady ? 'container-onReady' : 'container'}>
             <div>
               <LineUp
                 way='Away' 

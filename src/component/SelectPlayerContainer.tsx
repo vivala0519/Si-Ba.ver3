@@ -23,16 +23,17 @@ const SelectPlayerContainer = (props) => {
     // props
     const { selectedArea, setAddedPlayer } = props
     // 연도 declare
-    const yearList = Array.from({ length: 2023 - 1982 + 1 }, (_, i) => String(i + 1982))
+    const yearList = Array.from({ length: 2023 - 1982 + 1 }, (_, i) => String(2023 - i))
     
     const [selectMode, setSelectMode] = useState(true)
     const [playerListByYear, setPlayerListByYear] = useState([])
     const [teamList, setTeamList] = useState<string[]>([])
     const [playerList, setPlayerList] = useState<Player[]>([])
-    const [year, setYear] = useState<string>('1982')
+    const [year, setYear] = useState<string>('2023')
     const [team, setTeam] = useState<string>('')
     const [player, setPlayer] = useState<string>('')
-    const [selectedIdx, setSelectedIdx] = useState<number>(0);
+    const [selectedIdx, setSelectedIdx] = useState<number>(0)
+    const [prevAddedPlayer, setPrevAddedPlayer] = useState(null)
     
     const importJsonByYear = async (year: string) => {
         if (year && selectedArea) {
@@ -75,6 +76,7 @@ const SelectPlayerContainer = (props) => {
         if (Number(selectedArea?.slice(4)) < 13) {
             playerList[selectedIdx].year = year
             setAddedPlayer(playerList[selectedIdx]);
+            setPrevAddedPlayer(playerList[selectedIdx])
         }
     }
 
@@ -85,18 +87,40 @@ const SelectPlayerContainer = (props) => {
 
     // 연도에 따라 팀 리스트 바뀌면 default [0] 설정
     useEffect(() => {
-        setTeam(teamList[0])
+        if (prevAddedPlayer) {
+            if (teamList.includes(prevAddedPlayer.team)) {
+                setTeam(prevAddedPlayer.team)
+            } else {
+                setTeam(teamList[0])
+            }
+        } else {
+            setTeam(teamList[0])
+        }
     }, [teamList])
-    // 
+
     useEffect(() => {
         const playersDataByTeam:Player[] = playerListByYear.filter((player) => {
             if (team === player.team) {
                 return player
             }
         })
-        // 포지션 순으로 정렬
-        const orderByPosition = ['DH', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF']
-        const sortedList:Player[] = playersDataByTeam.sort((a, b) => orderByPosition.indexOf(a.position) - orderByPosition.indexOf(b.position));
+        let sortedList:Player[] = []
+        if (selectedArea?.slice(4) < 10) {
+            // 타자는 포지션 순으로 정렬
+            const orderByPosition = ['DH', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF']
+            sortedList = playersDataByTeam.sort((a, b) => orderByPosition.indexOf(a.position) - orderByPosition.indexOf(b.position))
+        } else {
+            // 투수는 이름 순
+            sortedList = playersDataByTeam.sort((a, b) => {
+                if (a.name < b.name) {
+                    return -1;
+                } else if (a.name > b.name) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+        }
         
         setPlayerList(sortedList)
         setSelectedIdx(0);

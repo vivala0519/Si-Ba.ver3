@@ -104,6 +104,7 @@ const ScoreBoard = (props: PropsType) => {
                 </Board>
             </ProcessBorder>
             <Help
+                className='help'
                 onMouseEnter={() => setShowHelp(true)}
                 onMouseLeave={() => setShowHelp(false)}
             />
@@ -205,8 +206,6 @@ const ScoreCell = styled.div<styleProps>`
 `
 
 const Help = styled.div`
-    background: url(${help}) no-repeat center center;
-    background-size: 100% 100%;
     cursor: pointer;
     position: relative;
     left: 580px;

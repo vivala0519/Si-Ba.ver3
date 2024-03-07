@@ -3,6 +3,11 @@
     animation: appear 1s ease-in-out forwards;
 }
 
+.help {
+    background-image: url("@/assets/help.svg");
+    background-size: 100% 100%;
+}
+
 @keyframes appear {
     100% {
         opacity: 1;

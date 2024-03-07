@@ -388,10 +388,10 @@ null
               {!gameFinish && <ButtonList>
                 {playState
                   ?
-                  <Pause $showButton={showPlayButton} onClick={pauseHandler}
+                  <Pause className='pause' $showButton={showPlayButton} onClick={pauseHandler}
                     onMouseEnter={() => setShowPlayButton(true)}/>
                   :
-                  <Restart $showButton={showPlayButton} onClick={() => restartHandler(speedList[storedSpeed])}
+                  <Restart className='restart' $showButton={showPlayButton} onClick={() => restartHandler(speedList[storedSpeed])}
                     onMouseEnter={() => setShowPlayButton(true)}/>
                 }
                 <SpeedUp $showButton={showPlayButton} onClick={setSpeedHandler}
@@ -494,8 +494,8 @@ const ButtonList = styled.div<styleProps>`
 `
 
 const Restart = styled.div<styleProps>`
-  background: url(${restart}) no-repeat center center !important;
-  background-size: 100% 100% !important;
+  // background: url(${restart}) no-repeat center center !important;
+  // background-size: 100% 100% !important;
   cursor: pointer;
   z-index: 1;
   border: none;
@@ -511,8 +511,8 @@ const Restart = styled.div<styleProps>`
 `
 
 const Pause = styled.div<styleProps>`
-  background: url(${pause}) no-repeat center center;
-  background-size: 100% 100%;
+  //background: url(${pause}) no-repeat center center;
+  //background-size: 100% 100%;
   cursor: pointer;
   z-index: 1;
   border: none;

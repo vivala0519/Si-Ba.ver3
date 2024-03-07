@@ -23,13 +23,13 @@ const SelectPlayerContainer = (props) => {
     // props
     const { selectedArea, setAddedPlayer } = props
     // 연도 declare
-    const yearList = Array.from({ length: 2023 - 1982 + 1 }, (_, i) => String(i + 1982))
+    const yearList = Array.from({ length: 2023 - 1982 + 1 }, (_, i) => String(2023 - i))
 
     const [selectMode, setSelectMode] = useState(true)
     const [playerListByYear, setPlayerListByYear] = useState([])
     const [teamList, setTeamList] = useState<string[]>([])
     const [playerList, setPlayerList] = useState<Player[]>([])
-    const [year, setYear] = useState<string>('1982')
+    const [year, setYear] = useState<string>('2023')
     const [team, setTeam] = useState<string>('')
     const [player, setPlayer] = useState<string>('')
     const [selectedIdx, setSelectedIdx] = useState<number>(0);

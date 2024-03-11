@@ -79,7 +79,7 @@ const DropDownBox = (props: BoxProps) => {
         <div
             className={isOpen ? "dropdown active" : "dropdown"}
             onClick={() => setIsOpen(!isOpen)}
-            style={{width: width, top: isOpen && listElement.length < 7 ? '138px' : (isOpen ? '145px': '0px')}}
+            style={{width: width + '%', top: isOpen && listElement.length < 7 ? '138px' : (isOpen ? '145px': '0px')}}
          >
         <div className="dropdownText">
             {state ? state : haveText}

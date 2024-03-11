@@ -54,7 +54,7 @@ const singleCombat = (batter, pitcher) => {
 }
 
 // inning 진행 func.
-const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBottom) => {
+const inningProcess = (attacker, defender, inning, gameReport, topBottom) => {
     let out = 0
     let base = [0, 0, 0]
     let inningScore = 0
@@ -92,11 +92,6 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
             attacker.score += score // 공격 팀 득점 추가
             inningScore += score
             defender.pitcherLostScore += score // 투수 실점 추가
-            if (scoreList[inning - 1] === undefined) {
-                scoreList.push(score)
-            } else {
-                scoreList[inning - 1] += score
-            }
             report.push({
                 inning: inning,
                 topBottom: topBottom,
@@ -148,9 +143,6 @@ const inningProcess = (attacker, defender, inning, scoreList, gameReport, topBot
             report.push({inning: inning, topBottom: topBottom, number: defender.pitcher, changed: true})
         }
     }
-    if (scoreList[inning - 1] === undefined) {
-        scoreList.push(0)
-    }
 }
 
 // game 진행 func.
@@ -191,7 +183,7 @@ export const gameProcess = async (home, away) => {
         gameReport: [],
     }
 
-    const { homeInfo, awayInfo, inningScore, gameReport } = gameData
+    const { homeInfo, awayInfo, gameReport } = gameData
 
     homeInfo.lineUp = home
     awayInfo.lineUp = away
@@ -199,7 +191,7 @@ export const gameProcess = async (home, away) => {
     for (inning; inning < 10; inning++) {
         // away 공격 / home 수비
         // console.log(inning, '회 초');
-        inningProcess(awayInfo, homeInfo, inning, inningScore.away, gameReport, 'top')
+        inningProcess(awayInfo, homeInfo, inning, gameReport, 'top')
         // 마지막 투수 report 기록
         if (inning === 9 && !homeInfo.pitcherReport[homeInfo.pitcher]) {
             homeInfo.pitcherReport[homeInfo.pitcher] = {count: homeInfo.pitcherCount, lostScore: homeInfo.pitcherLostScore, k: homeInfo.pitcherK}
@@ -210,7 +202,7 @@ export const gameProcess = async (home, away) => {
         if (inning === 9 && awayInfo.score < homeInfo.score) {
             awayInfo.pitcherReport[awayInfo.pitcher] = {count: awayInfo.pitcherCount, lostScore: awayInfo.pitcherLostScore, k: awayInfo.pitcherK}
         } else {
-            inningProcess(homeInfo, awayInfo, inning, inningScore.home, gameReport, 'bottom')
+            inningProcess(homeInfo, awayInfo, inning, gameReport, 'bottom')
             // 마지막 투수 report 기록
             if (inning === 9 && !awayInfo.pitcherReport[awayInfo.pitcher]) {
                 awayInfo.pitcherReport[awayInfo.pitcher] = {count: awayInfo.pitcherCount, lostScore: awayInfo.pitcherLostScore, k: awayInfo.pitcherK}

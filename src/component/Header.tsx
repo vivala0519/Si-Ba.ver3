@@ -40,7 +40,7 @@ const HeaderContainer = styled.div<styleProps>`
     margin-top: 50px;
     margin-bottom: 120px;
     left: 10px;
-    width: ${props => props.$ready ? '720px' : '580px'}
+    width: ${props => props.$ready ? '100%' : '100%'}
 `
 
 const Title = styled.div`

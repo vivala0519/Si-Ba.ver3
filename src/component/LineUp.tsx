@@ -129,7 +129,7 @@ export default LineUp
 const LineUpContainer = styled.div<PlayerProps>`
     display: flex;
     flex-direction: column;
-    width: 270px;
+    width: 100%;
     transition: transform 0.5s;
     transform: ${props => props.$ready && (props.$way === 'Away' ? 'translateX(-50px)' : 'translateX(50px)')};
 `
@@ -139,7 +139,7 @@ const TeamNameContainer = styled.div<PlayerProps>`
     left: ${props => (props.$way === 'Away' ? '12px' : '18px')};
     margin-bottom: 30px;
     margin-top: 20px;
-    width: 240px;
+    width: 90%;
     height: 40px;
     border: 2px outset #BB2649;
     border-radius: 3px;

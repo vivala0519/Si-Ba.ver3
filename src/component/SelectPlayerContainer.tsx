@@ -146,13 +146,13 @@ const SelectPlayerContainer = (props) => {
                 selectMode ?
                     <>
                         {/* <ChangeMode onClick={() => setSelectMode(!selectMode)}>search</ChangeMode> */}
-                        <DropDownBox type='Year' state={year} setState={setYear} propList={yearList} width={120}/>
+                        <DropDownBox type='Year' state={year} setState={setYear} propList={yearList} width={20}/>
                         {!loadingFlag ?
-                            <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={120}/>
+                            <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={20}/>
                             :
                             <LoadingBox className={"dropdown"} $width={'120px'}><div className={'loading-data'} style={{backgroundColor: '#a8a8a8', width: '120px', height: '40px'}}/></LoadingBox>}
                         {!loadingFlag ?
-                            <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={177}/>
+                            <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={30}/>
                             :
                             <LoadingBox className={"dropdown"} $width={'177px'}><div className={'loading-data'} style={{backgroundColor: '#a8a8a8', width: '177px', height: '40px'}}/></LoadingBox>}
                         {/* <ViewDetailStat /> */}

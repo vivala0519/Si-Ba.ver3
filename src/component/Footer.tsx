@@ -60,7 +60,7 @@ const FooterContainer = styled.div<styleProps>`
     align-items: flex-end;
     justify-content: flex-end;
     margin-top: 50px;
-    width: ${props => props.$ready ? '720px' : '580px'}
+    width: ${props => props.$ready ? '100%' : '100%'}
 `
 
 const FooterEl = styled.span`
@@ -152,5 +152,5 @@ const CopyRight = styled.span<styleProps>`
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
-    width: ${props => props.$ready ? '720px' : '580px'}
+    width: ${props => props.$ready ? '100%' : '100%'}
 `

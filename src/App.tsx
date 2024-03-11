@@ -346,15 +346,14 @@ function App() {
   return (
     <>
       {!onPlay ?
-      <>
-        <div className={disappear ? 'onPlay' : ''} style={{display: 'flex', flexDirection: 'column'}}>
+        <div className={disappear ? 'body-container onPlay' : 'body-container'} style={{display: 'flex', flexDirection: 'column'}}>
           <Header onReady={onReady}/>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
           {/*SearchBoxContainer*/}
           <div className={onReady ? 'container-onReady' : 'container'}>
             <div>
               <LineUp
-                way='Away' 
+                way='Away'
                 team={awayTeam}
                 setTeam={setAwayTeam}
                 addedPlayer={selectedArea?.includes('Away') ? addedPlayer : null}
@@ -384,59 +383,56 @@ function App() {
                 />
             </div>
           </div>
-        </div>
           <Footer onReady={onReady}/>
-          </>
+        </div>
       :
-        <>
-          <Report>
-            <div/>
-            <ReportHead>
-              <ScoreBoard
-                showScoreBoard={showScoreBoard}
+        <Report>
+          <div/>
+          <ReportHead>
+            <ScoreBoard
+              showScoreBoard={showScoreBoard}
+              gameReportRow={reportRow}
+              showPlayButton={showPlayButton}
+              setShowPlayButton={setShowPlayButton}
+              gameFinished={gameFinished}
+              setOnPlay={setOnPlay}
+            />
+            {!gameFinished && <ButtonList>
+              {playState
+                ?
+                <Pause className='pause' $showButton={showPlayButton} onClick={pauseHandler}
+                  onMouseEnter={() => setShowPlayButton(true)}/>
+                :
+                <Restart className='restart' $showButton={showPlayButton} onClick={() => restartHandler(speedList[storedSpeed])}
+                  onMouseEnter={() => setShowPlayButton(true)}/>
+              }
+              <SpeedUp $showButton={showPlayButton} onClick={setSpeedHandler}
+                onMouseEnter={() => setShowPlayButton(true)}>{speedButton[storedSpeed]}</SpeedUp>
+            </ButtonList>}
+          </ReportHead>
+          <div/>
+            <PlayerReport
+                key={'awayReport'}
+                way={'away'}
+                pitcherReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
+                batterReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
+            />
+            <LineUpCard
+                onPlay={onPlay}
+                setShowScoreBoard={setShowScoreBoard}
+                awayTeam={awayTeam}
+                homeTeam={homeTeam}
+                awayLineUp={awayLineUpList}
+                homeLineUp={homeLineUpList}
                 gameReportRow={reportRow}
-                showPlayButton={showPlayButton}
-                setShowPlayButton={setShowPlayButton}
-                gameFinished={gameFinished}
-                setOnPlay={setOnPlay}
-              />
-              {!gameFinished && <ButtonList>
-                {playState
-                  ?
-                  <Pause className='pause' $showButton={showPlayButton} onClick={pauseHandler}
-                    onMouseEnter={() => setShowPlayButton(true)}/>
-                  :
-                  <Restart className='restart' $showButton={showPlayButton} onClick={() => restartHandler(speedList[storedSpeed])}
-                    onMouseEnter={() => setShowPlayButton(true)}/>
-                }
-                <SpeedUp $showButton={showPlayButton} onClick={setSpeedHandler}
-                  onMouseEnter={() => setShowPlayButton(true)}>{speedButton[storedSpeed]}</SpeedUp>
-              </ButtonList>}
-            </ReportHead>
-            <div/>
-              <PlayerReport
-                  key={'awayReport'}
-                  way={'away'}
-                  pitcherReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
-                  batterReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
-              />
-              <LineUpCard
-                  onPlay={onPlay}
-                  setShowScoreBoard={setShowScoreBoard}
-                  awayTeam={awayTeam}
-                  homeTeam={homeTeam}
-                  awayLineUp={awayLineUpList}
-                  homeLineUp={homeLineUpList}
-                  gameReportRow={reportRow}
-              />
-              <PlayerReport
-                  key={'homeReport'}
-                  way={'home'}
-                  pitcherReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
-                  batterReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
-              />
-          </Report>
-        </>
+            />
+            <PlayerReport
+                key={'homeReport'}
+                way={'home'}
+                pitcherReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
+                batterReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
+            />
+        </Report>
       }
     </>
   )

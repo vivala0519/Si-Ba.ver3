@@ -180,7 +180,7 @@ const TeamName = styled.input`
     width: 100%;
     height: 90%;
     outline: none;
-    touch-action: manipulation;
+    touch-action: none;
     ::placeholder {
         color: red;
         opacity: 1;

@@ -457,6 +457,12 @@ const PlayButtonContainer = styled.div<styleProps>`
   @media (max-width: 821px) {
     left: 40%;
   }
+  @media (max-width: 400px) {
+    left: 39%;
+  }
+  @media (max-width: 380px) {
+    left: 38%;
+  }
 `
 
 const PlayButton = styled.button`

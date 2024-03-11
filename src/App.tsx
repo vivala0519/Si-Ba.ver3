@@ -370,7 +370,7 @@ function App() {
                 />
             </div>
             <PlayButtonContainer $ready={onReady}>
-              <PlayButton className={`${styles.play} ${onReady ? 'play-button show' : 'play-button'}`} onClick={playButtonHandler}>Play Ball!</PlayButton>
+              <PlayButton className={`${styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
             </PlayButtonContainer>
             <div style={{width: '100%'}}>
               <LineUp
@@ -465,7 +465,7 @@ const PlayButtonContainer = styled.div<styleProps>`
   }
 `
 
-const PlayButton = styled.button`
+const PlayButton = styled.button<styleProps>`
   //font-family: "Giants-Inline", serif;
   //font-family: "HeirofLightBold", serif;
   font-family: "KBO-Dia-Gothic_bold", serif;
@@ -478,6 +478,7 @@ const PlayButton = styled.button`
   width: 80px;
   height: 80px;
   margin-top: 20px;
+  display: ${props => props.$ready ? 'block' : 'none'}};
   &:hover,
   &:focus {
       outline: none;

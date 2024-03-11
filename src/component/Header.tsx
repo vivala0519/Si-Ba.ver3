@@ -37,7 +37,6 @@ const HeaderContainer = styled.div<styleProps>`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 50px;
     margin-bottom: 120px;
     left: 10px;
     width: ${props => props.$ready ? '100%' : '100%'}

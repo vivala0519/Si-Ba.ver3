@@ -8,7 +8,7 @@ interface Player {
 }
 
 interface BoxProps {
-    width: number
+    width: string
     state?: string
     setState?: React.Dispatch<React.SetStateAction<string>>
     selectedIdx?: number
@@ -79,7 +79,7 @@ const DropDownBox = (props: BoxProps) => {
         <div
             className={isOpen ? "dropdown active" : "dropdown"}
             onClick={() => setIsOpen(!isOpen)}
-            style={{width: width + '%', top: isOpen && listElement.length < 7 ? '138px' : (isOpen ? '145px': '0px')}}
+            style={{width: width, filter: 'drop-shadow(1px 2px 1px #888888)', top: isOpen && listElement.length < 7 ? '138px' : (isOpen ? '145px': '0px')}}
          >
         <div className="dropdownText">
             {state ? state : haveText}

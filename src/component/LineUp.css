@@ -13,6 +13,7 @@
     background-position-y: 1px;
     transform: translateX(-5px);
     opacity: 100%;
+    /*filter: drop-shadow(0 0 2px rgba(187, 38, 73, 0.3)) drop-shadow(0 0 5px rgba(187, 38, 73, 0.3)) drop-shadow(0 0 15px rgba(187, 38, 73, 0.3));*/
 }
 
 .selectedAway {
@@ -35,4 +36,5 @@
     background-position-y: 1px;
     transform: scaleX(-1);
     opacity: 100%;
+    /*filter: drop-shadow(0 0 2px rgba(187, 38, 73, 0.3)) drop-shadow(0 0 5px rgba(187, 38, 73, 0.3)) drop-shadow(0 0 15px rgba(187, 38, 73, 0.3));*/
 }

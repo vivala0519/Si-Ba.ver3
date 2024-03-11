@@ -72,6 +72,9 @@ const FooterEl = styled.span`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    @media (max-width: 821px) {
+        font-size: 8px;
+    };
 `
 
 const Link = styled.a`
@@ -121,6 +124,9 @@ const NextUpdate = styled.p<styleProps>`
         border-style: solid;
         border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
     }
+    @media (max-width: 821px) {
+        font-size: 8px;
+    };
 `;
 
 const Description = styled.p<styleProps>`
@@ -152,5 +158,8 @@ const CopyRight = styled.span<styleProps>`
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
-    width: ${props => props.$ready ? '100%' : '100%'}
+    width: ${props => props.$ready ? '100%' : '100%'};
+    @media (max-width: 821px) {
+        font-size: 8px;
+    };
 `

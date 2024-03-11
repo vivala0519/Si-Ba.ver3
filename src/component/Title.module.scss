@@ -42,8 +42,9 @@ $main-color: #BB2649;
     &::before {
       animation: none;
       color: transparent;
-      filter: drop-shadow(2px 4px 6px black);
+      //filter: drop-shadow(2px 4px 6px black);
       cursor: pointer;
+      filter: drop-shadow(0 0 2px rgba(187, 38, 73, 0.7)) drop-shadow(0 0 5px rgba(187, 38, 73, 0.7)) drop-shadow(0 0 15px rgba(187, 38, 73, 0.7));
     }
   }
 

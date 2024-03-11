@@ -107,7 +107,7 @@ const LineUp = (props: PropsType) => {
     return (
         <>
             <LineUpContainer $ready={onReady} $way={way}>
-                <TeamNameContainer $way={way}>
+                <TeamNameContainer $way={way} $focused={focused}>
                     <TeamNameBorder className={focused && styles.title}>
                         <TeamName
                             onChange={(event) => setTeam(event.target.value)}
@@ -132,22 +132,42 @@ const LineUpContainer = styled.div<PlayerProps>`
     width: 100%;
     transition: transform 0.5s;
     transform: ${props => props.$ready && (props.$way === 'Away' ? 'translateX(-50px)' : 'translateX(50px)')};
+
+    @media (max-width: 821px) {
+        transform: ${props => props.$ready && (props.$way === 'Away' ? 'translateX(-5px)' : 'translateX(5px)')};
+    }
 `
 
 const TeamNameContainer = styled.div<PlayerProps>`
     position: relative;
-    left: ${props => (props.$way === 'Away' ? '12px' : '18px')};
+    // left: ${props => (props.$way === 'Away' ? '0px' : '18px')};
     margin-bottom: 30px;
     margin-top: 20px;
-    width: 90%;
+    //width: 100%;
+    width: 240px;
     height: 40px;
     border: 2px outset #BB2649;
     border-radius: 3px;
+    @media (max-width: 821px) {
+        height: 4vh;
+        width: 90%;
+        position: relative;
+        left: 5%;
+    }
+    filter: ${props => {
+        if (props.$focused) {
+            return 'drop-shadow(0 0 2px rgba(187, 38, 73, 0.3)) drop-shadow(0 0 5px rgba(187, 38, 73, 0.3)) drop-shadow(0 0 15px rgba(187, 38, 73, 0.3))';
+        }
+    }};
 `
 
 const TeamNameBorder = styled.div`
+    //width: 100%;
     width: 100%;
     height: 40px;
+    @media (max-width: 821px) {
+        height: 4vh;
+    }
 `
 
 const TeamName = styled.input`
@@ -165,18 +185,32 @@ const TeamName = styled.input`
         opacity: 1;
     }
     z-index: 0;
+    @media (max-width: 821px) {
+        font-size: 12px;
+    }
 `
 
 const WayText = styled.span<PlayerProps>`
-    position: relative;
+    position: absolute;
+    font-size: 12px;
+    left: 43%;
+    @media (max-width: 821px) {
+        left: 40%;
+    };
     top: ${props => {
         if (props.$focused) {
-            return '-72px';
+            // return '-72px';
+            // return '-190%';
+            return '-90%';
         } else {
             if (props.$teamName) {
-                return '-67px';
+                // return '-72px';
+                // return '-180%';
+                return '-75%';
             } else {
-                return '-30px';
+                // return '-30px';
+                // return '-81%';
+                return '20%';
             }
         }
     }};
@@ -217,6 +251,7 @@ const Player = styled.div<PlayerProps>`
         border: ${props => props.$hover && !props.selected ? '3px solid #BB2649' : '3px solid transparent'};
         border-radius: 5px;
         cursor: ${props => props.$hover ? 'pointer' : 'default'};
+        filter: drop-shadow(0 0 2px rgba(187, 38, 73, 0.5)) drop-shadow(0 0 5px rgba(187, 38, 73, 0.5)) drop-shadow(0 0 15px rgba(187, 38, 73, 0.5));
     }
 `
 
@@ -228,7 +263,7 @@ const SeperatorLine = styled.hr`
 const LineUpNumber = styled.div<PlayerProps>`
     margin: 2px;
     text-align: center;
-    width: ${props => props.$num < 9 ? '40px' : '48px'};
+    width: ${props => props.$num < 9 ? '20%' : '48px'};
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -240,7 +275,8 @@ const PlayerName = styled.div<PlayerProps>`
 	text-align: center;
     position: relative;
     left: ${props => props.$way === 'Home' && '-5px'};
-    width: 106px;
+    //width: 106px;
+    width: 50%;
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -250,7 +286,8 @@ const PlayerName = styled.div<PlayerProps>`
 
 const Position = styled.div`
 	text-align: center;
-    width: 27px;
+    //width: 27px;
+    width: 13%;
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -260,7 +297,9 @@ const Position = styled.div`
 const Average = styled.div<PlayerProps>`
 	text-align: center;
     font-weight: 700;
-    width: 40px;
+    font-optical-sizing: auto;
+    //width: 40px;
+    width: 17%;
     margin-right: ${props => props.$way === 'Away' ? '10px' : '20px'};
     margin-left: ${props => props.$way === 'Away' && '10px'};
     display: ${props => {

@@ -42,6 +42,9 @@ $main-color: #BB2649;
     &::after,
     &::before {
       background-color: rgba(#BB2649, .7);
+      @media (max-width: 821px) {
+        background-color: transparent;
+      }
     }
   }
 

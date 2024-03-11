@@ -350,8 +350,8 @@ function App() {
           <Header onReady={onReady}/>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
           {/*SearchBoxContainer*/}
-          <div className={onReady ? 'container-onReady' : 'container'}>
-            <div>
+          <div className={'container'}>
+            <div style={{width: '100%'}}>
               <LineUp
                 way='Away'
                 team={awayTeam}
@@ -368,7 +368,7 @@ function App() {
             <PlayButtonContainer $ready={onReady}>
               <PlayButton className={`${styles.play} ${onReady ? 'play-button show' : 'play-button'}`} onClick={playButtonHandler}>Play Ball!</PlayButton>
             </PlayButtonContainer>
-            <div>
+            <div style={{width: '100%'}}>
               <LineUp
                 way='Home'
                 team={homeTeam}
@@ -441,18 +441,18 @@ function App() {
 export default App
 
 const PlayButtonContainer = styled.div<styleProps>`
-  position: relative;
-  top: 190px;
+  position: absolute;
+  top: 35%;
   display: flex;
   align-items: center;
-  width: ${(props) => {
-    if (props.$ready) {
-      return '80px';
-    } else {
-      return '40px';
-    }
-  }};
+  /* width: 80px; */
   height: 80px;
+  width: 80px;
+  left: 43%;
+  z-index: 1;
+  @media (max-width: 821px) {
+    left: 40%;
+  }
 `
 
 const PlayButton = styled.button`
@@ -471,6 +471,9 @@ const PlayButton = styled.button`
   &:hover,
   &:focus {
       outline: none;
+  }
+  @media (max-width: 821px) {
+    filter: opacity(0.7);
   }
 `
 

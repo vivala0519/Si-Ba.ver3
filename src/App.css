@@ -11,8 +11,9 @@
   @media (max-width: 821px) {
     /*justify-content: normal;*/
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     width: 100%;
+    font-size: 8px;
   }
 }
 .play-button {
@@ -50,6 +51,11 @@
   margin-top: 10px;
   position: relative;
   z-index: 0;
+  gap: 80px;
+  @media (max-width: 821px) {
+    gap: 5px;
+    margin-top: 0px;
+  }
 }
 
 .container::before {
@@ -80,7 +86,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("./assets/background3.png");
+  background-image: url("./assets/background2.png");
   background-size: 100% 100%;
   opacity: 0.2;
   z-index: -1;

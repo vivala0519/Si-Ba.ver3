@@ -146,15 +146,19 @@ const SelectPlayerContainer = (props) => {
                 selectMode ?
                     <>
                         {/* <ChangeMode onClick={() => setSelectMode(!selectMode)}>search</ChangeMode> */}
-                        <DropDownBox type='Year' state={year} setState={setYear} propList={yearList} width={20}/>
                         {!loadingFlag ?
-                            <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={20}/>
+                            <DropDownBox type='Year' state={year} setState={setYear} propList={yearList} width={'13%'}/>
                             :
-                            <LoadingBox className={"dropdown"} $width={'120px'}><div className={'loading-data'} style={{backgroundColor: '#a8a8a8', width: '120px', height: '40px'}}/></LoadingBox>}
+                            <LoadingBox className={"dropdown"} $width={'13%'}><div className={'loading-data'} style={{backgroundColor: '#a8a8a8', width: '100%', height: '99%'}}/></LoadingBox>
+                        }
                         {!loadingFlag ?
-                            <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={30}/>
+                            <DropDownBox type='Team' state={team} setState={setTeam} propList={teamList} width={'18%'}/>
                             :
-                            <LoadingBox className={"dropdown"} $width={'177px'}><div className={'loading-data'} style={{backgroundColor: '#a8a8a8', width: '177px', height: '40px'}}/></LoadingBox>}
+                            <LoadingBox className={"dropdown"} $width={'18%'}><div className={'loading-data'} style={{backgroundColor: '#a8a8a8', width: '100%', height: '99%'}}/></LoadingBox>}
+                        {!loadingFlag ?
+                            <DropDownBox type='Player' state={player} setState={setPlayer} selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} propList={playerList} width={'25%'}/>
+                            :
+                            <LoadingBox className={"dropdown"} $width={'25%'}><div className={'loading-data'} style={{backgroundColor: '#a8a8a8', width: '100%', height: '99%'}}/></LoadingBox>}
                         {/* <ViewDetailStat /> */}
                         {Number(selectedArea.slice(4)) > 9 ? <AddPitcher onClick={addPlayer} /> : <AddBatter onClick={addPlayer} />}
                     </>
@@ -181,6 +185,9 @@ const SelectContainer = styled.div<styleProps>`
     margin-right: ${props => props.selected && '-50px'};
     position: relative;
     z-index: 1;
+    @media (max-width: 821px) {
+        margin-top: 0px;
+    }
 `
 
 // const ViewDetailStat = styled.div`
@@ -239,10 +246,13 @@ const ChangeMode = styled.button`
 const LoadingBox = styled.div<styleProps>`
     display: flex;
     width: ${props => props.$width};
-    height: 42px;
+    height: 83%;
     align-items: center;
     justify-content: center;
     color: #BB2649;
+    @media (max-width: 821px) {
+        height: 60%;
+    }
 `
 
 const SelectAreaHelp = styled.div`
@@ -252,5 +262,9 @@ const SelectAreaHelp = styled.div`
     font-size: 20px;
     margin-top: 10px;
     margin-bottom: 10px;
+
+    @media (max-width: 821px) {
+        font-size: 15px;
+    };
     //color: #BB2649;
 `

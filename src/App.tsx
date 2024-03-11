@@ -343,10 +343,14 @@ function App() {
     }
   }, [onPlay]);
 
+  const handleTouchStart = (event) => {
+    event.preventDefault();
+  }
+
   return (
     <>
       {!onPlay ?
-        <div className={disappear ? 'body-container onPlay' : 'body-container'} style={{display: 'flex', flexDirection: 'column'}}>
+        <div className={disappear ? 'body-container onPlay' : 'body-container'} style={{display: 'flex', flexDirection: 'column'}} onTouchStart={handleTouchStart}>
           <Header onReady={onReady}/>
           <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
           {/*SearchBoxContainer*/}

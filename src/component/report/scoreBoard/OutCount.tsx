@@ -36,8 +36,8 @@ const OutCountainer = styled.div`
     left: 21px;
     top: 44px;
     @media (max-width: 821px) {
-        left: 4%;
-        top: 44px;
+        left: 6.3%;
+        top: 39.5px;
         gap: 9px;    
     }
 `

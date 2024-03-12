@@ -158,6 +158,11 @@ const ProcessBorder = styled.div<styleProps>`
     border-radius: var(--borderWidth);
     z-index: revert;
     margin-bottom: 15px;
+    
+    @media (max-width: 821px) {
+        width: 95%;
+        left: 2.3%;
+    }
 
     &::after {
         content: '';
@@ -192,9 +197,9 @@ const Board = styled.div`
     display: flex;
     flex-direction: column;
     width: 96%;
-    height: 124px;
+    height: 100%;
     background: repeating-linear-gradient(to right, #666666, black 82%, #3f3f3f 18%);
-    border: 3mm inset black;
+    border: 2mm inset black;
     //margin-bottom: 15px;
     color: white;
     font-family: "Road Rage", sans-serif;
@@ -238,7 +243,14 @@ const ScoreCell = styled.div<styleProps>`
     font-style: normal;
 
     @media (max-width: 821px) {
-        font-size: 22px;    
+        font-size: 22px;
+        width: ${props => {
+            if (props.$index === 0) {
+                return '13%'
+            } else {
+                return '5.8%'
+            }
+        }};
     }
 `
 

@@ -183,7 +183,7 @@ const LineUpCard = (props: PropsType) => {
             <CardBorder className={onPlay ? 'sheetBorder' : ''}>
             <Title>LINE-UP CARD</Title>
             <SheetContainer className={onPlay ? 'sheetActive' : 'sheet'}>
-                <div key='away_sheet'>
+                <div key='away_sheet' style={{width: '100%'}}>
                 <Sheet>
                     <SheetDiv key='away_team_name' style={{borderBottom: '0px'}}>{awayTeam ? awayTeam : 'Away'}</SheetDiv>
                     <StarterPitcher $isActive={activeTopBottom === 'bottom' && activeAwayPitcher === 10} $ballCount={awayPitcherCount}>
@@ -219,7 +219,7 @@ const LineUpCard = (props: PropsType) => {
                     </Pitcher>
                 </BullpenSheet>
                 </div>
-                <div key='home_sheet'>
+                <div key='home_sheet' style={{width: '100%'}}>
                 <Sheet>
                     <SheetDiv key='home_team_name' style={{borderBottom: '0px'}}>{homeTeam ? homeTeam : 'Home'}</SheetDiv>
                     <StarterPitcher $isActive={activeTopBottom === 'top' && activeHomePitcher === 10} $ballCount={homePitcherCount}>
@@ -273,16 +273,16 @@ const CardBorder = styled.div`
     filter: drop-shadow(0px 7px 37px black);
     @media (max-width: 821px) {
         position: absolute;
-        top: 25%;
+        top: 24%;
         left: 3%;
         width: 94%;
         z-index: 1000;
         padding: 0px 10px 10px 10px;
     };
-    @media (max-width: 376px) {
-        position: absolute;
-        top: 30%;
-    };
+    //@media (max-width: 376px) {
+    //    position: absolute;
+    //    top: 30%;
+    //};
     //--borderWidth: 3px;
     //position: relative;
     //border-radius: var(--borderWidth);

@@ -398,7 +398,7 @@ function App() {
         </div>
       :
         <Report>
-          <div/>
+          {!isMobile && <div/>}
           <ReportHead>
             <ScoreBoard
               showScoreBoard={showScoreBoard}
@@ -421,13 +421,13 @@ function App() {
                 onMouseEnter={() => setShowPlayButton(true)}>{speedButton[storedSpeed]}</SpeedUp>
             </ButtonList>}
           </ReportHead>
-          <div/>
-            {!isMobile && <PlayerReport
+          {!isMobile && <><div/>
+            <PlayerReport
                 key={'awayReport'}
                 way={'away'}
                 pitcherReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
                 batterReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
-            />}
+            /></>}
             <LineUpCard
                 onPlay={onPlay}
                 setShowScoreBoard={setShowScoreBoard}
@@ -561,7 +561,7 @@ const ButtonList = styled.div<styleProps>`
 
   @media (max-width: 831px) {
     position: absolute;
-    top: 28%;
+    top: 35%;
     left: 36%;  
   }
 `

@@ -32,8 +32,8 @@ const ScoreBoard = (props: PropsType) => {
     const [baseState, setBaseState] = useState([])
     const [outCount, setOutCount] = useState([false, false, false])
     const [hoverHome, setHoverHome] = useState(false)
-    const [showHelp, setShowHelp] = useState(false)
-    const helpText = '- 투수 교체 조건 : 투구 수 100개 이상 또는 5실점 이상\n- 경기 진행 중 현재 투수 배경색 : 투구 수에 따른 피로도'
+    // const [showHelp, setShowHelp] = useState(false)
+    // const helpText = '- 투수 교체 조건 : 투구 수 100개 이상 또는 5실점 이상\n- 경기 진행 중 현재 투수 배경색 : 투구 수에 따른 피로도'
 
     const scoringFunc = (record, gameReportRow) => {
         const { inning, inningScore, totalScore, totalHit, totalBB } = gameReportRow
@@ -253,38 +253,38 @@ const ScoreCell = styled.div<styleProps>`
         }};
     }
 `
-
-const Help = styled.div`
-    cursor: pointer;
-    position: relative;
-    left: 580px;
-    bottom: 41px;
-    width: 25px;
-    height: 30px;
-
-    @media (max-width: 821px) {
-        position: absolute;
-        left: 93%;
-        top: -30%;
-    }
-`
-
-const HelpContent = styled.p`
-    font-size: 12px;
-    font-family: "Hahmlet", serif;
-    font-style: normal;
-    font-weight: 800;
-    color: #5a5a5a;
-    position: relative;
-    left: 99%;
-    bottom: 97%;
-    white-space: pre-line;
-    text-align: left;
-
-    @media (max-width: 821px) {
-        position: absolute;
-        left: 22%;
-        top: -37%;
-        width: 100%;
-    }
-`
+//
+// const Help = styled.div`
+//     cursor: pointer;
+//     position: relative;
+//     left: 580px;
+//     bottom: 41px;
+//     width: 25px;
+//     height: 30px;
+//
+//     @media (max-width: 821px) {
+//         position: absolute;
+//         left: 93%;
+//         top: -30%;
+//     }
+// `
+//
+// const HelpContent = styled.p`
+//     font-size: 12px;
+//     font-family: "Hahmlet", serif;
+//     font-style: normal;
+//     font-weight: 800;
+//     color: #5a5a5a;
+//     position: relative;
+//     left: 99%;
+//     bottom: 97%;
+//     white-space: pre-line;
+//     text-align: left;
+//
+//     @media (max-width: 821px) {
+//         position: absolute;
+//         left: 22%;
+//         top: -37%;
+//         width: 100%;
+//     }
+// `

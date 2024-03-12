@@ -272,11 +272,11 @@ const CardBorder = styled.div`
     background-color: white;
     filter: drop-shadow(0px 7px 37px black);
     @media (max-width: 821px) {
-        position: absolute;
-        top: 24%;
-        left: 3%;
-        width: 94%;
-        z-index: 1000;
+        //position: absolute;
+        //top: 24%;
+        //left: 3%;
+        width: 100%;
+        //z-index: 1000;
         padding: 0px 10px 10px 10px;
     };
     //@media (max-width: 376px) {

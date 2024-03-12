@@ -19,6 +19,7 @@ interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
   $showButton?: boolean
   $ready?: boolean
   $hover?: boolean
+  $isMobile?: boolean
 }
 
 function App() {
@@ -223,7 +224,7 @@ function App() {
   const [onReady, setOnReady] = useState(false)
 
   useEffect(() => {
-    const checkMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const checkMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     setIsMobile(checkMobile)
   }, []);
@@ -441,7 +442,7 @@ function App() {
               gameFinished={gameFinished}
               setOnPlay={setOnPlay}
             />
-            {!gameFinished && <ButtonList>
+            {<ButtonList>
               {playState
                 ?
                 <Pause className='pause' $showButton={showPlayButton} onClick={pauseHandler}
@@ -568,28 +569,35 @@ const Ball = styled.div<styleProps>`
   z-index: 5;
 `
 
-const Report = styled.div`
+const Report = styled.div<styleProps>`
   display: grid;
   grid-template-rows: 150px 3fr;
   grid-template-columns: repeat(3, 1fr);
   grid-row-gap: 15px;
+  //display: flex;
+  //flex-direction: column;
   justify-content: center;
   justify-items: center;
   padding-top: 3em;
   @media (max-width: 821px) {
-    grid-template-rows: none;
+    display: flex;
     grid-template-columns: none;
     width: 100%;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
   };
 `
 
 const ReportHead = styled.div`
   padding-left: 4%;
+  position: relative;
+  width: 100%;
   @media (max-width: 821px) {
-    padding-left: 1%;
-    position: absolute;
-    width: 100%;
-    top: 6%;
+    padding-left: 0;
+    //position: relative;
+    //width: 100%;
+    //top: 6%;
   }
 `
 
@@ -601,8 +609,9 @@ const ButtonList = styled.div<styleProps>`
       return 'hidden';
     }
   }};
-  position: relative;
-  top: -90%;
+  position: absolute;
+  top: 36%;
+  left: 36%;
   display: flex;
   gap: 30px;
   justify-content: center;
@@ -610,8 +619,9 @@ const ButtonList = styled.div<styleProps>`
 
   @media (max-width: 831px) {
     position: absolute;
-    top: 35%;
-    left: 36%;  
+    top: 36%;
+    left: 36%;
+    gap: 15px;
   }
 `
 

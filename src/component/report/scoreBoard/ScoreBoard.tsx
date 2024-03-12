@@ -160,8 +160,8 @@ const ProcessBorder = styled.div<styleProps>`
     margin-bottom: 15px;
     
     @media (max-width: 821px) {
-        width: 95%;
-        left: 2.3%;
+        width: 100%;
+        //left: 2.3%;
     }
 
     &::after {

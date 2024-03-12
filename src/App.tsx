@@ -1,5 +1,5 @@
 import {useState, useEffect, DetailedHTMLProps, HTMLAttributes} from 'react'
-import styled, { css, keyframes } from 'styled-components'
+import styled from 'styled-components'
 import Swal from "sweetalert2"
 import LineUp from './component/LineUp'
 import LineUpCard from './component/report/LineUpCard.tsx'
@@ -19,7 +19,6 @@ interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
   $showButton?: boolean
   $ready?: boolean
   $hover?: boolean
-  $ballSpeed?: number
 }
 
 function App() {
@@ -281,7 +280,7 @@ function App() {
   // play button hover state
   const [hoverPlayButton, setHoverPlayButton] = useState(false)
   // ball spin speed
-  const [ballSpeed, setBallSpeed] = useState(5)
+  const [fastBall, setFastBall] = useState('low')
   // game finish flag
   const [gameFinished, setGameFinished] = useState(false)
 
@@ -361,17 +360,24 @@ function App() {
   }, [onPlay]);
 
   useEffect(() => {
-    let intervalId;
     if (hoverPlayButton) {
-      intervalId = setInterval(() => {
-        setBallSpeed(prevSpeed => Math.max(prevSpeed - 0.5, 0.2));
-      }, 500);
+      const timeout1 = setTimeout(() => {
+        setFastBall('middle')
+      }, 2000)
+      const timeout2 = setTimeout(() => {
+        setFastBall('high')
+      }, 4000)
+      const timeout3 = setTimeout(() => {
+        setFastBall('veryHigh')
+      }, 6000)
+      return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+        clearTimeout(timeout3);
+      };
     } else {
-      clearInterval(intervalId);
-      setBallSpeed(5)
+      setFastBall('low')
     }
-
-    return () => clearInterval(intervalId);
   }, [hoverPlayButton]);
 
   // 모바일에서 더블 터치 block
@@ -404,7 +410,7 @@ function App() {
             <PlayButtonContainer $ready={onReady} onMouseEnter={() => setHoverPlayButton(true)} onMouseLeave={() => setHoverPlayButton(false)}>
               <PlayButton className={`${hoverPlayButton ? styles.hoverPlay : styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
               <PlayButtonBorder $ready={onReady} $hover={hoverPlayButton}/>
-              {hoverPlayButton && <Ball $ballSpeed={ballSpeed}/>}
+              {hoverPlayButton && <Ball className={fastBall === 'low'? 'ball' : fastBall === 'middle' ? 'fast-ball' : fastBall === 'high' ? 'more-fast-ball' : 'the-most-fast-ball'} />}
             </PlayButtonContainer>
             <div style={{width: '100%'}}>
               <LineUp
@@ -550,15 +556,6 @@ const PlayButtonBorder = styled.div<styleProps>`
   };
 `
 
-const rotateAnimation = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
 const Ball = styled.div<styleProps>`
   position: relative;
   top: 20px;
@@ -569,11 +566,6 @@ const Ball = styled.div<styleProps>`
   width: 80px;
   height: 80px;
   z-index: 5;
-  ${props =>
-      props.$ballSpeed &&
-      css`
-      animation: ${rotateAnimation} ${props.$ballSpeed}s linear infinite;
-    `};
 `
 
 const Report = styled.div`

@@ -100,6 +100,42 @@
   color: #888;
 }
 
+.ball {
+  animation: slow 4s linear;
+}
+
+.fast-ball {
+  animation: fast 1s linear infinite;
+}
+
+.more-fast-ball {
+  animation: fast 0.5s linear infinite;
+}
+
+.the-most-fast-ball {
+  animation: fast 0.2s linear infinite;
+}
+
+@keyframes slow {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: rotate(360deg);
+    animation-timing-function: linear;
+  }
+}
+
+@keyframes fast {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes disappear {
   from {
     opacity: 100%;

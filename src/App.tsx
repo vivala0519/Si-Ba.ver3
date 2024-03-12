@@ -1,5 +1,5 @@
 import {useState, useEffect, DetailedHTMLProps, HTMLAttributes} from 'react'
-import styled from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import Swal from "sweetalert2"
 import LineUp from './component/LineUp'
 import LineUpCard from './component/report/LineUpCard.tsx'
@@ -11,12 +11,15 @@ import Footer from './component/Footer.tsx'
 import styles from './Play.module.scss'
 import restart from '@/assets/restart.svg'
 import pause from '@/assets/pause.svg'
+import ball from '@/assets/ball.png'
 import { gameProcess } from './api/gameProcess.js'
 import './App.css'
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>  {
   $showButton?: boolean
   $ready?: boolean
+  $hover?: boolean
+  $ballSpeed?: number
 }
 
 function App() {
@@ -275,6 +278,10 @@ function App() {
   const speedButton = ['x1', 'x2', 'x5', 'x10']
   // play button show state
   const [showPlayButton, setShowPlayButton] = useState(false)
+  // play button hover state
+  const [hoverPlayButton, setHoverPlayButton] = useState(false)
+  // ball spin speed
+  const [ballSpeed, setBallSpeed] = useState(5)
   // game finish flag
   const [gameFinished, setGameFinished] = useState(false)
 
@@ -315,11 +322,13 @@ function App() {
     }
   }, [showScoreBoard])
 
+  // 재시작 func.
   const restartHandler = (val) => {
     setPlayState(true)
     sendSplitReport(reportArr, processIndex, val)
   }
 
+  // 일시정지 func.
   const pauseHandler = () => {
     if (intervalId) {
       clearInterval(intervalId)
@@ -330,6 +339,7 @@ function App() {
     setPlayState(false)
   }
 
+  // 속도 조절 func
   const setSpeedHandler = () => {
     pauseHandler()
     const speed = storedSpeed + 1 === 4 ? 0 : storedSpeed + 1
@@ -340,6 +350,7 @@ function App() {
     }, 100)
   }
 
+  // home 으로 돌아왔을 때 초기화
   useEffect(() => {
     if (!onPlay) {
       setGameFinished(false)
@@ -349,6 +360,21 @@ function App() {
     }
   }, [onPlay]);
 
+  useEffect(() => {
+    let intervalId;
+    if (hoverPlayButton) {
+      intervalId = setInterval(() => {
+        setBallSpeed(prevSpeed => Math.max(prevSpeed - 0.5, 0.2));
+      }, 500);
+    } else {
+      clearInterval(intervalId);
+      setBallSpeed(5)
+    }
+
+    return () => clearInterval(intervalId);
+  }, [hoverPlayButton]);
+
+  // 모바일에서 더블 터치 block
   const handleTouchStart = (event) => {
     event.preventDefault();
   }
@@ -375,9 +401,10 @@ function App() {
                 onReady={onReady}
                 />
             </div>
-            <PlayButtonContainer $ready={onReady}>
-              <PlayButton className={`${styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
-              <PlayButtonBorder $ready={onReady}/>
+            <PlayButtonContainer $ready={onReady} onMouseEnter={() => setHoverPlayButton(true)} onMouseLeave={() => setHoverPlayButton(false)}>
+              <PlayButton className={`${hoverPlayButton ? styles.hoverPlay : styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
+              <PlayButtonBorder $ready={onReady} $hover={hoverPlayButton}/>
+              {hoverPlayButton && <Ball $ballSpeed={ballSpeed}/>}
             </PlayButtonContainer>
             <div style={{width: '100%'}}>
               <LineUp
@@ -512,12 +539,41 @@ const PlayButtonBorder = styled.div<styleProps>`
     width: 90px;
     height: 90px;
     background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
-    border-radius: calc(2 * var(--borderWidth));
+    //border-radius: calc(2 * var(--borderWidth));
     z-index: -1;
     animation: animatedgradient 3s ease alternate infinite;
     background-size: 300% 300%;
-    filter: blur(5px);
+    //filter: blur(5px);
+    //border-radius: 50%;
+    border-radius: ${props => props.$hover ? '50%' : 'calc(2 * var(--borderWidth))'};;
+    filter: ${props => props.$hover ? 'blur(30px)' : 'blur(5px)'};
+  };
+`
+
+const rotateAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Ball = styled.div<styleProps>`
+  position: relative;
+  top: 20px;
+  background: url(${ball}) no-repeat center center;
+  background-size: 200% 200%;
+  cursor: pointer;
+  pointer-events: none;
+  width: 80px;
+  height: 80px;
+  z-index: 5;
+  ${props =>
+      props.$ballSpeed &&
+      css`
+      animation: ${rotateAnimation} ${props.$ballSpeed}s linear infinite;
+    `};
 `
 
 const Report = styled.div`

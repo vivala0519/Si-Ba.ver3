@@ -138,7 +138,7 @@ const BoardRoof = styled.div<styleProps>`
 
 const ToHome = styled.div`
     position: absolute;
-    left: 86%;
+    left: 82%;
     top: -26px;
     width: 50px;
     height: 50px;
@@ -180,6 +180,9 @@ const ProcessBorder = styled.div<styleProps>`
         animation: animatedgradient 3s ease alternate infinite;
         background-size: 300% 300%;
         filter: blur(5px);
+        @media (max-width: 821px) {
+            width: 100%;
+        };
     }
 `
 
@@ -197,6 +200,10 @@ const Board = styled.div`
     font-family: "Road Rage", sans-serif;
     font-weight: 400;
     font-style: normal;
+
+    @media (max-width: 821px) {
+        width: 99%;
+    };
 `
 
 const ColumnDiv = styled.div<styleProps>`
@@ -229,6 +236,10 @@ const ScoreCell = styled.div<styleProps>`
     font-weight: 400;
     font-size: 25px;
     font-style: normal;
+
+    @media (max-width: 821px) {
+        font-size: 22px;    
+    }
 `
 
 const Help = styled.div`
@@ -238,10 +249,16 @@ const Help = styled.div`
     bottom: 41px;
     width: 25px;
     height: 30px;
+
+    @media (max-width: 821px) {
+        position: absolute;
+        left: 93%;
+        top: -30%;
+    }
 `
 
 const HelpContent = styled.p`
-    font-size: 18px;
+    font-size: 12px;
     font-family: "Hahmlet", serif;
     font-style: normal;
     font-weight: 800;
@@ -251,4 +268,11 @@ const HelpContent = styled.p`
     bottom: 97%;
     white-space: pre-line;
     text-align: left;
+
+    @media (max-width: 821px) {
+        position: absolute;
+        left: 22%;
+        top: -37%;
+        width: 100%;
+    }
 `

@@ -205,6 +205,8 @@ function App() {
 // null
 //   ]
 
+  const [isMobile, setIsMobile] = useState(false)
+
   const [awayTeam, setAwayTeam] = useState<string | null>(null)
   const [homeTeam, setHomeTeam] = useState<string | null>(null)
   const [selectedArea, setSelectedArea] = useState<string | null>(null)
@@ -217,6 +219,12 @@ function App() {
   const [report, setReport] = useState<object | null>(null)
   const [reportRow, setReportRow] = useState<object | null>(null)
   const [onReady, setOnReady] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    setIsMobile(checkMobile)
+  }, []);
 
   const playButtonHandler = async () => {
     const homeLineUpNullCount = homeLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
@@ -246,9 +254,7 @@ function App() {
   }, [homeLineUpList, awayLineUpList]);
 
   // useEffect(() => {
-  //   // @ts-ignore
   //   setAwayLineUpList(dummyData)
-  //   // @ts-ignore
   //   setHomeLineUpList(dummyData)
   // }, [])
 
@@ -371,6 +377,7 @@ function App() {
             </div>
             <PlayButtonContainer $ready={onReady}>
               <PlayButton className={`${styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
+              <PlayButtonBorder $ready={onReady}/>
             </PlayButtonContainer>
             <div style={{width: '100%'}}>
               <LineUp
@@ -415,12 +422,12 @@ function App() {
             </ButtonList>}
           </ReportHead>
           <div/>
-            <PlayerReport
+            {!isMobile && <PlayerReport
                 key={'awayReport'}
                 way={'away'}
                 pitcherReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
                 batterReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
-            />
+            />}
             <LineUpCard
                 onPlay={onPlay}
                 setShowScoreBoard={setShowScoreBoard}
@@ -430,12 +437,12 @@ function App() {
                 homeLineUp={homeLineUpList}
                 gameReportRow={reportRow}
             />
-            <PlayerReport
+            {!isMobile && <PlayerReport
                 key={'homeReport'}
                 way={'home'}
                 pitcherReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
                 batterReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
-            />
+            />}
         </Report>
       }
     </>
@@ -478,13 +485,38 @@ const PlayButton = styled.button<styleProps>`
   width: 80px;
   height: 80px;
   margin-top: 20px;
-  display: ${props => props.$ready ? 'block' : 'none'}};
+  display: ${props => props.$ready ? 'block' : 'none'};
+  z-index: 1;
   &:hover,
   &:focus {
       outline: none;
   }
   @media (max-width: 821px) {
     filter: opacity(0.7);
+  }
+`
+
+const PlayButtonBorder = styled.div<styleProps>`
+  display: ${props => props.$ready ? 'block' : 'none'};
+  --borderWidth: 2px;
+  position: relative;
+  top: -22px;
+  left: -3px;
+  border-radius: var(--borderWidth);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+    border-radius: calc(2 * var(--borderWidth));
+    z-index: -1;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+    filter: blur(5px);
   }
 `
 
@@ -496,10 +528,20 @@ const Report = styled.div`
   justify-content: center;
   justify-items: center;
   padding-top: 3em;
+  @media (max-width: 821px) {
+    grid-template-rows: none;
+    grid-template-columns: none;
+  };
 `
 
 const ReportHead = styled.div`
   padding-left: 4%;
+  @media (max-width: 821px) {
+    padding-left: 1%;
+    position: absolute;
+    width: 100%;
+    top: 6%;
+  }
 `
 
 const ButtonList = styled.div<styleProps>`
@@ -516,6 +558,12 @@ const ButtonList = styled.div<styleProps>`
   gap: 30px;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 831px) {
+    position: absolute;
+    top: 28%;
+    left: 36%;  
+  }
 `
 
 const Restart = styled.div<styleProps>`

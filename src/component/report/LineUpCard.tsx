@@ -267,11 +267,22 @@ const CardBorder = styled.div`
     display:flex;
     flex-direction: column;
     padding: 0px 10px 40px 10px;
-    width: fit-content;
+    //width: fit-content;
     color: black;
     background-color: white;
     filter: drop-shadow(0px 7px 37px black);
-    
+    @media (max-width: 821px) {
+        position: absolute;
+        top: 25%;
+        left: 3%;
+        width: 94%;
+        z-index: 1000;
+        padding: 0px 10px 10px 10px;
+    };
+    @media (max-width: 376px) {
+        position: absolute;
+        top: 30%;
+    };
     //--borderWidth: 3px;
     //position: relative;
     //border-radius: var(--borderWidth);
@@ -299,6 +310,9 @@ const Title = styled.div`
     font-style: normal;
     font-size: 37px;
     padding: 15px 0px 15px 0px;
+    @media (max-width: 821px) {
+        font-size: 27px;
+    };
 `
 
 const SheetContainer = styled.div`
@@ -310,9 +324,14 @@ const SheetContainer = styled.div`
 const Sheet = styled.div`
     display: grid;
     grid-template-rows: 1fr 1fr 10fr;
-    width: 270px;
+    //width: 270px;
+    width: 100%;
     border: 2px solid black;
     border-radius: 3px;
+
+    @media (max-width: 821px) {
+        height: 70%;
+    };
 `
 
 const SheetDiv = styled.div`
@@ -324,6 +343,9 @@ const SheetDiv = styled.div`
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
+    @media (max-width: 821px) {
+        font-size: 13px;
+    };
 `
 
 const PlayerEl = styled.div`
@@ -342,6 +364,9 @@ const Td = styled.div`
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;
+    @media (max-width: 821px) {
+        font-size: 10px;
+    };
 `
 
 const CursiveTd = styled.div`
@@ -354,15 +379,18 @@ const CursiveTd = styled.div`
     font-style: normal;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
+    @media (max-width: 821px) {
+        font-size: 15px;
+    };
 `
 
 const LetterSpacedByLength = styled.span<styleProps>`
     position: relative;
     left: ${props => {
         if (props.$namelength < 4) {
-            return '18px'
+            return '9%'
         } else {
-            return '8px'
+            return '5%'
         }
     }};
     font-family: "Nanum Pen Script", cursive;
@@ -382,6 +410,9 @@ const CursiveText = styled.span`
     font-family: "Nanum Pen Script", cursive;
     font-weight: 400;
     font-style: normal;
+    @media (max-width: 821px) {
+        font-size: 15px;
+    };
 `
 
 const StarterPitcher = styled.div<styleProps>`
@@ -412,7 +443,12 @@ const StarterPitcher = styled.div<styleProps>`
                 return '#d95e53 !important';
             }
         }
-    }}
+    }};
+    @media (max-width: 821px) {
+        font-size: 10px;
+        min-height: 30px;
+        padding: 0 5px 0 5px;
+    };
 `
 const Pitcher = styled.div<styleProps>`
     display: flex;
@@ -442,7 +478,11 @@ const Pitcher = styled.div<styleProps>`
                 return '#d95e53 !important';
             }
         }
-    }}
+    }};
+    @media (max-width: 821px) {
+        font-size: 13px;
+        min-height: 30px;
+    };
 `
 
 const BullpenSheet = styled.div`

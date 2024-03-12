@@ -223,7 +223,9 @@ const Report = styled.div<styleProps>`
             return 'drop-shadow(-4px 3px 5px grey)'
         }
     }};
-    max-width: 450px;
+    @media (max-width: 821px) {
+        display: none;
+    }
 `
 
 const Title = styled.div`

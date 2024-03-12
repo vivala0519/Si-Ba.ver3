@@ -131,7 +131,7 @@ const LineUpContainer = styled.div<PlayerProps>`
     flex-direction: column;
     width: 100%;
     transition: transform 0.5s;
-    transform: ${props => props.$ready && (props.$way === 'Away' ? 'translateX(-50px)' : 'translateX(50px)')};
+    transform: ${props => props.$ready && (props.$way === 'Away' ? 'translateX(-30px)' : 'translateX(30px)')};
 
     @media (max-width: 821px) {
         transform: ${props => props.$ready && (props.$way === 'Away' ? 'translateX(-5px)' : 'translateX(5px)')};
@@ -144,7 +144,7 @@ const TeamNameContainer = styled.div<PlayerProps>`
     margin-bottom: 30px;
     margin-top: 20px;
     //width: 100%;
-    width: 240px;
+    width: 280px;
     height: 40px;
     border: 2px outset #BB2649;
     border-radius: 3px;
@@ -264,7 +264,7 @@ const SeperatorLine = styled.hr`
 const LineUpNumber = styled.div<PlayerProps>`
     margin: 2px;
     text-align: center;
-    width: ${props => props.$num < 9 ? '20%' : '48px'};
+    width: ${props => props.$num < 9 ? '20%' : '20%'};
     font-family: "Hahmlet", serif;
     font-optical-sizing: auto;
     font-style: normal;

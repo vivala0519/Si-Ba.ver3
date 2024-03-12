@@ -35,6 +35,11 @@ const OutCountainer = styled.div`
     margin-bottom: 15px;
     left: 21px;
     top: 44px;
+    @media (max-width: 821px) {
+        left: 4%;
+        top: 44px;
+        gap: 9px;    
+    }
 `
 
 const OutEl = styled.div<styleProps>`
@@ -43,6 +48,11 @@ const OutEl = styled.div<styleProps>`
     width: 6px;
     height: 6px;
     position: relative;
+
+    @media (max-width: 821px) {
+        width: 4px;
+        height: 4px;
+    }
 
     &::after {
         content: '';

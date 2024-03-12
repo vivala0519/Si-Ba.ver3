@@ -579,6 +579,7 @@ const Report = styled.div`
   @media (max-width: 821px) {
     grid-template-rows: none;
     grid-template-columns: none;
+    width: 100%;
   };
 `
 

@@ -115,12 +115,12 @@ const ScoreBoard = (props: PropsType) => {
                     ))}
                 </Board>
             </ProcessBorder>
-            <Help
-                className='help'
-                onMouseEnter={() => setShowHelp(true)}
-                onMouseLeave={() => setShowHelp(false)}
-            />
-            {showHelp && <HelpContent>{ helpText }</HelpContent>}
+            {/*<Help*/}
+            {/*    className='help'*/}
+            {/*    onMouseEnter={() => setShowHelp(true)}*/}
+            {/*    onMouseLeave={() => setShowHelp(false)}*/}
+            {/*/>*/}
+            {/*{showHelp && <HelpContent>{ helpText }</HelpContent>}*/}
         </>
     )
 }

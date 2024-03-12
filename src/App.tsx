@@ -411,7 +411,7 @@ function App() {
             <PlayButtonContainer $ready={onReady} onMouseEnter={() => setHoverPlayButton(true)} onMouseLeave={() => setHoverPlayButton(false)}>
               <PlayButton className={`${hoverPlayButton ? styles.hoverPlay : styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
               <PlayButtonBorder $ready={onReady} $hover={hoverPlayButton}/>
-              {hoverPlayButton && <Ball className={fastBall === 'low'? 'ball' : fastBall === 'middle' ? 'fast-ball' : fastBall === 'high' ? 'more-fast-ball' : 'the-most-fast-ball'} />}
+              {hoverPlayButton && <Ball $ready={onReady} className={fastBall === 'low'? 'ball' : fastBall === 'middle' ? 'fast-ball' : fastBall === 'high' ? 'more-fast-ball' : 'the-most-fast-ball'} />}
             </PlayButtonContainer>
             <div style={{width: '100%'}}>
               <LineUp
@@ -442,7 +442,7 @@ function App() {
               gameFinished={gameFinished}
               setOnPlay={setOnPlay}
             />
-            {<ButtonList>
+            {!gameFinished && <ButtonList>
               {playState
                 ?
                 <Pause className='pause' $showButton={showPlayButton} onClick={pauseHandler}
@@ -558,6 +558,7 @@ const PlayButtonBorder = styled.div<styleProps>`
 `
 
 const Ball = styled.div<styleProps>`
+  display: ${props => props.$ready ? 'block' : 'none'};
   position: relative;
   top: 20px;
   background: url(${ball}) no-repeat center center;

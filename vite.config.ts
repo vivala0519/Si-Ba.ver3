@@ -4,20 +4,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    {
-      name: 'custom-rewrite',
-      configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-          if (/^\/[^.]*$/.test(req.url)) {
-            req.url = '/';
-          }
-          next();
-        });
-      },
-    }
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

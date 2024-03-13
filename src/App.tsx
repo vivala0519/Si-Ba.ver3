@@ -520,9 +520,7 @@ const Light = styled.div<styleProps>`
   width: ${props => props.$lightSize + '%'};
   height: ${props => props.$lightSize + '%'};
   top: ${props => 42 - (props.$lightSize / 3) + '%'};
-  background-image: url(${light});
-  background-position: center;
-  background-repeat: no-repeat;
+  background: url(${light}) no-repeat center center;
   background-size: 100% 100%;
 `
 

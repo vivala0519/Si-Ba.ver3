@@ -12,7 +12,7 @@ import styles from './Play.module.scss'
 import restart from '@/assets/restart.svg'
 import pause from '@/assets/pause.svg'
 import ball from '@/assets/ball.png'
-import light from '@/assets/light.svg'
+import light from '@/assets/light-static.svg'
 import { gameProcess } from './api/gameProcess.js'
 import './App.css'
 
@@ -415,7 +415,7 @@ function App() {
                 onReady={onReady}
                 />
             </div>
-            <Light $ready={onReady} $lightSize={lightSize}/>
+            <Light className='light' $ready={onReady} $lightSize={lightSize}/>
             <PlayButtonContainer $ready={onReady} onMouseEnter={() => setHoverPlayButton(true)} onMouseLeave={() => setHoverPlayButton(false)}>
               <PlayButton className={`${!hoverPlayButton ? styles.hoverPlay : styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
               <PlayButtonBorder $ready={onReady} $hover={!hoverPlayButton}/>

@@ -12,7 +12,7 @@ import styles from './Play.module.scss'
 import restart from '@/assets/restart.svg'
 import pause from '@/assets/pause.svg'
 import ball from '@/assets/ball.png'
-import light from '@/assets/sunflag.svg'
+import light from '@/assets/light.svg'
 import { gameProcess } from './api/gameProcess.js'
 import './App.css'
 

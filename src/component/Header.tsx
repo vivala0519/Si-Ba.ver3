@@ -1,8 +1,7 @@
-import {DetailedHTMLProps, HTMLAttributes} from 'react'
+import {useState, DetailedHTMLProps, HTMLAttributes} from 'react'
 import styled from 'styled-components'
 import styles from './Title.module.scss'
-import whiteIcon from '../assets/home-icon-white.jpg'
-import blackIcon from '../assets/home-icon-black.jpg'
+import homeIcon from '../assets/home-icon.png'
 
 interface PropsType {
     onReady: boolean
@@ -10,10 +9,13 @@ interface PropsType {
 
 interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     $ready?: boolean
+    $hover?: boolean
 }
 
 const Header = (props: PropsType) => {
     const { onReady } = props
+
+    const [hoverTitle, setHoverTitle] = useState(false)
 
     const handleRefresh = () => {
         window.location.reload()
@@ -21,9 +23,9 @@ const Header = (props: PropsType) => {
 
     return (
         <HeaderContainer $ready={onReady}>
-            <Title className={styles.title} onClick={handleRefresh}>
-                <span>야구</span>
-                <span>놀자</span>
+            <Title className={styles.title} onClick={handleRefresh} onMouseEnter={() => setHoverTitle(true)} onMouseLeave={() => setHoverTitle(false)}>
+                <TitleSpan $hover={hoverTitle}>야구</TitleSpan>
+                <TitleSpan $hover={hoverTitle}>놀자</TitleSpan>
             </Title>
             <SubTitle><YearColor>Si</YearColor>mulator of <YearColor style={{marginLeft: '5px'}}>Ba</YearColor>seball</SubTitle>
         </HeaderContainer>
@@ -58,16 +60,17 @@ const Title = styled.div`
         font-weight: 300;
     };
     
-    &::before {
-        @media (prefers-color-scheme: light) {
-            background: url(${whiteIcon}) no-repeat center center;
-            background-size: 100% 100%;
-        }
-        @media (prefers-color-scheme: dark) {
-            background: url(${blackIcon}) no-repeat center center;
-            background-size: 100% 100%;
+    &:hover {
+        &::before {
+            background-image: url(${homeIcon});
+            background-position: center;
+            background-repeat: no-repeat;
         }
     };
+`
+
+const TitleSpan = styled.span<styleProps>`
+    display: ${props => props.$hover ? 'none' : 'block'};
 `
 
 const SubTitle = styled.div`

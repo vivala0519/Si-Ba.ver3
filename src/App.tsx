@@ -12,6 +12,7 @@ import styles from './Play.module.scss'
 import restart from '@/assets/restart.svg'
 import pause from '@/assets/pause.svg'
 import ball from '@/assets/ball.png'
+import light from '@/assets/sunflag.svg'
 import { gameProcess } from './api/gameProcess.js'
 import './App.css'
 
@@ -20,6 +21,7 @@ interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
   $ready?: boolean
   $hover?: boolean
   $isMobile?: boolean
+  $lightSize?: number
 }
 
 function App() {
@@ -222,6 +224,7 @@ function App() {
   const [report, setReport] = useState<object | null>(null)
   const [reportRow, setReportRow] = useState<object | null>(null)
   const [onReady, setOnReady] = useState(false)
+  const [lightSize, setLightSize] = useState(3)
 
   useEffect(() => {
     const checkMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -254,6 +257,10 @@ function App() {
     const awayLineUpNullCount = awayLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
 
     setOnReady(homeLineUpNullCount === 1 && awayLineUpNullCount === 1)
+
+    const filledCount = 24 - (homeLineUpNullCount + awayLineUpNullCount - 2)
+    setLightSize(filledCount + 3)
+
   }, [homeLineUpList, awayLineUpList]);
 
   // useEffect(() => {
@@ -361,16 +368,16 @@ function App() {
   }, [onPlay]);
 
   useEffect(() => {
-    if (hoverPlayButton) {
+    if (onReady) {
       const timeout1 = setTimeout(() => {
         setFastBall('middle')
-      }, 2000)
+      }, 1000)
       const timeout2 = setTimeout(() => {
         setFastBall('high')
-      }, 4000)
+      }, 2500)
       const timeout3 = setTimeout(() => {
         setFastBall('veryHigh')
-      }, 6000)
+      }, 4000)
       return () => {
         clearTimeout(timeout1);
         clearTimeout(timeout2);
@@ -379,7 +386,7 @@ function App() {
     } else {
       setFastBall('low')
     }
-  }, [hoverPlayButton]);
+  }, [onReady]);
 
   // 모바일에서 더블 터치 block
   const handleTouchStart = (event) => {
@@ -408,10 +415,11 @@ function App() {
                 onReady={onReady}
                 />
             </div>
+            <Light $ready={onReady} $lightSize={lightSize}/>
             <PlayButtonContainer $ready={onReady} onMouseEnter={() => setHoverPlayButton(true)} onMouseLeave={() => setHoverPlayButton(false)}>
-              <PlayButton className={`${hoverPlayButton ? styles.hoverPlay : styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
-              <PlayButtonBorder $ready={onReady} $hover={hoverPlayButton}/>
-              {hoverPlayButton && <Ball $ready={onReady} className={fastBall === 'low'? 'ball' : fastBall === 'middle' ? 'fast-ball' : fastBall === 'high' ? 'more-fast-ball' : 'the-most-fast-ball'} />}
+              <PlayButton className={`${!hoverPlayButton ? styles.hoverPlay : styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
+              <PlayButtonBorder $ready={onReady} $hover={!hoverPlayButton}/>
+              {!hoverPlayButton && <Ball $ready={onReady} className={fastBall === 'low'? 'ball' : fastBall === 'middle' ? 'fast-ball' : fastBall === 'high' ? 'more-fast-ball' : 'the-most-fast-ball'} />}
             </PlayButtonContainer>
             <div style={{width: '100%'}}>
               <LineUp
@@ -504,6 +512,18 @@ const PlayButtonContainer = styled.div<styleProps>`
   @media (max-width: 380px) {
     left: 38%;
   }
+`
+
+const Light = styled.div<styleProps>`
+  display: ${props => props.$ready ? 'none' : 'block'};
+  position: absolute;
+  width: ${props => props.$lightSize + '%'};
+  height: ${props => props.$lightSize + '%'};
+  top: ${props => 42 - (props.$lightSize / 3) + '%'};
+  background-image: url(${light});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 `
 
 const PlayButton = styled.button<styleProps>`

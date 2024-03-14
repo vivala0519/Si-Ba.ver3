@@ -291,6 +291,9 @@ function App() {
   const [fastBall, setFastBall] = useState('low')
   // game finish flag
   const [gameFinished, setGameFinished] = useState(false)
+  // report for mobile
+  const [homeMobileReport, setHomeMobileReport] = useState({})
+  const [awayMobileReport, setAwayMobileReport] = useState({})
 
   const sendSplitReport = (report, index, speed) => {
     let i = index;
@@ -395,100 +398,105 @@ function App() {
   }
 
   return (
-    <>
-      {!onPlay ?
-        <div className={disappear ? 'body-container onPlay' : 'body-container'} style={{display: 'flex', flexDirection: 'column'}} onTouchStart={handleTouchStart}>
-          <Header onReady={onReady}/>
-          <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
-          {/*SearchBoxContainer*/}
-          <div className={'container'}>
-            <div style={{width: '100%'}}>
-              <LineUp
-                way='Away'
-                team={awayTeam}
-                setTeam={setAwayTeam}
-                addedPlayer={selectedArea?.includes('Away') ? addedPlayer : null}
-                setAddedPlayer={setAddedPlayer}
-                selectedArea={selectedArea?.includes('Away') ? selectedArea : null}
-                setSelectedArea={setSelectedArea}
-                lineUpList={awayLineUpList}
-                setLineUpList={setAwayLineUpList}
-                onReady={onReady}
-                />
+      <>
+        {!onPlay ?
+            <div className={disappear ? 'body-container onPlay' : 'body-container'} style={{display: 'flex', flexDirection: 'column'}} onTouchStart={handleTouchStart}>
+              <Header onReady={onReady}/>
+              <SelectPlayerContainer selectedArea={selectedArea} setAddedPlayer={setAddedPlayer} />
+              {/*SearchBoxContainer*/}
+              <div className={'container'}>
+                <div style={{width: '100%'}}>
+                  <LineUp
+                      way='Away'
+                      team={awayTeam}
+                      setTeam={setAwayTeam}
+                      addedPlayer={selectedArea?.includes('Away') ? addedPlayer : null}
+                      setAddedPlayer={setAddedPlayer}
+                      selectedArea={selectedArea?.includes('Away') ? selectedArea : null}
+                      setSelectedArea={setSelectedArea}
+                      lineUpList={awayLineUpList}
+                      setLineUpList={setAwayLineUpList}
+                      onReady={onReady}
+                  />
+                </div>
+                <StyledLight $ready={onReady} $lightSize={lightSize} />
+                <PlayButtonContainer $ready={onReady} onMouseEnter={() => setHoverPlayButton(true)} onMouseLeave={() => setHoverPlayButton(false)}>
+                  <PlayButton className={`${!hoverPlayButton ? styles.hoverPlay : styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
+                  <PlayButtonBorder $ready={onReady} $hover={!hoverPlayButton}/>
+                  {!hoverPlayButton && <Ball $ready={onReady} className={fastBall === 'low'? 'ball' : fastBall === 'middle' ? 'fast-ball' : fastBall === 'high' ? 'more-fast-ball' : 'the-most-fast-ball'} />}
+                </PlayButtonContainer>
+                <div style={{width: '100%'}}>
+                  <LineUp
+                      way='Home'
+                      team={homeTeam}
+                      setTeam={setHomeTeam}
+                      addedPlayer={selectedArea?.includes('Home') ? addedPlayer : null}
+                      setAddedPlayer={setAddedPlayer}
+                      selectedArea={selectedArea?.includes('Home') ? selectedArea : null}
+                      setSelectedArea={setSelectedArea}
+                      lineUpList={homeLineUpList}
+                      setLineUpList={setHomeLineUpList}
+                      onReady={onReady}
+                  />
+                </div>
+              </div>
+              <Footer onReady={onReady}/>
             </div>
-            <StyledLight $ready={onReady} $lightSize={lightSize} />
-            <PlayButtonContainer $ready={onReady} onMouseEnter={() => setHoverPlayButton(true)} onMouseLeave={() => setHoverPlayButton(false)}>
-              <PlayButton className={`${!hoverPlayButton ? styles.hoverPlay : styles.play} ${onReady ? 'play-button show' : 'play-button'}`} $ready={onReady} onClick={playButtonHandler}>Play Ball!</PlayButton>
-              <PlayButtonBorder $ready={onReady} $hover={!hoverPlayButton}/>
-              {!hoverPlayButton && <Ball $ready={onReady} className={fastBall === 'low'? 'ball' : fastBall === 'middle' ? 'fast-ball' : fastBall === 'high' ? 'more-fast-ball' : 'the-most-fast-ball'} />}
-            </PlayButtonContainer>
-            <div style={{width: '100%'}}>
-              <LineUp
-                way='Home'
-                team={homeTeam}
-                setTeam={setHomeTeam}
-                addedPlayer={selectedArea?.includes('Home') ? addedPlayer : null}
-                setAddedPlayer={setAddedPlayer}
-                selectedArea={selectedArea?.includes('Home') ? selectedArea : null}
-                setSelectedArea={setSelectedArea}
-                lineUpList={homeLineUpList}
-                setLineUpList={setHomeLineUpList}
-                onReady={onReady}
+            :
+            <Report>
+              {!isMobile && <div/>}
+              <ReportHead>
+                <ScoreBoard
+                    showScoreBoard={showScoreBoard}
+                    gameReportRow={reportRow}
+                    showPlayButton={showPlayButton}
+                    setShowPlayButton={setShowPlayButton}
+                    gameFinished={gameFinished}
+                    setOnPlay={setOnPlay}
                 />
-            </div>
-          </div>
-          <Footer onReady={onReady}/>
-        </div>
-      :
-        <Report>
-          {!isMobile && <div/>}
-          <ReportHead>
-            <ScoreBoard
-              showScoreBoard={showScoreBoard}
-              gameReportRow={reportRow}
-              showPlayButton={showPlayButton}
-              setShowPlayButton={setShowPlayButton}
-              gameFinished={gameFinished}
-              setOnPlay={setOnPlay}
-            />
-            {!gameFinished && <ButtonList>
-              {playState
-                ?
-                <Pause className='pause' $showButton={showPlayButton} onClick={pauseHandler}
-                  onMouseEnter={() => setShowPlayButton(true)}/>
-                :
-                <Restart className='restart' $showButton={showPlayButton} onClick={() => restartHandler(speedList[storedSpeed])}
-                  onMouseEnter={() => setShowPlayButton(true)}/>
-              }
-              <SpeedUp $showButton={showPlayButton} onClick={setSpeedHandler}
-                onMouseEnter={() => setShowPlayButton(true)}>{speedButton[storedSpeed]}</SpeedUp>
-            </ButtonList>}
-          </ReportHead>
-          {!isMobile && <><div/>
-            <PlayerReport
-                key={'awayReport'}
-                way={'away'}
-                pitcherReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
-                batterReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
-            /></>}
-            <LineUpCard
-                onPlay={onPlay}
-                setShowScoreBoard={setShowScoreBoard}
-                awayTeam={awayTeam}
-                homeTeam={homeTeam}
-                awayLineUp={awayLineUpList}
-                homeLineUp={homeLineUpList}
-                gameReportRow={reportRow}
-            />
-            {!isMobile && <PlayerReport
-                key={'homeReport'}
-                way={'home'}
-                pitcherReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
-                batterReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
-            />}
-        </Report>
-      }
-    </>
+                {!gameFinished && <ButtonList>
+                  {playState
+                      ?
+                      <Pause className='pause' $showButton={showPlayButton} onClick={pauseHandler}
+                             onMouseEnter={() => setShowPlayButton(true)}/>
+                      :
+                      <Restart className='restart' $showButton={showPlayButton} onClick={() => restartHandler(speedList[storedSpeed])}
+                               onMouseEnter={() => setShowPlayButton(true)}/>
+                  }
+                  <SpeedUp $showButton={showPlayButton} onClick={setSpeedHandler}
+                           onMouseEnter={() => setShowPlayButton(true)}>{speedButton[storedSpeed]}</SpeedUp>
+                </ButtonList>}
+              </ReportHead>
+              {!isMobile && <><div/>
+                <PlayerReport
+                    key={'awayReport'}
+                    way={'away'}
+                    pitcherReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
+                    batterReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
+                    setMobileReport={setAwayMobileReport}
+                /></>}
+              <LineUpCard
+                  onPlay={onPlay}
+                  setShowScoreBoard={setShowScoreBoard}
+                  awayTeam={awayTeam}
+                  homeTeam={homeTeam}
+                  awayLineUp={awayLineUpList}
+                  homeLineUp={homeLineUpList}
+                  gameReportRow={reportRow}
+                  isMobile={isMobile}
+                  homeMobileReport={homeMobileReport}
+                  awayMobileReport={awayMobileReport}
+              />
+              {!isMobile && <PlayerReport
+                  key={'homeReport'}
+                  way={'home'}
+                  pitcherReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
+                  batterReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
+                  setMobileReport={setHomeMobileReport}
+              />}
+            </Report>
+        }
+      </>
   )
 }
 

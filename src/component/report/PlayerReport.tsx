@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef, DetailedHTMLProps, HTMLAttributes } from 'react'
+import React, { useState, useEffect, useRef, DetailedHTMLProps, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 
 interface PropsType {
     way: string
     pitcherReportRow: object
     batterReportRow: object
+    setMobileReport: React.Dispatch<React.SetStateAction<object>>
 }
 
 interface PitcherReport {
@@ -27,7 +28,7 @@ interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 
 const PlayerReport = (props: PropsType) => {
     const containerRef = useRef(null)
-    const { way, pitcherReportRow, batterReportRow } = props
+    const { way, pitcherReportRow, batterReportRow, setMobileReport } = props
     const batters = Array.from({ length: 9 })
     // const [pitcher, setPitcher] = useState(10)
     const [ballCount, setBallCount] = useState([0, 0, 0])
@@ -98,6 +99,11 @@ const PlayerReport = (props: PropsType) => {
 
     }, [pitcherReportRow])
 
+    useEffect(() => {
+        const report = {kCount: kCount, ballCount: ballCount, pitcherInning: pitcherInning, pitcherOut: pitcherOut, pitcherLost: pitcherLost, batterReport: batterReport, batterTotalReport: batterTotalReport}
+        setMobileReport(report)
+    }, [kCount, ballCount, pitcherInning, pitcherOut, pitcherLost, batterReport, batterTotalReport]);
+
     // batter's report
     useEffect(() => {
         if (batterReportRow) {
@@ -153,7 +159,7 @@ const PlayerReport = (props: PropsType) => {
                         {batters.map((_, index) => (
                             index < 9 &&
                             <BatterRow $way={way} key={'batterRow' + index}>
-                                <BatterLeftSide key={'leftSide' + index}>
+                                <BatterLeftSide key={way + 'leftSide' + index}>
                                 {
                                 batterReport[index].map(cell => {
                                     if (['삼진', '땅볼', '뜬공'].includes(cell)) {

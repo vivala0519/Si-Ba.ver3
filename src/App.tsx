@@ -484,7 +484,7 @@ function App() {
                            onMouseEnter={() => setShowPlayButton(true)}>{speedButton[storedSpeed]}</SpeedUp>
                 </ButtonList>}
               </ReportHead>
-              {!isMobile && <><div/>
+              {<><div/>
                 <PlayerReport
                     key={'awayReport'}
                     way={'away'}
@@ -504,7 +504,7 @@ function App() {
                   homeMobileReport={homeMobileReport}
                   awayMobileReport={awayMobileReport}
               />
-              {!isMobile && <PlayerReport
+              {<PlayerReport
                   key={'homeReport'}
                   way={'home'}
                   pitcherReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}

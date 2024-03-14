@@ -165,10 +165,6 @@ const LineUpCard = (props: PropsType) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    useEffect(() => {
-        console.log(awayMobileReport)
-    }, [awayMobileReport])
-
     return (
         <>
             <CardBorder className={onPlay ? 'sheetBorder' : ''}>

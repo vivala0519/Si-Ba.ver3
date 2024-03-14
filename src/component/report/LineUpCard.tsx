@@ -217,7 +217,7 @@ const LineUpCard = (props: PropsType) => {
                         :
                         <PitcherRecord $way='away'>
                             <span>
-                                {[...Array(awayMobileReport['kCount'][0])].map((_, index) => (
+                                {[...Array(awayMobileReport['kCount'][0])]?.map((_, index) => (
                                     <K key={index}>K</K>
                                 ))}
                             </span>
@@ -254,7 +254,7 @@ const LineUpCard = (props: PropsType) => {
                                     <PlayerElRecord $index={index} $way='away'>
                                         <BatterLeftSide key={'awayLeftSide' + index}>
                                             {
-                                                awayMobileReport['batterReport'][index].map(cell => {
+                                                awayMobileReport['batterReport'][index]?.map(cell => {
                                                     if (['삼진', '땅볼', '뜬공'].includes(cell)) {
                                                         return (<BatterReportCell $hit={'out'}>{cell}</BatterReportCell>)
                                                     } else if (['볼넷', '안타', '2루타', '3루타', '홈런'].includes(cell)) {
@@ -283,7 +283,7 @@ const LineUpCard = (props: PropsType) => {
                         :
                         <PitcherRecord $way='away'>
                             <span>
-                                {[...Array(awayMobileReport['kCount'][1])].map((_, index) => (
+                                {[...Array(awayMobileReport['kCount'][1])]?.map((_, index) => (
                                     <K key={index}>K</K>
                                 ))}
                             </span>
@@ -303,7 +303,7 @@ const LineUpCard = (props: PropsType) => {
                         :
                         <PitcherRecord $way='away'>
                             <span>
-                                {[...Array(awayMobileReport['kCount'][2])].map((_, index) => (
+                                {[...Array(awayMobileReport['kCount'][2])]?.map((_, index) => (
                                     <K key={index}>K</K>
                                 ))}
                             </span>
@@ -326,7 +326,7 @@ const LineUpCard = (props: PropsType) => {
                         :
                         <PitcherRecord $way='home'>
                             <span>
-                                {[...Array(homeMobileReport['kCount'][0])].map((_, index) => (
+                                {[...Array(homeMobileReport['kCount'][0])]?.map((_, index) => (
                                     <K key={index}>K</K>
                                 ))}
                             </span>
@@ -363,7 +363,7 @@ const LineUpCard = (props: PropsType) => {
                                     <PlayerElRecord $index={index} $way='home'>
                                         <BatterLeftSide key={'homeLeftSide' + index}>
                                             {
-                                                homeMobileReport['batterReport'][index].map(cell => {
+                                                homeMobileReport['batterReport'][index]?.map(cell => {
                                                     if (['삼진', '땅볼', '뜬공'].includes(cell)) {
                                                         return (<BatterReportCell $hit={'out'}>{cell}</BatterReportCell>)
                                                     } else if (['볼넷', '안타', '2루타', '3루타', '홈런'].includes(cell)) {
@@ -390,7 +390,7 @@ const LineUpCard = (props: PropsType) => {
                         :
                         <PitcherRecord $way='home'>
                             <span>
-                                {[...Array(homeMobileReport['kCount'][1])].map((_, index) => (
+                                {[...Array(homeMobileReport['kCount'][1])]?.map((_, index) => (
                                     <K key={index}>K</K>
                                 ))}
                             </span>
@@ -408,7 +408,7 @@ const LineUpCard = (props: PropsType) => {
                         :
                         <PitcherRecord $way='home'>
                             <span>
-                                {[...Array(homeMobileReport['kCount'][2])].map((_, index) => (
+                                {[...Array(homeMobileReport['kCount'][2])]?.map((_, index) => (
                                     <K key={index}>K</K>
                                 ))}
                             </span>

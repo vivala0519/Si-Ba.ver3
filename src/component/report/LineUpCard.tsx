@@ -42,7 +42,7 @@ interface styleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 }
 
 const LineUpCard = (props: PropsType) => {
-    const { isMobile, awayTeam, homeTeam, awayLineUp, homeLineUp, onPlay, setShowScoreBoard, gameReportRow, homeMobileReport, awayMobileReport } = props
+    const { awayTeam, homeTeam, awayLineUp, homeLineUp, onPlay, setShowScoreBoard, gameReportRow, homeMobileReport, awayMobileReport } = props
     // display names for texting animation
     const [awayVisibleNames, setAwayVisibleNames] = useState(Array.from({length: 21 }, () => ''))
     const [homeVisibleNames, setHomeVisibleNames] = useState(Array.from({length: 21 }, () => ''))
@@ -204,7 +204,7 @@ const LineUpCard = (props: PropsType) => {
         <>
             <CardBorder className={onPlay ? 'sheetBorder' : ''}>
             <Title>{reportMode ? 'RECORD' : 'LINE-UP CARD'}</Title>
-            <SheetContainer className={onPlay ? 'sheetActive' : 'sheet'} onClick={() => (isMobile || window.innerWidth < 812) && setReportMode(!reportMode)} $isMobile={isMobile}>
+            <SheetContainer className={onPlay ? 'sheetActive' : 'sheet'} onClick={() => (window.innerWidth < 812) && setReportMode(!reportMode)} $isMobile={window.innerWidth < 812}>
                 <div key='away_sheet' style={{width: '100%'}}>
                 <Sheet>
                     <SheetDiv key='away_team_name' style={{borderBottom: '0px'}}>{awayTeam ? awayTeam : 'Away'}</SheetDiv>

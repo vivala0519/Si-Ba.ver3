@@ -235,7 +235,7 @@ function App() {
   const playButtonHandler = async () => {
     const homeLineUpNullCount = homeLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
     const awayLineUpNullCount = awayLineUpList.reduce((count, value) => (value === null ? count + 1 : count), 0)
-    
+
     if (homeLineUpNullCount > 1 || awayLineUpNullCount > 1) {
       Swal.fire({
         icon: "error",
@@ -364,6 +364,7 @@ function App() {
       setShowScoreBoard(false)
       setDisappear(false)
       setReport(null)
+      setHoverPlayButton(false)
     }
   }, [onPlay]);
 
@@ -539,7 +540,7 @@ const PlayButton = styled.button<styleProps>`
   z-index: 1;
   &:hover,
   &:focus {
-      outline: none;
+    outline: none;
   }
   @media (max-width: 821px) {
     filter: opacity(0.7);

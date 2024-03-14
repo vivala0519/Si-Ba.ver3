@@ -165,40 +165,9 @@ const LineUpCard = (props: PropsType) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // const awayPlayerList = Array.from({ length: 9 }, (_, i) => (
-    //     <>
-    //         {i !== 9 ?
-    //             <PlayerEl key={i}>
-    //                 <Td style={{borderBottom: i === 8 ? '0px' : '1px solid black'}}>{i + 1}</Td>
-    //                 <CursiveTd style={{borderBottom: i === 8 ? '0px' : '1px solid black'}}>{awayLineUp[i].position}</CursiveTd>
-    //                 <CursiveTd style={{borderBottom: i === 8 ? '0px' : '1px solid black', borderRight: '0px'}}>
-    //                     <LetterSpacedByLength nameLength={awayNameList[i].length}>{awayNameList[i]}</LetterSpacedByLength>
-    //                 </CursiveTd>
-    //             </PlayerEl>
-    //             :
-    //             <></>
-    //         }
-    //     </>
-    // ));
-    
-    // const homePlayerList = Array.from({ length: 9 }, (_, i) => (
-    //     <>
-    //         {i !== 9 ? 
-    //             <PlayerEl key={i}>
-    //                 <Td style={{borderBottom: i === 8 ? '0px' : '1px solid black'}}>{i + 1}</Td>
-    //                 <CursiveTd style={{borderBottom: i === 8 ? '0px' : '1px solid black'}}>{homeLineUp[i].position}</CursiveTd>
-    //                 <CursiveTd style={{borderBottom: i === 8 ? '0px' : '1px solid black', borderRight: '0px'}}>
-    //                     {/* <div style={{display: 'flex', gap: '15px'}}>
-    //                         {characterSpanByName(homeLineUp[i].name)}
-    //                     </div> */}
-    //                     <LetterSpacedByLength nameLength={homeLineUp[i].name.length}>{homeLineUp[i].name}</LetterSpacedByLength>
-    //                 </CursiveTd>
-    //             </PlayerEl>
-    //             :
-    //             <></>
-    //         }
-    //     </>
-    // ));
+    useEffect(() => {
+        console.log(awayMobileReport)
+    }, [awayMobileReport])
 
     return (
         <>

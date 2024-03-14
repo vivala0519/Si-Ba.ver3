@@ -292,8 +292,12 @@ function App() {
   // game finish flag
   const [gameFinished, setGameFinished] = useState(false)
   // report for mobile
-  const [homeMobileReport, setHomeMobileReport] = useState({})
-  const [awayMobileReport, setAwayMobileReport] = useState({})
+  const [homeMobileReport, setHomeMobileReport] = useState({
+    kCount: ['', '', ''], ballCount: ['', '', ''], pitcherInning: ['', '', ''], pitcherOut: ['', '', ''], pitcherLost: ['', '', ''], batterReport: {}, batterTotalReport: ['']
+  })
+  const [awayMobileReport, setAwayMobileReport] = useState({
+    kCount: ['', '', ''], ballCount: ['', '', ''], pitcherInning: ['', '', ''], pitcherOut: ['', '', ''], pitcherLost: ['', '', ''], batterReport: {}, batterTotalReport: ['']
+  })
 
   const sendSplitReport = (report, index, speed) => {
     let i = index;

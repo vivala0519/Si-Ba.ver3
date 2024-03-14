@@ -227,7 +227,20 @@ function App() {
   const [lightSize, setLightSize] = useState(3)
 
   useEffect(() => {
-    const checkMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    function handleResize() {
+      if (window.innerWidth > 820) {
+        setIsMobile(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    // const checkMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const checkMobile = window.innerWidth < 821
 
     setIsMobile(checkMobile)
   }, []);

@@ -291,6 +291,13 @@ function App() {
   const [fastBall, setFastBall] = useState('low')
   // game finish flag
   const [gameFinished, setGameFinished] = useState(false)
+  // report for mobile
+  const [homeMobileReport, setHomeMobileReport] = useState({
+  // kCount: ['', '', ''], ballCount: ['', '', ''], pitcherOut: ['', '', ''], pitcherLost: ['', '', ''], batterReport: {}, batterTotalReport: []
+  })
+  const [awayMobileReport, setAwayMobileReport] = useState({
+    // kCount: ['', '', ''], ballCount: ['', '', ''], pitcherOut: ['', '', ''], pitcherLost: ['', '', ''], batterReport: {}, batterTotalReport: []
+  })
 
   const sendSplitReport = (report, index, speed) => {
     let i = index;
@@ -364,6 +371,7 @@ function App() {
       setShowScoreBoard(false)
       setDisappear(false)
       setReport(null)
+      setHoverPlayButton(false)
     }
   }, [onPlay]);
 
@@ -469,6 +477,7 @@ function App() {
                 way={'away'}
                 pitcherReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
                 batterReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
+                setMobileReport={setAwayMobileReport}
             /></>}
             <LineUpCard
                 onPlay={onPlay}
@@ -478,12 +487,16 @@ function App() {
                 awayLineUp={awayLineUpList}
                 homeLineUp={homeLineUpList}
                 gameReportRow={reportRow}
+                isMobile={isMobile}
+                homeMobileReport={homeMobileReport}
+                awayMobileReport={awayMobileReport}
             />
             {!isMobile && <PlayerReport
                 key={'homeReport'}
                 way={'home'}
                 pitcherReportRow={reportRow && reportRow['topBottom'] === 'top' && reportRow}
                 batterReportRow={reportRow && reportRow['topBottom'] === 'bottom' && reportRow}
+                setMobileReport={setHomeMobileReport}
             />}
         </Report>
       }

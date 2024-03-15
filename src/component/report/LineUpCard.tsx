@@ -64,10 +64,6 @@ const LineUpCard = (props: PropsType) => {
     ))
 
     useEffect(() => {
-        // 라인업 텍스팅 완료되면 스코어보드 show
-        if (homeVisibleNames[20].length === homeLineUp[12].name.length) {
-            setShowScoreBoard(true)
-        }
         // visibleNames 위한 데이터 정제
         const adjustedNameList = [awayLineUp[10].name]
         for (let i = 0; i < 13; i++) {
@@ -101,6 +97,10 @@ const LineUpCard = (props: PropsType) => {
 
     
     useEffect(() => {
+        // 라인업 텍스팅 완료되면 스코어보드 show
+        if (homeVisibleNames[20].length === homeLineUp[12].name.length) {
+            setShowScoreBoard(true)
+        }
         const adjustedNameList = [homeLineUp[10].name]
         for (let i = 0; i < 13; i++) {
             if (i < 9) {
